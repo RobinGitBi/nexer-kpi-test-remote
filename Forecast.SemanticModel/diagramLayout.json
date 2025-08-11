@@ -4,8 +4,8 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 3074,
-        "y": 0
+        "x": 0,
+        "y": 109.74457817581735
       },
       "nodes": [
         {
@@ -319,7 +319,7 @@
         }
       ],
       "name": "All tables",
-      "zoomValue": 50,
+      "zoomValue": 70.466657361944783,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
@@ -1162,7 +1162,7 @@
       "ordinal": 10,
       "scrollPosition": {
         "x": 0,
-        "y": 117.33333587646484
+        "y": 217.33332824707031
       },
       "nodes": [
         {
@@ -1226,6 +1226,6 @@
       "tablesLocked": false
     }
   ],
-  "selectedDiagram": "Layout 10",
+  "selectedDiagram": "All tables",
   "defaultDiagram": "All tables"
 }

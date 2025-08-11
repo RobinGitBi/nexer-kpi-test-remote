@@ -220,7 +220,7 @@ table 'Measures Table'
 			    RETURN
 			        CALCULATE (
 			            SUM ( 'Project Transactions'[TotalHours] ),
-			            KEEPFILTERS(LEN('Project Transactions'[TimeCode]) < 4),
+			            KEEPFILTERS('Project Transactions'[ProjectClassType] in {1,2}),
 			            NOT 'Project Transactions'[EmploymentTypeID] in {4,5},
 			            'Project Transactions'[ActualityOrigin_new] = SelectedActuality
 			        )
@@ -240,9 +240,8 @@ table 'Measures Table'
 			    DIVIDE(
 			        CALCULATE(
 			            [FTE],
-			            'Function'[FunctionName] = "Administration"
-			            ,KEEPFILTERS('Project Transactions'[ActualityOrigin_new] = SelectedActuality)
-			        ),
+			            'Function'[FunctionId] = "20"
+			            ,KEEPFILTERS('Project Transactions'[ActualityOrigin_new] = SelectedActuality)),
 			    [FTE]
 			    )
 		formatString: 0.00%;-0.00%;0.00%
@@ -524,11 +523,9 @@ table 'Measures Table'
 			
 			)
 			```
-		formatString: 0
+		formatString: 0.0
 		displayFolder: HR
 		lineageTag: f08b70a5-c100-4d04-b88e-8754a575ef58
-
-		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure 'Total Direct Cost' =
 			

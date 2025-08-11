@@ -99,3 +99,7 @@ relationship 915ef708-ada7-51a6-aed4-734c5404224c
 	fromColumn: 'Project Transactions'.AdjustedFunctionId
 	toColumn: Function.FunctionId
 
+relationship 91f508ef-c878-41a0-b4ce-2e6d71bce0e9
+	fromColumn: 'Project Transactions'.CompanyId
+	toColumn: Company.CompanyId
+
