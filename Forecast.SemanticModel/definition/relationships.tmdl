@@ -1,0 +1,101 @@
+relationship AutoDetected_c46ca4dd-0363-4778-ac70-f2e2d6800074
+	fromColumn: P&L.CompanyUnitId
+	toColumn: 'Organisation Manual'.CompanyUnitId
+
+relationship da4918ae-4d62-a33e-64da-a299cb4a2a0f
+	fromColumn: P&L.CompanyGlId
+	toColumn: 'GL Account Local'.GLAccountID
+
+relationship 49072680-05ed-f5d9-f311-22fcfe31001c
+	fromColumn: 'Project Transactions'.EmploymentTypeId
+	toColumn: 'Employment Type'.EmploymentTypeId
+
+relationship 0ceed939-dae6-4586-3002-962ac2ea2191
+	fromColumn: 'Project Transactions'.AccountingDate
+	toColumn: Calendar.Date
+
+relationship AutoDetected_4f731a26-596e-4a6f-9697-6c57c9cff80e
+	fromColumn: P&L.CurrencyId
+	toColumn: 'Source Currency'.CurrencyId
+
+relationship c7f7946e-5749-5e43-a021-04ace18a9b69
+	fromColumn: P&L.AccountingDate
+	toColumn: Calendar.Date
+
+relationship 9b490700-5c70-1c29-531d-8453c341c543
+	fromColumn: 'Monthly Exchange Rates'.Date
+	toColumn: Calendar.Date
+
+relationship 902ce437-2534-4e16-da34-0de8b6f25df3
+	fromColumn: 'Monthly Exchange Rates'.SourceCurrencyKey
+	toColumn: 'Source Currency'.CurrencyId
+
+relationship db01a574-21d3-5c1e-a741-7dd25efd3789
+	fromColumn: 'Monthly Exchange Rates'.TargetCurrencyKey
+	toColumn: 'Reporting Currency'.CurrencyId
+
+relationship f2bb2c07-1b60-032a-be5d-0b80e6c9cb6d
+	fromColumn: 'Monthly Exchange Rates'.Actuality
+	toColumn: Actuality.ActualityId
+
+relationship 643ad6d7-dc7b-08fc-32c0-c07e41dae348
+	fromColumn: 'Project Transactions'.Actuality
+	toColumn: Actuality.ActualityId
+
+relationship AutoDetected_f0ec3dbe-aff8-4c20-a0e9-79b571568e09
+	fromColumn: 'Project Transactions'.ProjectClassType
+	toColumn: 'Project Class Type'.pk_projectclasstype
+
+relationship 02bb803b-1c65-da8f-3245-fcc6169e7bb7
+	fromColumn: P&L.Actuality
+	toColumn: Actuality.ActualityId
+
+relationship AutoDetected_ede204f8-ad8e-4a5a-a718-0f9e60fa7113
+	fromColumn: 'Project Transactions'.CurrencyId
+	toColumn: 'Source Currency'.CurrencyId
+
+relationship 5cdc0615-3937-2ed9-9fa5-3cbaa6f59e34
+	fromColumn: 'Project Transactions'.CompanyTimeCode
+	toColumn: 'Time Code'.CompanyTimeCodeId
+
+relationship 2d063492-a1ce-5817-2887-ae522361e5bf
+	isActive: false
+	fromColumn: P&L.ActualityDate
+	toColumn: Calendar.Date
+
+relationship 65a826cc-b75a-33a6-df1b-b6a221e68441
+	fromColumn: P&L.ActualityOrigin_new
+	toColumn: ActualityOrgin.ActualityOrigin
+
+relationship 5efd3f00-2d58-b0ef-a1f0-4f090cd2e41a
+	fromColumn: 'Project Transactions'.ActualityOrigin_new
+	toColumn: ActualityOrgin.ActualityOrigin
+
+relationship 727966c0-67a4-838f-0f01-146571096137
+	fromColumn: 'Project Transactions'.EmployeeUnitId
+	toColumn: 'Organisation Manual'.CompanyUnitId
+
+relationship AutoDetected_a7443dd4-fa91-4b56-8951-8d7e2774c87c
+	fromColumn: Goals.CompanyUnitId
+	toColumn: 'Organisation Manual'.CompanyUnitId
+
+relationship AutoDetected_b5724f5c-90a9-40d3-9376-bd777f1e2b7e
+	fromColumn: P&L.GlFunctionIcId
+	toColumn: 'GL Account Hierarchy'.GlFunctionIcId
+
+relationship 963bef18-7320-0ddf-02c7-dd2953447180
+	fromColumn: P&L.FunctionId
+	toColumn: Function.FunctionId
+
+relationship 96ab5417-e25a-d382-ddd7-a19b440789ee
+	fromColumn: P&L.CompanyId
+	toColumn: Company.CompanyId
+
+relationship 53f216ae-8ef3-07e5-d804-53a30e3d81fc
+	fromColumn: Goals.AccountingDate
+	toColumn: Calendar.Date
+
+relationship 915ef708-ada7-51a6-aed4-734c5404224c
+	fromColumn: 'Project Transactions'.AdjustedFunctionId
+	toColumn: Function.FunctionId
+

@@ -1,0 +1,54 @@
+table crmreport
+	isHidden
+	lineageTag: 6b3cc6d0-5bdb-4635-87bf-23123daf0b0b
+
+	column Name
+		dataType: string
+		isHidden
+		lineageTag: 032e84d0-83f4-46cd-830e-99ed394da25a
+		summarizeBy: none
+		sourceColumn: Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		isHidden
+		lineageTag: 3a61edf6-931f-4df9-90ae-927a101309d5
+		summarizeBy: none
+		sourceColumn: Description
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Kind
+		dataType: string
+		isHidden
+		lineageTag: def3086b-e65f-483b-8c1b-896e57279d21
+		summarizeBy: none
+		sourceColumn: Kind
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition crmreport = m
+		mode: import
+		queryGroup: Other
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    crmreport_Schema = prod_gold_Database{[Name="crmreport",Kind="Schema"]}[Data]
+				in
+				    crmreport_Schema
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

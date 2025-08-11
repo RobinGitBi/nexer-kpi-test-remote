@@ -1,0 +1,123 @@
+table exchangeratesmonthly
+	isHidden
+	lineageTag: 3393d080-2dd1-4b22-9e65-304f1686e9eb
+
+	column Date
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: b69b6d0f-59ef-46ab-809a-b7f85b669fa8
+		summarizeBy: none
+		sourceColumn: Date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column YearMonth
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5baaebd8-79f3-442b-8092-ea20c697697e
+		summarizeBy: sum
+		sourceColumn: YearMonth
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Actuality
+		dataType: string
+		isHidden
+		lineageTag: 2a081a53-2608-4e1b-80c1-a6fe6e73cbee
+		summarizeBy: none
+		sourceColumn: Actuality
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActualityDanir
+		dataType: string
+		isHidden
+		lineageTag: 72589bba-9634-41f9-a931-8438d5f3eaf4
+		summarizeBy: none
+		sourceColumn: ActualityDanir
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyType
+		dataType: string
+		isHidden
+		lineageTag: 72182cbc-84e5-4e95-bd25-3a81876cf64b
+		summarizeBy: none
+		sourceColumn: CurrencyType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Currency
+		dataType: string
+		isHidden
+		lineageTag: 1c627dc9-af27-4d63-8ce2-dd1039a2824d
+		summarizeBy: none
+		sourceColumn: Currency
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExchangeRates
+		dataType: double
+		isHidden
+		lineageTag: dd4fb0ae-c214-4646-a5cb-fe03ac5cf09f
+		summarizeBy: sum
+		sourceColumn: ExchangeRates
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CurrencyId
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b4397674-7a5e-4a53-abe7-94aceda50dfd
+		summarizeBy: count
+		sourceColumn: CurrencyId
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition exchangeratesmonthly = m
+		mode: import
+		source =
+				let
+				    // Step 1: Connect to source
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_silver_enterprise_Database = Source{[Name="prod_silver_enterprise",Kind="Database"]}[Data],
+				    finance_Schema = prod_silver_enterprise_Database{[Name="finance",Kind="Schema"]}[Data],
+				    exchangeratesmonthly_Table = finance_Schema{[Name="exchangeratesmonthly",Kind="Table"]}[Data],
+				
+				    // Step 2: Remove unneeded column
+				    #"Removed Columns" = Table.RemoveColumns(exchangeratesmonthly_Table,{"_increment_timestamp"}),
+				    #"Merged Queries" = Table.NestedJoin(#"Removed Columns", {"Currency"}, #"Reporting Currency", {"SourceCurrency"}, "Reporting Currency", JoinKind.LeftOuter),
+				    #"Expanded Reporting Currency" = Table.ExpandTableColumn(#"Merged Queries", "Reporting Currency", {"CurrencyId"}, {"Reporting Currency.CurrencyId"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded Reporting Currency",{{"Reporting Currency.CurrencyId", "CurrencyId"}})
+				in
+				    #"Renamed Columns"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

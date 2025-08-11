@@ -1,0 +1,21 @@
+EVALUATE
+VAR CurrentMonth = FORMAT(TODAY(), "YYYYMM")
+RETURN
+    FILTER (
+        ADDCOLUMNS (
+            //FILTER (
+                SUMMARIZE (
+                    'P&L',
+                    'Calendar'[Year Month],
+                    'ActualityOrgin'[ActualityOrigin]
+                ),
+                //LEFT('Calendar'[Year Month], 4) = "2025"
+            //),
+            "@SalesAmount", [1. P&L_Cal_AmountYtd],
+            "@Check", RIGHT(ActualityOrgin[ActualityOrigin],6)
+        ),
+        OR (
+            [ActualityOrigin] = "AC" && 'Calendar'[Year Month] <> CurrentMonth,
+            [ActualityOrigin] = "FC" & 'Calendar'[Year Month]
+        )
+    )

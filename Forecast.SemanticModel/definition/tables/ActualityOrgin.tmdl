@@ -1,0 +1,54 @@
+table ActualityOrgin
+	lineageTag: 4b6dbc16-34ad-4691-a238-583302e32771
+
+	column ActualityOrigin
+		dataType: string
+		lineageTag: 1a4bb0ca-d6d4-428e-8b73-68f89dbf185c
+		summarizeBy: none
+		sourceColumn: ActualityOrigin
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FC Year'
+		dataType: string
+		lineageTag: 174f66f6-6e61-4af5-9720-e31efd0dcfbf
+		summarizeBy: none
+		sourceColumn: FC Year
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Actuality
+		dataType: string
+		lineageTag: fedd9a2c-6953-4e0c-a827-6f50e92e1260
+		summarizeBy: none
+		sourceColumn: Actuality
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ActualityOrgin = m
+		mode: import
+		source = ```
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    financereport_Schema = prod_gold_Database{[Name="financereport",Kind="Schema"]}[Data],
+				    projecttransactionslocal_Table = financereport_Schema{[Name="projecttransactions",Kind="Table"]}[Data],
+				    #"Removed Other Columns" = Table.SelectColumns(projecttransactionslocal_Table,{"ActualityOrigin", "Actuality"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Sorted Rows" = Table.Sort(#"Removed Duplicates",{{"ActualityOrigin", Order.Ascending}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Sorted Rows",null,"AC",Replacer.ReplaceValue,{"ActualityOrigin"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","20","",Replacer.ReplaceText,{"ActualityOrigin"}),
+				    #"Added Custom" = Table.AddColumn(#"Replaced Value1", "Custom", each if Text.StartsWith([ActualityOrigin], "FC") and Text.Length([ActualityOrigin]) = 6 
+				    then "20" & Text.Middle([ActualityOrigin], 2, 2) 
+				    else [ActualityOrigin]),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"Custom", "FC Year"}})
+				in
+				    #"Renamed Columns"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,15 @@
+expression 'Organisation Manual (2)' =
+		let
+		    Source = #"Organisation Manual",
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"BusinessUnitId", "BusinessUnit"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns", {"BusinessUnitId"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Removed Duplicates",{{"BusinessUnitId", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: b4d0ed23-d0ac-4ca4-bd59-0720e409b97d
+	queryGroup: Dimensions
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,52 @@
+table Function
+	lineageTag: f70cb549-e493-49aa-a81b-59ddce034051
+
+	column pk_function
+		dataType: int64
+		formatString: 0
+		lineageTag: 896955ad-d5b4-4a0c-bf7d-d2a1aba04cff
+		summarizeBy: sum
+		sourceColumn: pk_function
+
+		annotation SummarizationSetBy = Automatic
+
+	column FunctionId
+		dataType: string
+		lineageTag: 7ac9a5f4-a20e-4db3-8934-7a069eea4e58
+		summarizeBy: none
+		sourceColumn: FunctionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column FunctionName
+		dataType: string
+		lineageTag: 1e7303f3-d5d2-407f-959b-5cde5774b036
+		summarizeBy: none
+		sourceColumn: FunctionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1c439f91-d99b-4bde-9e4d-a467962db189
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Function = m
+		mode: import
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    organization_Schema = prod_gold_Database{[Name="organization",Kind="Schema"]}[Data],
+				    function_Table = organization_Schema{[Name="function",Kind="Table"]}[Data]
+				in
+				    function_Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

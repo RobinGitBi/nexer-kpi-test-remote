@@ -1,0 +1,71 @@
+table 'Employment Type'
+	lineageTag: a9e8e8ec-8159-44ad-b3ad-36ea546ace91
+
+	column EmploymentTypeId
+		dataType: int64
+		formatString: 0
+		lineageTag: ecf14adb-1df3-4769-ab67-fb8bb2bf6acf
+		summarizeBy: none
+		sourceColumn: EmploymentTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmploymentType
+		dataType: string
+		lineageTag: f1d0d9b1-2c28-4b8d-8523-4f8f51db76fb
+		summarizeBy: none
+		sourceColumn: EmploymentType
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmploymentCategoryId
+		dataType: int64
+		formatString: 0
+		lineageTag: a1aaf6f9-1c04-486e-98dd-1ead0a2a4565
+		summarizeBy: none
+		sourceColumn: EmploymentCategoryId
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmploymentCategory
+		dataType: string
+		lineageTag: d93c5d95-bebc-4474-846e-9eef3b5a6d06
+		summarizeBy: none
+		sourceColumn: EmploymentCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: e3a7ec25-dfce-438a-8861-271b3e92ed43
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column pk_employmenttype
+		dataType: int64
+		formatString: 0
+		lineageTag: a73d1bfe-dfcf-433d-bacb-868330f43862
+		summarizeBy: none
+		sourceColumn: pk_employmenttype
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Employment Type' = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    shareddimensions_Schema = prod_gold_Database{[Name="shareddimensions",Kind="Schema"]}[Data],
+				    employmenttypelocal_Table = shareddimensions_Schema{[Name="employmenttype",Kind="Table"]}[Data]
+				in
+				    employmenttypelocal_Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

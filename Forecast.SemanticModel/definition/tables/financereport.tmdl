@@ -1,0 +1,54 @@
+table financereport
+	isHidden
+	lineageTag: 48417d04-d139-4c86-9a15-22dd505146ac
+
+	column Name
+		dataType: string
+		isHidden
+		lineageTag: d8f1a3cf-0ad7-4435-a1c6-ff0277751433
+		summarizeBy: none
+		sourceColumn: Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		isHidden
+		lineageTag: b029364a-fef6-4f81-8bf8-16760d3ab048
+		summarizeBy: none
+		sourceColumn: Description
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Kind
+		dataType: string
+		isHidden
+		lineageTag: 57b90a88-2255-4017-a147-6a7d0660db93
+		summarizeBy: none
+		sourceColumn: Kind
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition financereport = m
+		mode: import
+		queryGroup: Other
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    financereport_Schema = prod_gold_Database{[Name="financereport",Kind="Schema"]}[Data]
+				in
+				    financereport_Schema
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

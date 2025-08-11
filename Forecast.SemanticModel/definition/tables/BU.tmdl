@@ -1,0 +1,86 @@
+table BU
+	lineageTag: a174aeac-75e9-4e0b-85f5-21f23a633de4
+
+	column Company
+		dataType: string
+		lineageTag: f4147105-3e2d-48b6-a83e-9cb8dc095eed
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessUnitId
+		dataType: string
+		lineageTag: 5c6131cb-08bd-4b0c-96f7-96531dd28394
+		summarizeBy: none
+		sourceColumn: BusinessUnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserDisplayName
+		dataType: string
+		lineageTag: 330dc95d-8dbf-4cc1-b46c-94d6c10d8133
+		summarizeBy: none
+		sourceColumn: UserDisplayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserMail
+		dataType: string
+		lineageTag: cc82d27d-6f0f-4fe1-b7a1-2a2fdcbc782f
+		summarizeBy: none
+		sourceColumn: UserMail
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsFinanceEmployee
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f620f3c-9638-48d2-ba97-2bf73ee683f5
+		summarizeBy: sum
+		sourceColumn: IsFinanceEmployee
+
+		annotation SummarizationSetBy = Automatic
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f210eafb-2a57-435d-ba07-a97656164356
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'BusinessUnitId.1'
+		dataType: string
+		lineageTag: 38232271-ff9c-4e8f-afdb-2f78e5c6d2c9
+		summarizeBy: none
+		sourceColumn: BusinessUnitId.1
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessUnit
+		dataType: string
+		lineageTag: 2c909886-0ae5-4017-8396-6d1a993607c3
+		summarizeBy: none
+		sourceColumn: BusinessUnit
+
+		annotation SummarizationSetBy = Automatic
+
+	partition BU = m
+		mode: import
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    security_Schema = prod_gold_Database{[Name="security",Kind="Schema"]}[Data],
+				    bu_Table = security_Schema{[Name="bu",Kind="Table"]}[Data],
+				    #"Merged Queries" = Table.NestedJoin(bu_Table, {"BusinessUnitId"}, #"Organisation Manual (2)", {"BusinessUnitId"}, "Organisation Manual (2)", JoinKind.FullOuter),
+				    #"Expanded Organisation Manual (2)" = Table.ExpandTableColumn(#"Merged Queries", "Organisation Manual (2)", {"BusinessUnitId", "BusinessUnit"}, {"BusinessUnitId.1", "BusinessUnit"})
+				in
+				    #"Expanded Organisation Manual (2)"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

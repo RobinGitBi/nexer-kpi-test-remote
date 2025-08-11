@@ -1,0 +1,92 @@
+table Company
+	lineageTag: 3710e1e1-3ef2-42cd-a805-2010e0dae563
+
+	column pk_erpcompany
+		dataType: int64
+		formatString: 0
+		lineageTag: 828f4880-bbcf-41b4-ad0a-50c7604d18d5
+		summarizeBy: none
+		sourceColumn: pk_erpcompany
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyId
+		dataType: string
+		lineageTag: 0dd97b9b-d4c5-4021-8778-115d7bcfa186
+		summarizeBy: none
+		sourceColumn: CompanyId
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Company
+		dataType: string
+		lineageTag: 5f740ef5-2e18-4ae1-9e0a-d3627219cd95
+		summarizeBy: none
+		sourceColumn: Company
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryId
+		dataType: string
+		lineageTag: b5ebdb8e-759d-48cc-8cc9-909b1b27dfdc
+		summarizeBy: none
+		sourceColumn: CountryId
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Language
+		dataType: string
+		lineageTag: e5f51950-38a4-4d6b-93bd-1d5a6ba2d916
+		summarizeBy: none
+		sourceColumn: Language
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Currency
+		dataType: string
+		lineageTag: 568ebb74-68cd-4b94-a300-d3537a3a6d64
+		summarizeBy: none
+		sourceColumn: Currency
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a00c4e5d-78d2-45d8-9749-798811c49b6a
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Company = m
+		mode: import
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    shareddimensions_Schema = prod_gold_Database{[Name="shareddimensions",Kind="Schema"]}[Data],
+				    erpcompany_Table = shareddimensions_Schema{[Name="erpcompany",Kind="Table"]}[Data]
+				in
+				    erpcompany_Table
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

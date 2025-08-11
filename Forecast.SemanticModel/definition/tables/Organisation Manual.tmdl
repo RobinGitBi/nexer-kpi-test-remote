@@ -1,0 +1,254 @@
+table 'Organisation Manual'
+	lineageTag: 5c03eb48-f2a7-4eea-8d32-ee3b80138656
+
+	column CompanyUnitId
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 5bc1d5df-d184-4aad-9be7-094a9b822128
+		summarizeBy: none
+		sourceColumn: CompanyUnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyId
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 6a63df62-92c7-4704-9c96-d6c864cfbf72
+		summarizeBy: none
+		sourceColumn: CompanyId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Company
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: e3565ee0-15a2-405c-ae47-5366bbd17d2e
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitId
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: fce93fdc-4ab0-4f13-9f70-baffd86b2e8c
+		summarizeBy: none
+		sourceColumn: UnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Unit
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: dd9c5c09-9486-4dc0-972c-fde06e933c14
+		summarizeBy: none
+		sourceColumn: Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitIsInactive
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 8cef72c0-a693-4d91-88ec-c489e413f1eb
+		summarizeBy: none
+		sourceColumn: UnitIsInactive
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitLevelId
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: acd4f53f-338a-4ba8-bcef-7a8d954548cf
+		summarizeBy: none
+		sourceColumn: UnitLevelId
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessUnitId
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f0e50fd4-cf8e-476d-a97c-d8d1cf1463f2
+		summarizeBy: count
+		sourceColumn: BusinessUnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessAreaId
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f10f96d8-fb0b-4177-849e-4d338f006e47
+		summarizeBy: count
+		sourceColumn: BusinessAreaId
+
+		annotation SummarizationSetBy = Automatic
+
+	column DivisionId
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d48584ae-242f-439f-b63c-e2d265c20d6b
+		summarizeBy: count
+		sourceColumn: DivisionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ControlAndDevelopmentBoardId
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 3b9fc9b5-fdd1-4b77-9894-9435f06e0e68
+		summarizeBy: count
+		sourceColumn: ControlAndDevelopmentBoardId
+
+		annotation SummarizationSetBy = Automatic
+
+	column GrowthAreaId
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 100a2dde-702c-4682-be58-b544e06c2a0c
+		summarizeBy: count
+		sourceColumn: GrowthAreaId
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitLevelName
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 3bdbd23f-40d8-439b-a57d-3efa7bc56fe0
+		summarizeBy: none
+		sourceColumn: UnitLevelName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessUnit
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 717cb389-d77a-47ed-b87f-661e38847daf
+		summarizeBy: none
+		sourceColumn: BusinessUnit
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessArea
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 45364b86-7084-4459-8e97-32bc8edd4e6d
+		summarizeBy: none
+		sourceColumn: BusinessArea
+
+		annotation SummarizationSetBy = Automatic
+
+	column ControlAndDevelopmentBoard
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: ab53395e-513e-49df-8f0b-fdb58033ba5b
+		summarizeBy: none
+		sourceColumn: ControlAndDevelopmentBoard
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: e23dff41-96e6-4be7-a646-2ae7a8676f07
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column Organisation
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: c6f8ea52-7188-41a0-ae85-e4287442be82
+		summarizeBy: none
+		sourceColumn: Organisation
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: df2de25e-1d3e-40e2-b87b-7935c49126b0
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessAreaManager
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: fd43edb3-fef9-408e-b9fa-facdea05e5d3
+		summarizeBy: none
+		sourceColumn: BusinessAreaManager
+
+		annotation SummarizationSetBy = Automatic
+
+	column BeVisibleId
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 28af46a5-8dee-47d9-8d61-b7bb6bc96ca8
+		summarizeBy: none
+		sourceColumn: BeVisibleId
+
+		annotation SummarizationSetBy = Automatic
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 458d7d48-8c97-4dc8-97d7-7a6ecaf21ceb
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'UnitID Name'
+		dataType: string
+		lineageTag: 27480529-9eed-41ad-a53c-6faa686a6b2d
+		summarizeBy: none
+		sourceColumn: UnitID Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Growth Area ID Name'
+		dataType: string
+		lineageTag: 41640c84-86cb-4f7d-bcf5-d76480f1a28b
+		summarizeBy: none
+		sourceColumn: Growth Area ID Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Area Id Name'
+		dataType: string
+		lineageTag: 152dc4e0-db38-49da-9a15-86615a6c6e09
+		summarizeBy: none
+		sourceColumn: Business Area Id Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Organisation Manual' = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    shareddimensions_Schema = prod_gold_Database{[Name="shareddimensions",Kind="Schema"]}[Data],
+				    organisationmanual_Table = shareddimensions_Schema{[Name="organisationmanual",Kind="Table"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(organisationmanual_Table,{"pk_organisationmanual"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Removed Columns",{{"GrowthAreaId", type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type1", "UnitID Name", each [UnitId] & " " & [Unit] & " " & [CompanyId]),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Growth Area ID Name", each [GrowthAreaId] & " " & [GrowthArea]),
+				    #"Added Custom2" = Table.AddColumn(#"Added Custom1", "Business Area Id Name", each [BusinessAreaId] & " " & [BusinessArea]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom2",{{"BusinessAreaId", Int64.Type}, {"BusinessUnitId", Int64.Type}, {"GrowthAreaId", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"GrowthArea", "Organisation"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

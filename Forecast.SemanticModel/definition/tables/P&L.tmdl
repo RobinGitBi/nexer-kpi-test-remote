@@ -1,0 +1,274 @@
+table P&L
+	lineageTag: b2c89209-e67d-42de-a87a-cabf1c3aacaa
+
+	column CompanyId
+		dataType: string
+		lineageTag: e34914b1-d848-4114-9bee-2f9f29e7cb82
+		summarizeBy: none
+		sourceColumn: CompanyId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyGlId
+		dataType: string
+		lineageTag: 84b3ae96-669b-475a-a185-b400726f8252
+		summarizeBy: none
+		sourceColumn: CompanyGlId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyUnitId
+		dataType: string
+		lineageTag: 415b8d35-f83f-43da-8d4d-23ec6292601b
+		summarizeBy: none
+		sourceColumn: CompanyUnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column FunctionId
+		dataType: string
+		lineageTag: 5482d9b6-fa41-4393-84f1-6b20a59ba65b
+		summarizeBy: none
+		sourceColumn: FunctionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyEmployeeId
+		dataType: string
+		lineageTag: c420170d-8590-49a2-87ca-15594fe07372
+		summarizeBy: none
+		sourceColumn: CompanyEmployeeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyProjectId
+		dataType: string
+		lineageTag: 93834309-d253-4d56-a22b-7e96aebc87be
+		summarizeBy: none
+		sourceColumn: CompanyProjectId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerId
+		dataType: string
+		lineageTag: 6edf2094-e7d5-4fab-95b6-0e0d670ced12
+		summarizeBy: none
+		sourceColumn: CustomerId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyObjectiveId
+		dataType: string
+		lineageTag: 270e98fd-67e8-46e1-ba2d-1c77b85f68ad
+		summarizeBy: none
+		sourceColumn: CompanyObjectiveId
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountingDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 18f6c548-a12d-4a2b-9fb3-610ff1ea9b2c
+		summarizeBy: none
+		sourceColumn: AccountingDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ReportingAmount
+		dataType: double
+		lineageTag: 2e87ef61-b159-4ac2-8215-254f07dcf5f0
+		summarizeBy: sum
+		sourceColumn: ReportingAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SourceCurrency
+		dataType: string
+		lineageTag: a21f0ed2-7bea-48a1-a427-55bda409554c
+		summarizeBy: none
+		sourceColumn: SourceCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	column LocalAmount
+		dataType: double
+		lineageTag: 358fc763-bee9-47f5-ad88-4c912f86d32d
+		summarizeBy: sum
+		sourceColumn: LocalAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LocalCurrency
+		dataType: string
+		lineageTag: ee3ff3b5-da9c-4d39-bea5-87eb8a9d7e29
+		summarizeBy: none
+		sourceColumn: LocalCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: double
+		lineageTag: abcb52e3-ae81-4229-93d9-522c1d025f48
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TransactionText
+		dataType: string
+		lineageTag: 147965e5-86af-41b2-a8e2-da876ea451ff
+		summarizeBy: none
+		sourceColumn: TransactionText
+
+		annotation SummarizationSetBy = Automatic
+
+	column CounterCompanyId
+		dataType: string
+		lineageTag: c879150f-1673-477e-99bc-8f1d15dc12e7
+		summarizeBy: none
+		sourceColumn: CounterCompanyId
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionOrigin
+		dataType: string
+		lineageTag: 064d3db3-9e34-4103-ad1f-440f01a11d18
+		summarizeBy: none
+		sourceColumn: TransactionOrigin
+
+		annotation SummarizationSetBy = Automatic
+
+	column Altered
+		dataType: int64
+		formatString: 0
+		lineageTag: 9ce4824d-b279-44a5-bea1-b538f5fdf2f5
+		summarizeBy: sum
+		sourceColumn: Altered
+
+		annotation SummarizationSetBy = Automatic
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0642e541-3b98-4f10-9f54-2326c5792533
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column Actuality
+		dataType: string
+		lineageTag: de28bce0-76b9-4b78-890b-b0475c29e346
+		summarizeBy: none
+		sourceColumn: Actuality
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActualityOrigin
+		dataType: string
+		lineageTag: fa0000bf-ebc6-41aa-8f77-0ce885203e28
+		summarizeBy: none
+		sourceColumn: ActualityOrigin
+		sortByColumn: Actuality
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActualityDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 393da505-1b53-4a68-90bc-1d0528c97311
+		summarizeBy: none
+		sourceColumn: ActualityDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Start of Month'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 03ebbe48-2443-46d4-8489-173de31685b2
+		summarizeBy: none
+		sourceColumn: Start of Month
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CurrencyId
+		dataType: int64
+		formatString: 0
+		lineageTag: d9221291-c1fa-4b33-8547-32dcd375bfe6
+		summarizeBy: none
+		sourceColumn: CurrencyId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActualityOrigin_new
+		dataType: string
+		lineageTag: 46b2d57c-a242-4929-a5c8-d3028e750ac9
+		summarizeBy: none
+		sourceColumn: ActualityOrigin_new
+
+		annotation SummarizationSetBy = Automatic
+
+	column '.Cond' = ```
+			
+			    IF('P&L'[ActualityOrigin_new]="AC",1,0)
+			```
+		formatString: 0
+		lineageTag: 0b0f8782-8e82-4335-8fc4-435b4bc63bfc
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column pk_profitandloss
+		dataType: int64
+		formatString: 0
+		lineageTag: de7017e7-3eed-4c6d-9367-f0759b5f0040
+		summarizeBy: sum
+		sourceColumn: pk_profitandloss
+
+		annotation SummarizationSetBy = Automatic
+
+	column GlFunctionIcId
+		dataType: string
+		lineageTag: f9143cf3-6274-4e54-886d-766f421117d6
+		summarizeBy: none
+		sourceColumn: GlFunctionIcId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition P&L = m
+		mode: import
+		queryGroup: Facts
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    financereport_Schema = prod_gold_Database{[Name="financereport",Kind="Schema"]}[Data],
+				    profitandlosslocal_Table = financereport_Schema{[Name="profitandloss",Kind="Table"]}[Data],
+				    #"Inserted Start of Month" = Table.AddColumn(profitandlosslocal_Table, "Start of Month", each Date.StartOfMonth([AccountingDate]), type date),
+				    #"Merged Queries" = Table.NestedJoin(#"Inserted Start of Month", {"SourceCurrency"}, #"Source Currency", {"SourceCurrency"}, "Source Currency", JoinKind.LeftOuter),
+				    #"Expanded Source Currency" = Table.ExpandTableColumn(#"Merged Queries", "Source Currency", {"CurrencyId"}, {"CurrencyId"}),
+				    #"Added Custom" = Table.AddColumn(#"Expanded Source Currency", "ActualityOrigin_new", each if [ActualityOrigin] is null then "AC" else [ActualityOrigin]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"ActualityOrigin_new", type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",null,"0",Replacer.ReplaceValue,{"FunctionId"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","20","",Replacer.ReplaceText,{"ActualityOrigin_new"})
+				in
+				    #"Replaced Value1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

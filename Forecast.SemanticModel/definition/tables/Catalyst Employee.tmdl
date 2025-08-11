@@ -1,0 +1,344 @@
+table 'Catalyst Employee'
+	lineageTag: 0a15209f-9a8f-487b-8dfd-4a598f0685a6
+
+	column pk_catalystemployee
+		dataType: int64
+		formatString: 0
+		lineageTag: befad6b6-c61b-434e-b200-8a61564ebcec
+		summarizeBy: sum
+		sourceColumn: pk_catalystemployee
+
+		annotation SummarizationSetBy = Automatic
+
+	column GUID
+		dataType: string
+		lineageTag: 7bdc35e9-3b10-4e3b-bb4a-dc1650552413
+		summarizeBy: none
+		sourceColumn: GUID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalaryEmployeeId
+		dataType: int64
+		formatString: 0
+		lineageTag: 10e1bd53-5790-48b1-92bf-e8d132c6d37e
+		summarizeBy: count
+		sourceColumn: SalaryEmployeeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: f1306b97-ebdb-430d-8fc5-ba215b1fe91f
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Function
+		dataType: int64
+		formatString: 0
+		lineageTag: 26f16400-0a62-4384-91a3-23a51432c4e8
+		summarizeBy: sum
+		sourceColumn: Function
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitId
+		dataType: int64
+		formatString: 0
+		lineageTag: f28a98e4-5a69-4b0d-8df6-538e94404e05
+		summarizeBy: count
+		sourceColumn: UnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyId
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e90e927-343b-402b-af80-4a6ce3f556e2
+		summarizeBy: count
+		sourceColumn: CompanyId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConsultantUnitId
+		dataType: string
+		lineageTag: 50a40f73-c668-4fc5-952b-d712241bea9f
+		summarizeBy: none
+		sourceColumn: ConsultantUnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column JobLocationCity
+		dataType: string
+		lineageTag: 7f6b94e1-62f5-46a1-a15e-42f7126c4398
+		summarizeBy: none
+		sourceColumn: JobLocationCity
+
+		annotation SummarizationSetBy = Automatic
+
+	column JobLocationCountry
+		dataType: string
+		lineageTag: acf46c50-2e54-455b-8d85-8e8e1d304d0a
+		summarizeBy: none
+		sourceColumn: JobLocationCountry
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmploymentType
+		dataType: string
+		lineageTag: 52e0ba08-e17b-432d-b960-35852cc45481
+		summarizeBy: none
+		sourceColumn: EmploymentType
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmploymentStatus
+		dataType: string
+		lineageTag: 547f0922-d26f-42a2-ba35-889e7182eff6
+		summarizeBy: none
+		sourceColumn: EmploymentStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlannedChangeId
+		dataType: int64
+		formatString: 0
+		lineageTag: ca5d3b57-1db9-4766-8de9-ca61e00b1b23
+		summarizeBy: count
+		sourceColumn: PlannedChangeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column FTEPercentage
+		dataType: string
+		lineageTag: 3a473f0f-3c4e-4e09-8f9f-0e16e230b916
+		summarizeBy: none
+		sourceColumn: FTEPercentage
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmploymentDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3b058af7-69fb-4a9e-8e74-2e6ba6cb1734
+		summarizeBy: none
+		sourceColumn: EmploymentDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column EmploymentDateWithinGroup
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6ee87ed9-68ee-40a8-b0e4-67d4c3440dff
+		summarizeBy: none
+		sourceColumn: EmploymentDateWithinGroup
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ContractualEndDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 96467294-32c5-4872-b1d4-6e34b40bcefb
+		summarizeBy: none
+		sourceColumn: ContractualEndDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column EmailAddress
+		dataType: string
+		lineageTag: 7069805b-924a-4575-8014-0b2ff04bd833
+		summarizeBy: none
+		sourceColumn: EmailAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column Role
+		dataType: string
+		lineageTag: b8fb20d9-b925-427e-ac38-4c55f03daa45
+		summarizeBy: none
+		sourceColumn: Role
+
+		annotation SummarizationSetBy = Automatic
+
+	column Degree
+		dataType: string
+		lineageTag: ba0e445f-c573-4601-bcdc-afeea210e50a
+		summarizeBy: none
+		sourceColumn: Degree
+
+		annotation SummarizationSetBy = Automatic
+
+	column ManagerAdId
+		dataType: string
+		lineageTag: 49381542-8636-4711-bed8-33cb392c040d
+		summarizeBy: none
+		sourceColumn: ManagerAdId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ManagerSalaryEmployeeId
+		dataType: int64
+		formatString: 0
+		lineageTag: a8fbbd4a-7fe4-4184-a8eb-90b4dcd6a5af
+		summarizeBy: count
+		sourceColumn: ManagerSalaryEmployeeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ManagerName
+		dataType: string
+		lineageTag: 5acafeb5-b48b-4b1f-884c-656de64af9e6
+		summarizeBy: none
+		sourceColumn: ManagerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ManagerEmailAddress
+		dataType: string
+		lineageTag: 7d98e83b-3b29-4b62-9702-986e07ee1090
+		summarizeBy: none
+		sourceColumn: ManagerEmailAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fe7d6c71-caed-4d07-9b39-7b05324e71fb
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LastModifiedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 856a39e3-1f5e-4e65-8037-4df1dc36bab6
+		summarizeBy: none
+		sourceColumn: LastModifiedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TerminatedId
+		dataType: int64
+		formatString: 0
+		lineageTag: 1607abeb-5f8d-4775-8709-d7631ff898c7
+		summarizeBy: count
+		sourceColumn: TerminatedId
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateOfBirth
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8aebe892-249b-4bb5-b058-4786f6d95485
+		summarizeBy: none
+		sourceColumn: DateOfBirth
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Gender
+		dataType: string
+		lineageTag: 5df46fba-684e-4a13-a81f-838031da277f
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkRole
+		dataType: string
+		lineageTag: 8ba003a9-e58c-4d7f-b24f-b749d87813f3
+		summarizeBy: none
+		sourceColumn: WorkRole
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyUnitId
+		dataType: string
+		lineageTag: 842d4f42-3d1f-44e9-bbbf-57763f73dc12
+		summarizeBy: none
+		sourceColumn: CompanyUnitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReasonForLeaving
+		dataType: string
+		lineageTag: d8aa8a3f-2ea0-40c8-a8fd-29785bd36749
+		summarizeBy: none
+		sourceColumn: ReasonForLeaving
+
+		annotation SummarizationSetBy = Automatic
+
+	column JobTitle
+		dataType: string
+		lineageTag: f4ba90b9-9a91-4bb4-8cef-c8be3e3fa10f
+		summarizeBy: none
+		sourceColumn: JobTitle
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCrmEmployee
+		dataType: int64
+		formatString: 0
+		lineageTag: 6d84b0f1-fd10-4f4e-b1d6-85619517673f
+		summarizeBy: sum
+		sourceColumn: IsCrmEmployee
+
+		annotation SummarizationSetBy = Automatic
+
+	column NumberOfMonthsExEmployees
+		dataType: int64
+		formatString: 0
+		lineageTag: 8e5d434f-fddf-401d-b3da-1514c8c02cea
+		summarizeBy: sum
+		sourceColumn: NumberOfMonthsExEmployees
+
+		annotation SummarizationSetBy = Automatic
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1226e6a5-4785-4f1d-912f-3180ccb31cff
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeId
+		dataType: string
+		lineageTag: 7be95304-64c1-4368-b35d-63a863f88a66
+		summarizeBy: none
+		sourceColumn: EmployeeId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Catalyst Employee' = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    shareddimensions_Schema = prod_gold_Database{[Name="shareddimensions",Kind="Schema"]}[Data],
+				    catalystemployee_Table = shareddimensions_Schema{[Name="catalystemployee",Kind="Table"]}[Data]
+				in
+				    catalystemployee_Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

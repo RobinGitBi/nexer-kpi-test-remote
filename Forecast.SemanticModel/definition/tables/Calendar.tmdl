@@ -1,0 +1,159 @@
+table Calendar
+	lineageTag: 65041477-06a8-4a16-9394-4c3344a61489
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 2bee08ed-400a-431c-9d3c-fbbe7fa540df
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 5257f1bb-d944-4c82-ac2f-d962f585ef0c
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month'
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: b09791aa-ce34-4b23-90fc-f63d2c296307
+		summarizeBy: none
+		sourceColumn: Year Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: b9a4281c-b6f1-47eb-9284-4dc3b49197b2
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a8c8890d-ae91-473d-8e5f-f77ec3075638
+		summarizeBy: sum
+		sourceColumn: Month Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 8d5ed59f-35c9-4f75-a711-6b3b390c1392
+		summarizeBy: none
+		sourceColumn: Month
+		sortByColumn: 'Month Number'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthYearName
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: f97d5761-47c4-4195-a24c-7b3b3966525e
+		summarizeBy: none
+		sourceColumn: MonthYearName
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Number'
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 9a04b504-9706-47da-aa06-4c079ecd6dcc
+		summarizeBy: sum
+		sourceColumn: Day Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: b60d03a7-57e0-45ca-aaa2-cf01f1ccb12f
+		summarizeBy: none
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current Year Offset'
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 53197943-4f6e-4a2f-82c2-3f097270c798
+		summarizeBy: sum
+		sourceColumn: Current Year Offset
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Of Year'
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 2f6722c7-e41d-496c-9f7b-eee5683d279b
+		summarizeBy: sum
+		sourceColumn: Week Of Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PX Year Week'
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 8ae2aa4d-2bea-4d68-9b13-79cda2832177
+		summarizeBy: sum
+		sourceColumn: PX Year Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column PxWeekNum
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 9d94cc29-ca8d-4bf2-88e4-f902d9c2a00a
+		summarizeBy: sum
+		sourceColumn: PxWeekNum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar = m
+		mode: import
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    timeintelligence_Schema = prod_gold_Database{[Name="timeintelligence",Kind="Schema"]}[Data],
+				    calendar_Table = timeintelligence_Schema{[Name="calendar",Kind="Table"]}[Data],
+				    // Get the current year
+				    CurrentYear = Date.Year(DateTime.LocalNow()),
+				
+				    // Create a list for the last 3 full years and include the current year
+				    Last3Years = {CurrentYear - 3, CurrentYear - 2, CurrentYear - 1, CurrentYear},
+				
+				    // Filter rows for the last 3 full years plus the current year
+				    FilteredCalendar = Table.SelectRows(calendar_Table, each List.Contains(Last3Years, Date.Year([Date]))),
+				    #"Sorted Rows" = Table.Sort(FilteredCalendar,{{"Date", Order.Descending}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Sorted Rows",{"_increment_timestamp", "IsWeekend", "DayName", "MonthName"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"YearMonth", "Year Month"}, {"Month", "Month Number"}, {"MonthShortName", "Month"}, {"Day", "Day Number"}, {"DayShortName", "Day"}, {"CurrentYearOffset", "Current Year Offset"}, {"WeekOfYear", "Week Of Year"}, {"PxYearWeek", "PX Year Week"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

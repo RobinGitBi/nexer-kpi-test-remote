@@ -1,0 +1,98 @@
+table 'Monthly Exchange Rates'
+	lineageTag: b7d2edf3-7979-4b49-9b4c-4cb7382755e2
+
+	column Date
+		formatString: General Date
+		lineageTag: e508f407-6e4a-4e27-bcad-9cccffbb1e61
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceCurrencyKey
+		formatString: 0
+		lineageTag: 8f49b752-db20-4693-8098-80dc610a08c3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [SourceCurrencyKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	column TargetCurrencyKey
+		formatString: 0
+		lineageTag: d6454044-512c-431d-89d7-546e2d6089c8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TargetCurrencyKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rate
+		lineageTag: b29aa485-9f6f-4dcc-8b1b-c6187fd96f22
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Rate]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Actuality
+		lineageTag: 1fd55b03-ca15-44d4-ac07-7965d4fa6ee5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Actuality]
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyType
+		lineageTag: ae431262-7871-405d-8b2f-657edc6e99c6
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [CurrencyType]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Monthly Exchange Rates' = calculated
+		mode: import
+		source =
+				
+				VAR SourceRates =
+				    SELECTCOLUMNS (
+				        'exchangeratesmonthly',
+				        "@Date", 'exchangeratesmonthly'[Date],
+				        "@Actuality", exchangeratesmonthly[Actuality],
+				        "@CurrencyType", exchangeratesmonthly[CurrencyType],
+				        "@SourceCurrencyKey", 'exchangeratesmonthly'[currencyid] + 0,
+				        "@SourceRate", 'exchangeratesmonthly'[exchangerates] + 0
+				    )
+				VAR TargetRates =
+				    SELECTCOLUMNS (
+				        'exchangeratesmonthly',
+				        "@Date", 'exchangeratesmonthly'[Date],
+				        "@Actuality", exchangeratesmonthly[Actuality],
+				        "@CurrencyType", exchangeratesmonthly[CurrencyType],
+				        "@TargetCurrencyKey", 'exchangeratesmonthly'[currencyid] + 0,
+				        "@TargetRate", 'exchangeratesmonthly'[exchangerates] + 0
+				    )
+				VAR JoinedRates =
+				    ADDCOLUMNS (
+				        NATURALINNERJOIN ( SourceRates, TargetRates ),
+				        "@Rate", DIVIDE ( [@TargetRate], [@SourceRate] )
+				    )
+				VAR Result =
+				    SELECTCOLUMNS (
+				        JoinedRates,
+				        "Date", [@Date],
+				        "Actuality", [@Actuality],
+				        "CurrencyType", [@CurrencyType],
+				        "SourceCurrencyKey", [@SourceCurrencyKey],
+				        "TargetCurrencyKey", [@TargetCurrencyKey],
+				        "Rate", [@Rate]
+				    )
+				RETURN
+				    Result
+
+	annotation PBI_Id = 91fce5217a084e1181dfb4854e603d16
+

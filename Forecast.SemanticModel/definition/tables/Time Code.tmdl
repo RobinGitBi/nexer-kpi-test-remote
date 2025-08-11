@@ -1,0 +1,127 @@
+table 'Time Code'
+	lineageTag: 3c09b1a7-3706-4856-b3a2-f5b8112825f6
+
+	column pk_timecode
+		dataType: int64
+		formatString: 0
+		lineageTag: b46a8b82-2322-42c5-abb5-946cf8fc6588
+		summarizeBy: none
+		sourceColumn: pk_timecode
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyTimeCodeId
+		dataType: string
+		lineageTag: 5659f358-ed51-414d-8b30-82bb991f0949
+		summarizeBy: none
+		sourceColumn: CompanyTimeCodeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyId
+		dataType: string
+		lineageTag: bc77fea0-fd6c-4a69-b736-74988893368b
+		summarizeBy: none
+		sourceColumn: CompanyId
+
+		annotation SummarizationSetBy = Automatic
+
+	column TimeCode
+		dataType: string
+		lineageTag: 4a340e91-3f33-429f-81c7-2d2d7ddace8f
+		summarizeBy: none
+		sourceColumn: TimeCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: int64
+		formatString: 0
+		lineageTag: 452eb953-c401-4d94-b1df-6f7497a7a3b9
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectActivity
+		dataType: string
+		lineageTag: 5db85b0b-dbbb-4188-b807-169b6090c010
+		summarizeBy: none
+		sourceColumn: ProjectActivity
+
+		annotation SummarizationSetBy = Automatic
+
+	column AbsenceType
+		dataType: string
+		lineageTag: bfaa03d8-f379-4866-ab3c-cadcfc820d57
+		summarizeBy: none
+		sourceColumn: AbsenceType
+
+		annotation SummarizationSetBy = Automatic
+
+	column DanirTimeBank
+		dataType: string
+		lineageTag: 664f4fec-c087-493f-beac-ee0525dc3dc4
+		summarizeBy: none
+		sourceColumn: DanirTimeBank
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectId
+		dataType: string
+		lineageTag: f774f831-ae87-4d76-840c-5c02fb8f2418
+		summarizeBy: none
+		sourceColumn: ProjectId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectDescription
+		dataType: string
+		lineageTag: 39f8907e-40dc-44ce-aa2e-681e50a4090b
+		summarizeBy: none
+		sourceColumn: ProjectDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActivityId
+		dataType: string
+		lineageTag: 16806947-1e70-4a0e-b0e4-0a4b8c50bbf5
+		summarizeBy: none
+		sourceColumn: ActivityId
+
+		annotation SummarizationSetBy = Automatic
+
+	column BlockedId
+		dataType: int64
+		formatString: 0
+		lineageTag: 38f7d2f4-9352-4473-b375-a5bbea1dda43
+		summarizeBy: none
+		sourceColumn: BlockedId
+
+		annotation SummarizationSetBy = Automatic
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b1d68a21-242c-411b-950c-53fd2b7cc184
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Time Code' = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    financereport_Schema = prod_gold_Database{[Name="financereport",Kind="Schema"]}[Data],
+				    timecode_Table = financereport_Schema{[Name="timecode",Kind="Table"]}[Data]
+				in
+				    timecode_Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

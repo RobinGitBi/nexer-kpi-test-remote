@@ -1,0 +1,907 @@
+table 'Measures Table'
+	lineageTag: 988be8a7-76ea-492d-9ce2-ac05d4ea600e
+
+	measure 'Sales (Monthly)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [Sales (Internal)],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]))
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                ERROR ( "Missing conversion rate" )
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: a2eec3fd-7806-4a92-a18a-232b798fddb8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'sales (internal)' = SUMX('P&L', 'P&L'[ReportingAmount])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 5321d7ee-9da0-45bb-af08-9730f8608edd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. P&L_Cal_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. P&L_Cal_YtdToMonth]
+			    )
+			```
+		formatString: #,0
+		displayFolder: P&L Currency Conversions
+		lineageTag: 8d0ba334-38ea-48ca-bc2d-0893bafcb020
+
+	measure '3. P&L_Cal_YtdToMonth' =
+			
+			IF(
+			        AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. P&L_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. P&L_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. P&L_Cal_CurrencyConversion Sales (YTD)],
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ),
+			        [2. P&L_Cal_CurrencyConversion Sales (YTD)]
+			    )
+		displayFolder: P&L Currency Conversions
+		lineageTag: d11e3bb0-f4d3-4998-beea-e0b15d765267
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. P&L_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. P&L_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = SelectedActuality,
+			            exchangeratesmonthly[CurrencyType] = SelectedCurrencyType)
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 22c4c3a5-a52c-4f88-953b-088a54714dbd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '1. P&L_Cal_AmountYtd' = ```
+			
+			    CALCULATE(
+			        SUMX(
+			            'P&L', 
+			            'P&L'[ReportingAmount]
+			        ), 
+			        DATESYTD('Calendar'[Date])
+			    )
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: dfd305aa-9416-47af-8544-7da2315d5a70
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Unbilable Hours' = ```
+			
+			VAR SelectedActuality = SELECTEDVALUE('ActualityOrgin'[ActualityOrigin])
+			
+			RETURN
+			
+			IF(
+			    SelectedActuality = "AC",
+			    [Presence Hours] - [Billable Hours],
+			    CALCULATE(
+			        SUMX(
+			            'Project Transactions',
+			            'Project Transactions'[TotalHours] * 'Project Transactions'[UhrFc]
+			        ),
+			       KEEPFILTERS(NOT 'Employment Type'[EmploymentTypeId] IN {4,5}) 
+			    )
+			)
+			```
+		displayFolder: HR
+		lineageTag: 91971fbf-6770-47c6-bfa3-2f007ae3db89
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure UHR = ```
+			
+			
+			    [Unbilable Hours] / [Presence Hours]
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: HR
+		lineageTag: cb99a819-7ea9-411a-8f99-44fb440c4aa0
+
+	measure 'Total Hours' = ```
+			
+			    
+			    //VAR SelectedActuality = SELECTEDVALUE ( ActualityOrgin[ActualityOrigin] )
+			    
+			    //RETURN
+			        CALCULATE (
+			            SUM ( 'Project Transactions'[TotalHours] ),
+			            NOT 'Project Transactions'[EmploymentTypeID] in {4,5}//,
+			            //'Project Transactions'[ActualityOrigin_new] = SelectedActuality
+			        )
+			```
+		displayFolder: HR
+		lineageTag: 71973251-aed1-458e-8a4c-ed99d36a08dd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Revenues =
+			
+			
+			VAR SelectedActualityOrigin = SELECTEDVALUE ( 'ActualityOrgin'[ActualityOrigin] )
+			VAR SelectedActuality = SELECTEDVALUE ( 'Actuality'[Actuality] )
+			
+			RETURN
+			
+			    CALCULATE(
+			        [4. PT_Cal_ContextTransitionToMonth],
+			        KEEPFILTERS('Project Transactions'[ActualityOrigin_new] = SelectedActualityOrigin )
+			        ,'GL Account Hierarchy'[FirstLevelIdAndName] = "30 Total Revenues"
+			    )
+		displayFolder: KPIs
+		lineageTag: c0512b59-d556-4d12-996d-2a1b61f1f049
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Price per hour' = ```
+			
+			
+			VAR SelectedActuality = SELECTEDVALUE ( 'Project Transactions'[Actuality] )
+			
+			VAR RevenuesAC = 
+			    CALCULATE(
+			        [Revenues],
+			        'Project Transactions'[TransactionType]=1
+			    )
+			
+			VAR RevenuesFC = 
+			    CALCULATE(
+			        [Revenues],
+			        KEEPFILTERS(
+			        NOT 'Employment Type'[EmploymentTypeId] IN {4, 5}
+			        )
+			    )
+			
+			RETURN
+			
+			IF(
+			    SelectedActuality = "AC",
+			    DIVIDE(RevenuesAC,[Billable Hours]),
+			    DIVIDE(RevenuesFC,[Billable Hours])
+			)
+			```
+		formatString: #,0
+		displayFolder: HR
+		lineageTag: d9c079b4-a264-4af1-ada0-19005ec09874
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Presence Hours' = ```
+			
+			
+			    VAR SelectedActuality = SELECTEDVALUE ( 'ActualityOrgin'[ActualityOrigin] )
+			    
+			    RETURN
+			        CALCULATE (
+			            SUM ( 'Project Transactions'[TotalHours] ),
+			            KEEPFILTERS(LEN('Project Transactions'[TimeCode]) < 4),
+			            NOT 'Project Transactions'[EmploymentTypeID] in {4,5},
+			            'Project Transactions'[ActualityOrigin_new] = SelectedActuality
+			        )
+			```
+		displayFolder: HR
+		lineageTag: 4c937dde-ab27-4141-87d3-59dbd4301b89
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure OH% =
+			
+			
+			VAR SelectedActuality = SELECTEDVALUE ( 'ActualityOrgin'[ActualityOrigin] )
+			
+			RETURN
+			
+			    DIVIDE(
+			        CALCULATE(
+			            [FTE],
+			            'Function'[FunctionName] = "Administration"
+			            ,KEEPFILTERS('Project Transactions'[ActualityOrigin_new] = SelectedActuality)
+			        ),
+			    [FTE]
+			    )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: HR
+		lineageTag: 8db79e53-cdb0-4971-b52c-705540cf41df
+
+	measure '1. FTE' = ```
+			
+			SUMX (
+			    VALUES ( 'Project Transactions'[ProjectEmployeeId] ),
+			    VAR FTECalculation =
+			        CALCULATE (
+			            DIVIDE (
+			                CALCULATE (
+			                    SUM ( 'Project Transactions'[TotalHours] ),
+			                    FILTER (
+			                        ALL ( 'Time Code'[TimeCode] ),
+			                        ISBLANK ( 'Time Code'[TimeCode] )
+			                            || 'Time Code'[TimeCode]
+			                            IN {
+			                                "400",
+			                                "401",
+			                                "402",
+			                                "403",
+			                                "8020",
+			                                "8040",
+			                                "8060",
+			                                "8080",
+			                                "9900",
+			                                "9911",
+			                                "9915",
+			                                "9916",
+			                                "9920",
+			                                "9922",
+			                                "9924",
+			                                "9930",
+			                                "9935",
+			                                "9940",
+			                                "9950",
+			                                "9960",
+			                                "9980",
+			                                "9982"
+			                            }
+			                    )
+			                ),
+			                SUM ( 'Project Transactions'[NormalWorkingHoursMonthly] )
+			            ),
+			            KEEPFILTERS ( NOT 'Employment Type'[EmploymentTypeId] IN { 4, 5 } ),
+			            KEEPFILTERS ( 'Project Transactions'[Actuality] = "AC" ),
+			            KEEPFILTERS ( 'Project Transactions'[OverTime] = 0 ),
+			            'Calendar'[Year Month] = MAX ( 'Calendar'[Year Month] )
+			        )
+			    RETURN
+			        IF ( FTECalculation <> 0, FTECalculation )
+			)
+			
+			```
+		displayFolder: HR
+		lineageTag: ac4c81db-67e2-4b8a-92c8-f6262e019652
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Billable Hours' = ```
+			
+			 
+			VAR SelectedActuality = SELECTEDVALUE ( 'ActualityOrgin'[ActualityOrigin] )
+			 
+			RETURN
+			 
+			IF(
+			     SelectedActuality = "AC",
+			    CALCULATE(
+			        SUM('Project Transactions'[TotalHours]),
+			        'Project Transactions'[ProjectClassType] = 1,
+			        'Project Transactions'[NonChargableId] = 0,
+			        KEEPFILTERS(NOT 'Project Transactions'[EmploymentTypeId] IN {4,5})
+			    ),
+			   
+			        CALCULATE(
+			            SUMX(
+			                'Project Transactions',
+			                'Project Transactions'[TotalHours] * (1 - 'Project Transactions'[UhrFc])
+			            ),
+			            KEEPFILTERS(
+			                NOT 'Employment Type'[EmploymentTypeId] IN {4, 5}
+			            ),
+			            KEEPFILTERS(LEN('Project Transactions'[TimeCode]) < 4)
+			        )
+			)
+			```
+		displayFolder: HR
+		lineageTag: e55bea96-4911-422c-8361-499c4485a3c3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Absence = ```
+			
+			    ([Total Hours] - [Presence Hours]) / [Total Hours]
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: HR
+		lineageTag: 0849e2d6-09e0-42a8-84c5-2fb8cd882cb6
+
+	measure EBIT = ```
+			
+			    VAR TotalRevenue = 
+			        CALCULATE(
+			            [4. P&L_Cal_ContextTransitionToMonth],
+			            'GL Account Hierarchy'[FirstLevelIdAndName] = "30 Total Revenues"
+			        )
+			    VAR TotalCOGS = 
+			        CALCULATE(
+			            [4. P&L_Cal_ContextTransitionToMonth],
+			            'GL Account Hierarchy'[FirstLevelIdAndName] = "40 Total Direct Costs"
+			        )
+			    VAR TotalOverhead = 
+			        CALCULATE(
+			            [4. P&L_Cal_ContextTransitionToMonth],
+			            'GL Account Hierarchy'[FirstLevelIdAndName] = "50 Total Overhead Costs"
+			        )
+			RETURN
+			TotalRevenue + TotalCOGS + TotalOverhead
+			```
+		formatString: #,0
+		displayFolder: Financials
+		lineageTag: 27b829f2-0f4d-498b-8c93-1af55f6bafa4
+
+	measure 'EBIT %' = ```
+			
+			    DIVIDE(
+			        [EBIT],  
+			        CALCULATE(
+			            [4. P&L_Cal_ContextTransitionToMonth],
+			            'GL Account Hierarchy'[FirstLevelIdAndName] = "30 Total Revenues"
+			        ))
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Financials
+		lineageTag: 6384041d-981c-4eea-9298-b431f5c8359f
+
+	measure '1. PT_Cal_AmountYtd' = ```
+			
+			    CALCULATE(
+			        SUMX(
+			            'Project Transactions', 
+			            'Project Transactions'[TotalRevenue]
+			        ), 
+			        DATESYTD('Calendar'[Date])
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: c6900ad0-7477-4c8e-89d0-8b9d963209be
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = SelectedActuality,
+			            exchangeratesmonthly[CurrencyType] = SelectedCurrencyType)
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: b5e4a934-3f2f-4a3f-9f2d-e9b059ab8975
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: a667b544-6a7f-41c0-8b7a-92cf2b123752
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. PT_Cal_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: ea294387-f04c-465f-bed6-85d2abebeac9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Presence = CALCULATE(SUM('Project Transactions'[TotalHours]), USERELATIONSHIP('Project Transactions'[ActualityDate], 'Calendar'[Date]))
+		displayFolder: HR
+		lineageTag: 929c5730-245b-400c-98ec-6e3a37e10404
+
+	measure X_Hours = ```
+			
+			VAR SelectedActuality = SELECTEDVALUE ( 'Project Transactions'[Actuality] )
+			
+			RETURN
+			
+			IF(
+			    SelectedActuality = "AC",
+			    CALCULATE(
+			        [Total Hours], 
+			        'Project Transactions'[ProjectClassType] IN {1, 2},
+			        KEEPFILTERS(
+			            NOT 'Employment Type'[EmploymentTypeId] IN {4, 5}
+			        ),
+			        KEEPFILTERS( 
+			            'Project Transactions'[Actuality] = SelectedActuality
+			        )
+			    ),
+			        CALCULATE(
+			        SUMX(
+			            'Project Transactions',
+			            'Project Transactions'[TotalHours] * (1 - 'Project Transactions'[UhrFc])
+			        ),
+			        KEEPFILTERS(
+			            NOT 'Employment Type'[EmploymentTypeId] IN {4, 5}
+			        )
+			    ))
+			```
+		displayFolder: KPIs
+		lineageTag: b428a2ad-712c-4015-9769-904d85aa992d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure ContextTransition = SUMX(VALUES('Calendar'[Year Month]), [Presence Hours])
+		displayFolder: KPIs
+		lineageTag: a093e87f-285f-4432-9632-4688dc2652d7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure FTE = ```
+			
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Project Transactions'[ActualityOrigin] )
+			    
+			    RETURN
+			
+			IF(
+			    ISBLANK(SelectedActuality),
+			    [1. FTE],
+			    CALCULATE(
+			    SUM('Project Transactions'[FteFc]),
+			     KEEPFILTERS(
+			            NOT 'Employment Type'[EmploymentTypeId] IN {4,5}
+			        ),
+			    'Calendar'[Year Month] = MAX('Calendar'[Year Month])
+			)
+			
+			)
+			```
+		formatString: 0
+		displayFolder: HR
+		lineageTag: f08b70a5-c100-4d04-b88e-8754a575ef58
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Total Direct Cost' =
+			
+			VAR SelectedActuality = SELECTEDVALUE ( 'Project Transactions'[Actuality] )
+			
+			RETURN
+			
+			    CALCULATE(
+			        [4. PT_Cal_Costs_ContextTransitionToMonth]
+			        ,KEEPFILTERS('Project Transactions'[Actuality] = SelectedActuality )
+			        ,'Project Transactions'[Function]="Prod"
+			        ,'GL Account Hierarchy'[FirstLevelIdAndName] = "40 Total Direct Costs"
+			    )
+		displayFolder: Financials
+		lineageTag: c45b0bbc-0874-48af-856c-11b14be2d8a0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '1. PT_Cal_CostsYtd' = ```
+			
+			    CALCULATE(
+			        SUMX(
+			            'Project Transactions', 
+			            'Project Transactions'[TotalCost]
+			        ), 
+			        DATESYTD('Calendar'[Date])
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 7854a8b5-620b-418e-92d9-d883d4afb14d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = SelectedActuality,
+			            exchangeratesmonthly[CurrencyType] = SelectedCurrencyType)
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: 7b9b6f0f-eff1-415a-8cf3-ef9c4a5fcbeb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 51bcb4e7-3ff8-4f2a-b53d-57396408e5fc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 50973e24-bbf9-493f-92c9-78bc64b80b26
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Margin' =
+			
+			
+			CALCULATE (
+			    ([Revenues] + [GM1 Total Direct Costs]) / [Revenues]
+			
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Financials
+		lineageTag: 795a7a58-d706-425e-9be4-87c19bfe317d
+
+	measure 'Gross Margin Hours' = ```
+			
+			    DIVIDE(
+			        ([Revenues] + [GM1 Total Direct Costs]),
+			        [Total Hours]
+			    )
+			    *
+			    [Total Hours]
+			```
+		formatString: #,0
+		displayFolder: Financials
+		lineageTag: a981d33d-241a-4605-8cb9-271b53a960e8
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'GM1 Total Direct Costs' = ```
+			
+			VAR Result = 
+			    CALCULATE(
+			        [4. PT_Cal_Costs_ContextTransitionToMonth],
+			        'Function'[FunctionName] = "Production",
+			        'GL Account Hierarchy'[FirstLevelIdAndName] = "40 Total Direct Costs"
+			        //,'Project Transactions'[ExpenseCode] = "98" 
+			        //,KEEPFILTERS('Project Transactions'[TransactionType] = 1)
+			    )
+			RETURN
+			    IF(Result = 0, BLANK(), Result)
+			
+			```
+		displayFolder: Financials
+		lineageTag: a139e776-09b0-4e9e-b613-547f044871a4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Margin Hours  %' = ```
+			
+			    DIVIDE(
+			        [Gross Margin Hours],
+			        [Revenues]
+			    )
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Financials
+		lineageTag: 33bd47cc-8995-4851-8924-3be66c750274
+
+	measure PL_Actual_vs_Origin = ```
+			
+			VAR SelectedMonth = SELECTEDVALUE('Calendar'[Year Month])
+			VAR SelectedMonthAsDate = DATE(LEFT(SelectedMonth, 4), RIGHT(SelectedMonth, 2), 1)
+			VAR PriorYearMonth = FORMAT(EDATE(SelectedMonthAsDate, -12), "YYYYMM")
+			VAR CurrentMonth = FORMAT(TODAY(), "YYYYMM")
+			VAR MostRecentDate = FORMAT(
+			    CALCULATE(
+			        MAX('Calendar'[Date]),
+			        ALLSELECTED('Calendar')
+			    ),
+			    "YYYYMM"
+			)
+			VAR SelectedMonthFormatted = FORMAT(MAX('Calendar'[Date]), "YYYYMM")
+			
+			RETURN
+			IF (
+			    COUNTROWS(
+			        FILTER(
+			            'P&L',
+			            RIGHT('P&L'[ActualityOrigin_new], 6) IN VALUES('Calendar'[Year Month])
+			        )
+			    ) > 0,
+			    CALCULATE(
+			        [4. P&L_Cal_ContextTransitionToMonth],
+			        KEEPFILTERS('P&L'[ActualityOrigin_new] <> "AC")
+			    ),
+			    IF (
+			        SelectedMonthFormatted > CurrentMonth && SelectedMonthFormatted <= MostRecentDate,
+			        CALCULATE(
+			            [4. P&L_Cal_ContextTransitionToMonth],
+			            'P&L'[Actuality] <> "AC",
+			            FORMAT('P&L'[ActualityDate], "YYYYMM") = PriorYearMonth
+			        ),
+			        IF (
+			            SelectedMonthFormatted < CurrentMonth,
+			            CALCULATE(
+			                [4. P&L_Cal_ContextTransitionToMonth],
+			                KEEPFILTERS('P&L'[ActualityOrigin_new] = "AC")
+			            ),
+			            BLANK()
+			        )
+			    )
+			)
+			
+			```
+		formatString: #,0
+		displayFolder: Financials
+		lineageTag: 9d1c8189-db60-4a0a-9a8e-0282cb380acb
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Other Leave Ratio' =
+			
+			
+			VAR SelectedActuality = SELECTEDVALUE ( 'Project Transactions'[ActualityOrigin] )
+			
+			RETURN
+			    DIVIDE(
+			        CALCULATE (
+			            SUM ( 'Project Transactions'[TotalHours] ),
+			            NOT 'Employment Type'[EmploymentTypeId] in {4,5},
+			            'Time Code'[AbsenceType] = "Other",
+			            KEEPFILTERS('Project Transactions'[Actuality] = SelectedActuality)
+			        ),
+			        [Total Hours]
+			    )
+		displayFolder: HR
+		lineageTag: dcac4cfc-8b51-41f4-a9d2-440a7ab6e62d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sick Leave Ratio' =
+			
+			
+			VAR SelectedActuality = SELECTEDVALUE ( 'Project Transactions'[ActualityOrigin] )
+			
+			RETURN
+			    DIVIDE(
+			        CALCULATE (
+			            SUM ( 'Project Transactions'[TotalHours] ),
+			            NOT 'Employment Type'[EmploymentTypeId] in {4,5},
+			            'Time Code'[AbsenceType] = "Sick",
+			            KEEPFILTERS('Project Transactions'[Actuality] = SelectedActuality)
+			        ),
+			        [Total Hours]
+			    )
+		displayFolder: HR
+		lineageTag: 5cc2fb9f-1b4e-438d-9b97-7c77c6545ba8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vacation Ratio' =
+			
+			
+			VAR SelectedActuality = SELECTEDVALUE ( 'Project Transactions'[ActualityOrigin] )
+			
+			RETURN
+			DIVIDE(
+			    CALCULATE (
+			        SUM ( 'Project Transactions'[TotalHours] ),
+			        NOT 'Employment Type'[EmploymentTypeId] in {4,5},
+			        'Time Code'[AbsenceType] = "Vacation",
+			        KEEPFILTERS('Project Transactions'[Actuality] = SelectedActuality)
+			    ),
+			    [Total Hours]
+			)
+		displayFolder: HR
+		lineageTag: e1be8a38-5d90-4cba-8cbc-09b5ce6edf10
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure SelectedUnit = ```
+			
+			VAR SelectedValues = DISTINCT('Organisation Manual'[Organisation])
+			VAR CountSelected = COUNTROWS(SelectedValues)
+			RETURN
+			    IF(
+			        ISFILTERED('Organisation Manual'[Organisation]),
+			        SWITCH(
+			            TRUE(),
+			            CountSelected = 1 || CountSelected = 2,
+			                CONCATENATEX(
+			                    SelectedValues,
+			                    'Organisation Manual'[Organisation],
+			                    ", ",
+			                    'Organisation Manual'[Organisation],
+			                    ASC
+			                ),
+			            CountSelected > 2,
+			                CONCATENATEX(
+			                    TOPN(2, SelectedValues, 'Organisation Manual'[Organisation], ASC),
+			                    'Organisation Manual'[Organisation],
+			                    ", ",
+			                    'Organisation Manual'[Organisation],
+			                    ASC
+			                ) & " and more"
+			        ),
+			        "All BL/Chairman Selected"
+			    )
+			
+			```
+		lineageTag: 91737438-fcb7-4f8e-bb57-85fb42941d44
+
+	measure 'Selected Year and Months' = ```
+			
+			VAR SelectedYear = SELECTEDVALUE('Calendar'[Year])
+			VAR YearCount = COUNTROWS(VALUES('Calendar'[Year]))
+			VAR SelectedMonths =
+			    FILTER(
+			        VALUES('Calendar'),
+			        'Calendar'[Year] = SelectedYear
+			    )
+			VAR MonthTable =
+			    ADDCOLUMNS(
+			        SUMMARIZE(SelectedMonths, 'Calendar'[Month], 'Calendar'[Month Number]),
+			        "MonthName", 'Calendar'[Month]
+			    )
+			VAR MonthList =
+			    CONCATENATEX(
+			        MonthTable,
+			        [MonthName],
+			        ", ",
+			        [Month Number],
+			        ASC
+			    )
+			RETURN
+			    IF(
+			        YearCount = 1,
+			        SelectedYear & ": " & MonthList,
+			        "Select a single year"
+			    )
+			
+			```
+		lineageTag: e5f3a4ac-ec84-4a6b-873b-1bb63aaf6528
+
+	measure '5. P&L_Cal_FilteredActuality_AC_Monthly' = ```
+			
+			VAR ActualityTable =
+			    SUMMARIZE(
+			        'Calendar',
+			        'Calendar'[Year Month],
+			        "HasAC", 
+			            CALCULATE(
+			                COUNTROWS('P&L'),
+			                'P&L'[ActualityOrigin_new] = "AC"
+			            )
+			    )
+			
+			RETURN
+			SUMX(
+			    ActualityTable,
+			    VAR ThisMonth = [Year Month]
+			    VAR HasAC = [HasAC] > 0
+			
+			    RETURN
+			        CALCULATE(
+			            [3. P&L_Cal_YtdToMonth],
+			            KEEPFILTERS('Calendar'[Year Month] = ThisMonth),
+			            IF(
+			                HasAC,
+			                'Monthly Exchange Rates'[Actuality] = "AC",
+			                TRUE() -- no filter otherwise
+			            )
+			        )
+			)
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: ff11165a-1a20-4a55-8221-0312b47e86e3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Measures Table' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlSKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", Int64.Type}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

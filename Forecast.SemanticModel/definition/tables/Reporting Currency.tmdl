@@ -1,0 +1,36 @@
+table 'Reporting Currency'
+	lineageTag: 68c7171e-2698-4605-9185-7c2f84f8e15d
+
+	column CurrencyId
+		dataType: int64
+		formatString: 0
+		lineageTag: a00f5317-91dc-4516-ac55-08b17bcc944d
+		summarizeBy: none
+		sourceColumn: CurrencyId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceCurrency
+		dataType: string
+		lineageTag: 4b0964a7-1030-48a6-b35a-830e0e5f27e3
+		summarizeBy: none
+		sourceColumn: SourceCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Reporting Currency' = m
+		mode: import
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    financereport_Schema = prod_gold_Database{[Name="financereport",Kind="Schema"]}[Data],
+				    sourcecurrency_Table = financereport_Schema{[Name="sourcecurrency",Kind="Table"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(sourcecurrency_Table,{"pk_sourcecurrency", "_increment_timestamp"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

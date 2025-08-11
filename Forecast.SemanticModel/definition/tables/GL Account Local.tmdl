@@ -1,0 +1,134 @@
+table 'GL Account Local'
+	lineageTag: feaa971a-5df6-44d6-8bc9-97e55424bd33
+
+	column pk_glaccountlocal
+		dataType: int64
+		formatString: 0
+		lineageTag: f44954a4-4965-4cfd-9ae0-c495cdc3101c
+		summarizeBy: none
+		sourceColumn: pk_glaccountlocal
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLAccountID
+		dataType: string
+		lineageTag: 1a23225f-dd08-4408-a274-7f555283e9d2
+		summarizeBy: none
+		sourceColumn: GLAccountID
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLAccountName
+		dataType: string
+		lineageTag: 4e4ed767-a9bc-4a05-8722-8f45b6f2aecf
+		summarizeBy: none
+		sourceColumn: GLAccountName
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLCategoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: cdc38fb5-9026-448b-9313-d67328819327
+		summarizeBy: none
+		sourceColumn: GLCategoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLCategoryName
+		dataType: string
+		lineageTag: 400cda55-d9cf-4d2d-bcac-3f0e9045f91d
+		summarizeBy: none
+		sourceColumn: GLCategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLCategory
+		dataType: string
+		lineageTag: 9e5013ea-dd69-46b6-84ee-60a3dd87440a
+		summarizeBy: none
+		sourceColumn: GLCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLSubcategoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: 88d97d76-951e-40a8-891c-06df59465589
+		summarizeBy: none
+		sourceColumn: GLSubcategoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLSubcategoryName
+		dataType: string
+		lineageTag: 8ef3fd23-20ad-42f5-9099-dedd309dac0a
+		summarizeBy: none
+		sourceColumn: GLSubcategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLSubcategory
+		dataType: string
+		lineageTag: e7f62870-0cd9-42c7-9e38-d02bdf71f96c
+		summarizeBy: none
+		sourceColumn: GLSubcategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLCreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 58eabddf-3b02-4792-8447-a4b277904d1c
+		summarizeBy: none
+		sourceColumn: GLCreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c9b70710-9ddd-4584-9a0b-bc8abb505e1a
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GLAccount.1'
+		dataType: int64
+		formatString: 0
+		lineageTag: ad6d3d20-aff5-4293-bc62-2e25eb0fe5b8
+		summarizeBy: none
+		sourceColumn: GLAccount.1
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLAccount
+		dataType: string
+		lineageTag: 1dc79c43-a8e9-44e3-ab81-ac95cb7165c1
+		summarizeBy: none
+		sourceColumn: GLAccount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'GL Account Local' = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    shareddimensions_Schema = prod_gold_Database{[Name="shareddimensions",Kind="Schema"]}[Data],
+				    glaccountlocal_Table = shareddimensions_Schema{[Name="glaccountlocal",Kind="Table"]}[Data],
+				    #"Split Column by Delimiter" = Table.SplitColumn(glaccountlocal_Table, "GLAccount", Splitter.SplitTextByEachDelimiter({"-"}, QuoteStyle.Csv, false), {"GLAccount.1", "GLAccount.2"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"GLAccount.1", Int64.Type}, {"GLAccount.2", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"GLAccount.2", "GLAccount"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

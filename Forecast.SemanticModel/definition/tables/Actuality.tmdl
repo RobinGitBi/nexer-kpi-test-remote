@@ -1,0 +1,71 @@
+table Actuality
+	lineageTag: c689a2ac-18a0-44c8-9ddc-9e0ee7b4af24
+
+	column pk_actuality
+		dataType: int64
+		formatString: 0
+		lineageTag: bc7f2626-3ecb-4cf7-b954-c3e9c2945e28
+		summarizeBy: sum
+		sourceColumn: pk_actuality
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActualityId
+		dataType: string
+		lineageTag: 079e403a-fcc2-4f38-ad88-69994357efa3
+		summarizeBy: none
+		sourceColumn: ActualityId
+		sortByColumn: Custom
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Actuality
+		dataType: string
+		lineageTag: c70d134d-5798-4a29-9055-dcdea924261e
+		summarizeBy: none
+		sourceColumn: Actuality
+		sortByColumn: Custom
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 174dbf27-c04b-4e98-8fe2-e463d1329118
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column Custom
+		dataType: int64
+		formatString: 0
+		lineageTag: 0baca05e-8176-4428-b969-b44c32a56035
+		summarizeBy: sum
+		sourceColumn: Custom
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Actuality = m
+		mode: import
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    financereport_Schema = prod_gold_Database{[Name="financereport",Kind="Schema"]}[Data],
+				    actuality_Table = financereport_Schema{[Name="actuality",Kind="Table"]}[Data],
+				    #"Sorted Rows" = Table.Sort(actuality_Table,{{"Actuality", Order.Ascending}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Sorted Rows", "Custom", each if [ActualityId] = "AC" then 1 else if [ActualityId] = "BU" then 2 else if [ActualityId] = "FC1" then 3 else if [ActualityId] = "FC2" then 4 else if [ActualityId] = "FC3" then 5 else if [ActualityId] = "FC4" then 6 else if [ActualityId] = "FC5" then 7 else if [ActualityId] = "FC6" then 8 else if [ActualityId] = "FC7" then 9 else if [ActualityId] = "FC8" then 10 else if [ActualityId] = "FC9" then 11 else if [ActualityId] = "FC10" then 12 else if [ActualityId] = "FC11" then 13 else if [ActualityId] = "FC12" then 13 else null),
+				    #"Sorted Rows1" = Table.Sort(#"Added Conditional Column",{{"Custom", Order.Ascending}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Sorted Rows1",{{"Custom", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

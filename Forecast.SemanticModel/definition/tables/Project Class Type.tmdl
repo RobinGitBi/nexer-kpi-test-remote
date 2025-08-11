@@ -1,0 +1,54 @@
+table 'Project Class Type'
+	lineageTag: 6d2293d7-65b0-4f27-85c7-e091c5c6ce68
+
+	column pk_projectclasstype
+		dataType: int64
+		formatString: 0
+		lineageTag: b7955ac5-6f4a-4ce2-acb4-8cd24936e375
+		summarizeBy: none
+		sourceColumn: pk_projectclasstype
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectClassTypeId
+		dataType: int64
+		formatString: 0
+		lineageTag: aca44963-7fca-4ccb-95cc-538f1094f538
+		summarizeBy: none
+		sourceColumn: ProjectClassTypeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectClassType
+		dataType: string
+		lineageTag: c40a7b88-5e2c-4e26-9294-96fb7588f2f6
+		summarizeBy: none
+		sourceColumn: ProjectClassType
+
+		annotation SummarizationSetBy = Automatic
+
+	column _increment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: fc481a85-8cf0-4812-9c11-ec6da2015d62
+		summarizeBy: none
+		sourceColumn: _increment_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Project Class Type' = m
+		mode: import
+		queryGroup: Dimensions
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    shareddimensions_Schema = prod_gold_Database{[Name="shareddimensions",Kind="Schema"]}[Data],
+				    projectclasstype_Table = shareddimensions_Schema{[Name="projectclasstype",Kind="Table"]}[Data]
+				in
+				    projectclasstype_Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

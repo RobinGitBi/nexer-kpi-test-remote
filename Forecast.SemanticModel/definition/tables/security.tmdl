@@ -1,0 +1,42 @@
+table security
+	lineageTag: 2062bcb6-4ee7-42c4-a24d-919755c77968
+
+	column Name
+		dataType: string
+		lineageTag: ecc70447-9430-4b76-bdb9-50d97f7e9a1b
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: c24ccc87-50f9-4a21-aadb-0640fbe3ca60
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Kind
+		dataType: string
+		lineageTag: 83f084a1-a861-4b31-8064-b3d312401bff
+		summarizeBy: none
+		sourceColumn: Kind
+
+		annotation SummarizationSetBy = Automatic
+
+	partition security = m
+		mode: import
+		queryGroup: Other
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    security_Schema = prod_gold_Database{[Name="security",Kind="Schema"]}[Data]
+				in
+				    security_Schema
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
