@@ -1134,7 +1134,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'O1. FTE' = ```
+	measure 'Correct FTE' = ```
 			
 			SUMX (
 			    VALUES ( 'Project Transactions'[ProjectEmployeeId] ),
@@ -1214,6 +1214,11 @@ table 'Measures Table'
 		lineageTag: deb3c749-4b99-4c94-9b30-0655b5a8725e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Correct OH%' = DIVIDE(CALCULATE([Correct FTE], FILTER('Function', 'Function'[FunctionId] = "20")), [Correct FTE])
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: KPIs
+		lineageTag: bb2813e4-7226-47f7-8765-77a986ac7449
 
 	partition 'Measures Table' = m
 		mode: import
