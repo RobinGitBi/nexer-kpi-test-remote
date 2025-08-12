@@ -21933,7 +21933,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Absence"
+			          "ConceptualProperty": "Correct Absence"
 			        }
 			      },
 			      "State": "Generated",

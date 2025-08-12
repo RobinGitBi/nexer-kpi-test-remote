@@ -118,17 +118,18 @@ table 'Measures Table'
 			
 			RETURN
 			
-			IF(
-			    SelectedActuality = "AC",
-			    [Presence Hours AC] - [Billable Hours],
-			    CALCULATE(
-			        SUMX(
-			            'Project Transactions',
-			            'Project Transactions'[TotalHours] * 'Project Transactions'[UhrFc]
-			        ),
-			       KEEPFILTERS(NOT 'Employment Type'[EmploymentTypeId] IN {4,5}) 
-			    )
-			)
+			// IF(
+			    // SelectedActuality = "AC",
+			    [Correct Presence Hours AC] - [Billable Hours]
+			    // ,
+			    // CALCULATE(
+			    //     SUMX(
+			    //         'Project Transactions',
+			    //         'Project Transactions'[TotalHours] * 'Project Transactions'[UhrFc]
+			    //     ),
+			    //    KEEPFILTERS(NOT 'Employment Type'[EmploymentTypeId] IN {4,5}) 
+			    // )
+			// )
 			```
 		displayFolder: HR
 		lineageTag: 91971fbf-6770-47c6-bfa3-2f007ae3db89
@@ -138,7 +139,7 @@ table 'Measures Table'
 	measure UHR = ```
 			
 			
-			    [Unbilable Hours] / [Presence Hours AC]
+			    [Unbilable Hours] / [Correct Presence Hours AC]
 			```
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: HR
@@ -152,9 +153,7 @@ table 'Measures Table'
 			    //RETURN
 			        CALCULATE (
 			            SUM ( 'Project Transactions'[TotalHours] ),
-			            NOT 'Project Transactions'[EmploymentTypeID] in {4,5},
-			            USERELATIONSHIP('Project Transactions'[EmployeeFunctionId], 'Function'[FunctionId])//,
-			            //'Project Transactions'[ActualityOrigin_new] = SelectedActuality
+			            NOT 'Project Transactions'[EmploymentTypeID] in {4,5}
 			        )
 			```
 		displayFolder: HR
@@ -387,14 +386,14 @@ table 'Measures Table'
 			                            }
 			                    )
 			                ),
-			                [NormalWorkingHours (Emp-Month)]
+			                CALCULATE(SUM('Project Transactions'[NormalWorkingHoursMonthly]), CROSSFILTER('Project Transactions'[Custom], 'Function'[FunctionId], none))
 			            //     SUM ( 'Project Transactions'[NormalWorkingHoursMonthly] )
 			            // ),
 			            // KEEPFILTERS ( NOT 'Employment Type'[EmploymentTypeId] IN { 4, 5 } ),
 			            // KEEPFILTERS ( 'Project Transactions'[Actuality] = "AC" ),
 			            // KEEPFILTERS ( 'Project Transactions'[OverTime] = 0 ),
 			            // 'Calendar'[Year Month] = MAX ( 'Calendar'[Year Month] ), USERELATIONSHIP('Project Transactions'[EmployeeFunctionId],'Function'[FunctionId])
-			        ))
+			        // )
 			VAR FcFte =
 			            CALCULATE(
 			    SUM('Project Transactions'[FteFc]),
@@ -413,8 +412,6 @@ table 'Measures Table'
 		lineageTag: ac4c81db-67e2-4b8a-92c8-f6262e019652
 
 		changedProperty = IsHidden
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Billable Hours' = ```
 			
@@ -476,9 +473,9 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Absence = ```
+	measure 'Correct Absence' = ```
 			
-			    ([Total Hours] - [Presence Hours AC]) / [Total Hours]
+			    ([Total Hours] - [Correct Presence Hours AC]) / [Total Hours]
 			```
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: HR
@@ -1043,7 +1040,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Presence Hours AC' = ```
+	measure 'Correct Presence Hours AC' = ```
 			
 			
 			    CALCULATE (
@@ -1059,36 +1056,11 @@ table 'Measures Table'
 	measure 'Merged Presence' =
 			
 			SWITCH(TRUE(),
-			SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", [Presence Hours AC],
+			SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", [Correct Presence Hours AC],
 			SELECTEDVALUE('Project Transactions'[Actuality]) <> "AC", [Presence Hours FC]
 			)
 		displayFolder: HR
 		lineageTag: 59a07d76-0da8-4a64-a827-25087f863487
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'NormalWorkingHours (Emp-Month)' = ```
-			
-			SUMX (
-			    SUMMARIZE (
-			        'Project Transactions',
-			        'Project Transactions'[ProjectEmployeeId],
-			        'Calendar'[Year Month]       -- <<< månadsnyckel
-			    ),
-			    CALCULATE (
-			        MAX ( 'Project Transactions'[NormalWorkingHoursMonthly] ),
-			        REMOVEFILTERS ( 'Function'[FunctionId] ),
-			        REMOVEFILTERS ( 'Project Transactions'[EmployeeFunctionId] ),
-			        REMOVEFILTERS ( 'Project Transactions'[AdjustedFunctionId] ),
-			        REMOVEFILTERS ( 'Project Transactions'[ProjectFunctionId] ),
-			        CROSSFILTER('Project Transactions'[Custom], 'Function'[FunctionId], None),
-			        CROSSFILTER('Project Transactions'[EmployeeFunctionId], 'Function'[FunctionId], none)
-			    )
-			)
-			
-			```
-		displayFolder: HR
-		lineageTag: 82facb1e-e389-4eb7-b56c-e94565bd393a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -1181,6 +1153,12 @@ table 'Measures Table'
 			            )
 			
 			        )
+			        +
+			                    CALCULATE(
+			    SUM('Project Transactions'[FteFc]),
+			     KEEPFILTERS(
+			            NOT 'Employment Type'[EmploymentTypeId] IN {4,5}
+			        ))
 			    RETURN
 			        IF ( FTECalculation <> 0, FTECalculation )
 			)
@@ -1215,16 +1193,27 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Correct OH%' = DIVIDE(CALCULATE([Correct FTE], FILTER('Function', 'Function'[FunctionId] = "20")), [Correct FTE])
+	measure 'Correct OH%' = if(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", DIVIDE(CALCULATE([Correct FTE], FILTER('Function', 'Function'[FunctionId] = "20")), [Correct FTE]), [SemiCorrectFCOH%] )
 		formatString: 0.00\ %;-0.00\ %;0.00\ %
 		displayFolder: KPIs
 		lineageTag: bb2813e4-7226-47f7-8765-77a986ac7449
 
-	measure FCFTE = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), USERELATIONSHIP('Project Transactions'[AdjustedFunctionId], 'Function'[FunctionId]))
+	measure SemiCorrectFCFTE = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), USERELATIONSHIP('Project Transactions'[AdjustedFunctionId], 'Function'[FunctionId]))
 		displayFolder: KPIs
 		lineageTag: 4759f5cc-e9b9-48db-9609-0934a2beb1eb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure SemiCorrectFCOH% =
+			
+			DIVIDE(
+			CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), KEEPFILTERS('Function'[FunctionId] = "20"), USERELATIONSHIP('Project Transactions'[AdjustedFunctionId], 'Function'[FunctionId])
+			, 'Function'[FunctionId])
+			,
+			[SemiCorrectFCFTE])
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: KPIs
+		lineageTag: 6a597d6e-9ae0-46cf-8420-20d914c8110e
 
 	partition 'Measures Table' = m
 		mode: import
