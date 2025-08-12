@@ -21769,7 +21769,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Presence Hours"
+			          "ConceptualProperty": "Presence Hours FC"
 			        }
 			      },
 			      "State": "Generated",

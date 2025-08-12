@@ -95,11 +95,32 @@ relationship 53f216ae-8ef3-07e5-d804-53a30e3d81fc
 	fromColumn: Goals.AccountingDate
 	toColumn: Calendar.Date
 
-relationship 915ef708-ada7-51a6-aed4-734c5404224c
-	fromColumn: 'Project Transactions'.AdjustedFunctionId
-	toColumn: Function.FunctionId
-
 relationship 91f508ef-c878-41a0-b4ce-2e6d71bce0e9
 	fromColumn: 'Project Transactions'.CompanyId
+	toColumn: Company.CompanyId
+
+relationship 27a701de-99e6-b2dd-1bee-d26b1dac926f
+	fromColumn: 'Project Transactions'.Custom
+	toColumn: Function.FunctionId
+
+relationship 14ffe133-8f29-a51a-c2ff-6b729797232d
+	isActive: false
+	fromColumn: 'Project Transactions'.EmployeeFunctionId
+	toColumn: Function.FunctionId
+
+relationship f03b491c-919f-09da-4b67-ce7566022e25
+	fromColumn: NormalWorkingHours.AccountingDate
+	toColumn: Calendar.Date
+
+relationship fd6c1b53-0f92-8a65-0fba-e74d2f2d8d6f
+	fromColumn: NormalWorkingHours.ProjectEmployeeId
+	toColumn: 'Catalyst Employee'.EmployeeId
+
+relationship eba28c3e-da67-4887-b95d-bb63fa20775b
+	fromColumn: 'Project Transactions'.ProjectEmployeeId
+	toColumn: 'Catalyst Employee'.EmployeeId
+
+relationship 633c514a-4f23-b85a-3e44-9a842f8bdf7a
+	fromColumn: NormalWorkingHours.CompanyId
 	toColumn: Company.CompanyId
 

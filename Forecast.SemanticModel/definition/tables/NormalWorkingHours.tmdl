@@ -1,0 +1,97 @@
+table NormalWorkingHours
+	lineageTag: b038edcd-f80e-42ab-880f-1234abdc257d
+
+	column ProjectEmployeeId
+		dataType: string
+		lineageTag: 3bb3dae1-3801-4a02-83d4-81c93fc48f74
+		summarizeBy: none
+		sourceColumn: ProjectEmployeeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyId
+		dataType: string
+		lineageTag: f3c10335-8bbc-470d-94b1-f2153a2756f6
+		summarizeBy: none
+		sourceColumn: CompanyId
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountingDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8d8cd490-2049-4222-bb92-18be3fc130cd
+		summarizeBy: none
+		sourceColumn: AccountingDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Actualitydate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1a39c8a6-617e-4ecc-a6ce-a0c082f3f2f9
+		summarizeBy: none
+		sourceColumn: Actualitydate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Actuality
+		dataType: string
+		lineageTag: 7700c5ec-566b-416d-b674-84bbd148a1d5
+		summarizeBy: none
+		sourceColumn: Actuality
+
+		annotation SummarizationSetBy = Automatic
+
+	column NormWork
+		dataType: double
+		lineageTag: 05974576-8fcd-4782-a26e-e199a6b49c11
+		summarizeBy: sum
+		sourceColumn: NormWork
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FteFc
+		dataType: double
+		lineageTag: 49a7b3f2-8452-42c6-b63e-472e667468a7
+		summarizeBy: sum
+		sourceColumn: FteFc
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition NormalWorkingHours = m
+		mode: import
+		queryGroup: Facts
+		source =
+				let
+				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
+				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
+				    financereport_Schema = prod_gold_Database{[Name="financereport",Kind="Schema"]}[Data],
+				    projecttransactionslocal_Table = financereport_Schema{[Name="projecttransactions",Kind="Table"]}[Data],
+				    #"Added Custom" = Table.AddColumn(projecttransactionslocal_Table, "Function", each if [ProjectFunctionId] = "10" then "Prod" else if [ProjectFunctionId] = "20" then "OH" else null),
+				    Custom1 = Table.NestedJoin(#"Added Custom", {"SourceCurrency"}, #"Source Currency", {"SourceCurrency"}, "Source Currency", JoinKind.LeftOuter),
+				    #"Expanded Source Currency" = Table.ExpandTableColumn(Custom1, "Source Currency", {"CurrencyId"}, {"CurrencyId"}),
+				    #"Added Custom1" = Table.AddColumn(#"Expanded Source Currency", "ActualityOrigin_new", each if [ActualityOrigin] is null then "AC" else [ActualityOrigin]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom1",{{"ActualityOrigin_new", type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",null,"0",Replacer.ReplaceValue,{"AdjustedFunctionId"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Replaced Value", each true),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Filtered Rows","20","",Replacer.ReplaceText,{"ActualityOrigin_new"}),
+				    #"Added Custom2" = Table.AddColumn(#"Replaced Value1", "Custom", each if [AdjustedFunctionId] = "20" and [ProjectClassType] =1 then 10 else [AdjustedFunctionId]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom2",{{"Custom", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type1",{"pk_projecttransactions", "CurrencyId", "Function", "ItemId", "CompanyObjectiveId", "TaskId", "CompanyCustomerId", "ProjectFunctionId"}),
+				    #"Grouped Rows" = Table.Group(#"Removed Columns", {"ProjectEmployeeId", "CompanyId", "AccountingDate", "Actualitydate", "Actuality"}, {{"NormWork", each List.Sum([NormalWorkingHoursMonthly]), type nullable number}, {"FteFc", each List.Sum([FteFc]), type nullable number}})
+				in
+				    #"Grouped Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

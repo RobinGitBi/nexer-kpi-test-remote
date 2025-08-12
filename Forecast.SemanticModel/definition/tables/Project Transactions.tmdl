@@ -614,6 +614,14 @@ table 'Project Transactions'
 
 		annotation SummarizationSetBy = Automatic
 
+	column Custom
+		dataType: string
+		lineageTag: 57d11a6d-9dbb-4e20-9313-b34a91466825
+		summarizeBy: none
+		sourceColumn: Custom
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'Project Transactions' = m
 		mode: import
 		queryGroup: Facts
@@ -630,9 +638,11 @@ table 'Project Transactions'
 				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom1",{{"ActualityOrigin_new", type text}}),
 				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",null,"0",Replacer.ReplaceValue,{"AdjustedFunctionId"}),
 				    #"Filtered Rows" = Table.SelectRows(#"Replaced Value", each true),
-				    #"Replaced Value1" = Table.ReplaceValue(#"Filtered Rows","20","",Replacer.ReplaceText,{"ActualityOrigin_new"})
+				    #"Replaced Value1" = Table.ReplaceValue(#"Filtered Rows","20","",Replacer.ReplaceText,{"ActualityOrigin_new"}),
+				    #"Added Custom2" = Table.AddColumn(#"Replaced Value1", "Custom", each if [AdjustedFunctionId] = "20" and [ProjectClassType] =1 then 10 else [AdjustedFunctionId]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom2",{{"Custom", type text}})
 				in
-				    #"Replaced Value1"
+				    #"Changed Type1"
 
 	annotation PBI_NavigationStepName = Navigation
 
