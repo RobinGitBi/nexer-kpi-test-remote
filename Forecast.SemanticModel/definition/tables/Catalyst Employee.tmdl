@@ -5,7 +5,7 @@ table 'Catalyst Employee'
 		dataType: int64
 		formatString: 0
 		lineageTag: befad6b6-c61b-434e-b200-8a61564ebcec
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: pk_catalystemployee
 
 		annotation SummarizationSetBy = Automatic
@@ -22,7 +22,7 @@ table 'Catalyst Employee'
 		dataType: int64
 		formatString: 0
 		lineageTag: 10e1bd53-5790-48b1-92bf-e8d132c6d37e
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: SalaryEmployeeId
 
 		annotation SummarizationSetBy = Automatic
@@ -39,7 +39,7 @@ table 'Catalyst Employee'
 		dataType: int64
 		formatString: 0
 		lineageTag: 26f16400-0a62-4384-91a3-23a51432c4e8
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: Function
 
 		annotation SummarizationSetBy = Automatic
@@ -48,7 +48,7 @@ table 'Catalyst Employee'
 		dataType: int64
 		formatString: 0
 		lineageTag: f28a98e4-5a69-4b0d-8df6-538e94404e05
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: UnitId
 
 		annotation SummarizationSetBy = Automatic
@@ -57,7 +57,7 @@ table 'Catalyst Employee'
 		dataType: int64
 		formatString: 0
 		lineageTag: 5e90e927-343b-402b-af80-4a6ce3f556e2
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: CompanyId
 
 		annotation SummarizationSetBy = Automatic
@@ -106,7 +106,7 @@ table 'Catalyst Employee'
 		dataType: int64
 		formatString: 0
 		lineageTag: ca5d3b57-1db9-4766-8de9-ca61e00b1b23
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: PlannedChangeId
 
 		annotation SummarizationSetBy = Automatic
@@ -188,7 +188,7 @@ table 'Catalyst Employee'
 		dataType: int64
 		formatString: 0
 		lineageTag: a8fbbd4a-7fe4-4184-a8eb-90b4dcd6a5af
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: ManagerSalaryEmployeeId
 
 		annotation SummarizationSetBy = Automatic
@@ -235,7 +235,7 @@ table 'Catalyst Employee'
 		dataType: int64
 		formatString: 0
 		lineageTag: 1607abeb-5f8d-4775-8709-d7631ff898c7
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: TerminatedId
 
 		annotation SummarizationSetBy = Automatic
@@ -295,7 +295,7 @@ table 'Catalyst Employee'
 		dataType: int64
 		formatString: 0
 		lineageTag: 6d84b0f1-fd10-4f4e-b1d6-85619517673f
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: IsCrmEmployee
 
 		annotation SummarizationSetBy = Automatic
@@ -304,7 +304,7 @@ table 'Catalyst Employee'
 		dataType: int64
 		formatString: 0
 		lineageTag: 8e5d434f-fddf-401d-b3da-1514c8c02cea
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: NumberOfMonthsExEmployees
 
 		annotation SummarizationSetBy = Automatic

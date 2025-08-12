@@ -1220,6 +1220,12 @@ table 'Measures Table'
 		displayFolder: KPIs
 		lineageTag: bb2813e4-7226-47f7-8765-77a986ac7449
 
+	measure FCFTE = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), USERELATIONSHIP('Project Transactions'[AdjustedFunctionId], 'Function'[FunctionId]))
+		displayFolder: KPIs
+		lineageTag: 4759f5cc-e9b9-48db-9609-0934a2beb1eb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition 'Measures Table' = m
 		mode: import
 		source =
