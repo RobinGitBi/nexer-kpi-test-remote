@@ -1064,43 +1064,9 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure XXX = ```
-			
-			SUMX (
-			    VALUES ( 'Project Transactions'[ProjectEmployeeId] ),
-			    VAR HoursFiltered =
-			        CALCULATE (
-			            SUM ( 'Project Transactions'[TotalHours] ),
-			            FILTER (
-			                ALL ( 'Time Code'[TimeCode] ),
-			                ISBLANK ( 'Time Code'[TimeCode] ) ||
-			                'Time Code'[TimeCode] IN {
-			                    "400","401","402","403","8020","8040","8060","8080",
-			                    "9900","9911","9915","9916","9920","9922","9924","9930",
-			                    "9935","9940","9950","9960","9980","9982"
-			                }
-			            ),
-			            // Tvinga analys på EmployeeFunctionId:
-			            USERELATIONSHIP ( 'Project Transactions'[EmployeeFunctionId], 'Function'[FunctionId] ),
-			            // Stäng av andra funktionsvägar:
-			            CROSSFILTER ( 'Project Transactions'[Custom],  'Function'[FunctionId], None )
-			        )
-			
-			    VAR FTE_AC = DIVIDE ( HoursFiltered, [NormalWorkingHours (Emp-Month)] )
-			
-			    VAR FTE_FC =
-			        CALCULATE (
-			            SUM ( 'Project Transactions'[FteFc] ),
-			            USERELATIONSHIP ( 'Project Transactions'[EmployeeFunctionId], 'Function'[FunctionId] ),
-			            CROSSFILTER ( 'Project Transactions'[Custom],  'Function'[FunctionId], None ),
-			            KEEPFILTERS ( NOT 'Employment Type'[EmploymentTypeId] IN { 4, 5 } )
-			        )
-			
-			    VAR Result = FTE_AC + FTE_FC
-			    RETURN IF ( Result <> 0, Result )
-			)
-			
-			```
+	measure 'Total Direct Costs' =
+			IF(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", CALCULATE(SUM('Project Transactions'[TotalCost]), USERELATIONSHIP('Project Transactions'[AdjustedFunctionId], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[AdjustedFunctionId] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4)),
+			 CALCULATE(SUM('Project Transactions'[TotalCost]), USERELATIONSHIP('Project Transactions'[Custom], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4)))
 		displayFolder: HR
 		lineageTag: 011c4945-1415-4e52-ade5-eeedaccb201b
 
