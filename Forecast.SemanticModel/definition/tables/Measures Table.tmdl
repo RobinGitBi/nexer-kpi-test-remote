@@ -1065,7 +1065,7 @@ table 'Measures Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Correct Total Direct Costs' =
-			IF(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunctionId], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[AdjustedFunctionId] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4)),
+			IF(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[FunctionAdjusted], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[FunctionAdjusted] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4)),
 			 CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[Custom], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3})))
 		displayFolder: HR
 		lineageTag: 011c4945-1415-4e52-ade5-eeedaccb201b
@@ -1164,7 +1164,7 @@ table 'Measures Table'
 		displayFolder: KPIs
 		lineageTag: bb2813e4-7226-47f7-8765-77a986ac7449
 
-	measure SemiCorrectFCFTE = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), USERELATIONSHIP('Project Transactions'[AdjustedFunctionId], 'Function'[FunctionId]))
+	measure SemiCorrectFCFTE = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), USERELATIONSHIP('Project Transactions'[FunctionAdjusted], 'Function'[FunctionId]))
 		displayFolder: KPIs
 		lineageTag: 4759f5cc-e9b9-48db-9609-0934a2beb1eb
 
@@ -1173,7 +1173,7 @@ table 'Measures Table'
 	measure SemiCorrectFCOH% =
 			
 			DIVIDE(
-			CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), KEEPFILTERS('Function'[FunctionId] = "20"), USERELATIONSHIP('Project Transactions'[AdjustedFunctionId], 'Function'[FunctionId])
+			CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), KEEPFILTERS('Function'[FunctionId] = "20"), USERELATIONSHIP('Project Transactions'[FunctionAdjusted], 'Function'[FunctionId])
 			, 'Function'[FunctionId])
 			,
 			[SemiCorrectFCFTE])
@@ -1183,8 +1183,8 @@ table 'Measures Table'
 
 	measure 'Correct Revenue' = ```
 			CALCULATE([4. PT_Cal_ContextTransitionToMonth], 
-			 USERELATIONSHIP('Project Transactions'[AdjustedFunctionId], 'Function'[FunctionId]),
-			  KEEPFILTERS('Project Transactions'[AdjustedFunctionId] = "10")
+			 USERELATIONSHIP('Project Transactions'[FunctionAdjusted], 'Function'[FunctionId]),
+			  KEEPFILTERS('Project Transactions'[FunctionAdjusted] = "10")
 			, KEEPFILTERS('Project Transactions'[ProjectClassType] = 1), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3}))
 			```
 		displayFolder: HR
@@ -1235,23 +1235,22 @@ table 'Measures Table'
 		displayFolder: HR
 		lineageTag: 03a85fd7-bdcd-4794-8713-8fcde3bccb48
 
-	measure 'Correct Gross Margin1 Hours' = ```
+	measure 'Correct Gross Profit 1 Hours' =
 			
 			
-			// var GrossProfit = CALCULATE([4. PT_Cal_ContextTransitionToMonth], [4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunctionId], 'Function'[FunctionId]), 
+			var GrossProfit = CALCULATE([4. PT_Cal_ContextTransitionToMonth] + [4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[FunctionAdjusted], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[TransactionType] = 1), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3}), KEEPFILTERS('Project Transactions'[ProjectClassType] = 1) )
 			
-			// VAR HourSubstraction = CALCULATE(SUM('Project Transactions'[TotalCost]), filter ('Project Transactions',[ExpenseCode] = "98"), ALL('Employment Type'))
+			VAR HourSubstraction = CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], KEEPFILTERS('Project Transactions'[ExpenseCode] = "98"))
 			
-			// VAR Result = GrossProfit
+			VAR Result = GrossProfit + HourSubstraction
 			
-			// RETURN Result)
-			```
-		formatString: 0
+			RETURN Result
+		formatString: #,0
 		displayFolder: HR
 		lineageTag: 7d112286-6332-4025-a3de-463db7b1bf92
 
-	measure 'Correct Gross Margin Hours' = --
-		formatString: 0
+	measure 'Correct Gross Margin Hours' = DIVIDE([Correct Gross Profit 1 Hours], CALCULATE([Correct Revenue], 'Project Transactions'[TransactionType] = 1))
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
 		displayFolder: HR
 		lineageTag: 78898a1f-bb11-40f1-964c-cfc92c973994
 

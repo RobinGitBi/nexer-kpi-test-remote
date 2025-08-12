@@ -534,14 +534,6 @@ table 'Project Transactions'
 
 		annotation UnderlyingDateTimeDataType = Date
 
-	column AdjustedFunctionId
-		dataType: string
-		lineageTag: ee2084ea-9905-4b13-b8c1-2d7421652eb4
-		summarizeBy: none
-		sourceColumn: AdjustedFunctionId
-
-		annotation SummarizationSetBy = Automatic
-
 	column CompanyId
 		dataType: string
 		lineageTag: 95e55c53-8ada-426c-bfbb-180fab409821
@@ -622,6 +614,23 @@ table 'Project Transactions'
 
 		annotation SummarizationSetBy = Automatic
 
+	column FunctionAdjusted
+		dataType: string
+		lineageTag: d9bc4df7-d968-494b-b817-1900d9288387
+		summarizeBy: none
+		sourceColumn: FunctionAdjusted
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionTypeSortOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: c08a49cb-8052-41f1-8533-461c4b9ce089
+		summarizeBy: sum
+		sourceColumn: TransactionTypeSortOrder
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'Project Transactions' = m
 		mode: import
 		queryGroup: Facts
@@ -636,10 +645,10 @@ table 'Project Transactions'
 				    #"Expanded Source Currency" = Table.ExpandTableColumn(Custom1, "Source Currency", {"CurrencyId"}, {"CurrencyId"}),
 				    #"Added Custom1" = Table.AddColumn(#"Expanded Source Currency", "ActualityOrigin_new", each if [ActualityOrigin] is null then "AC" else [ActualityOrigin]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom1",{{"ActualityOrigin_new", type text}}),
-				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",null,"0",Replacer.ReplaceValue,{"AdjustedFunctionId"}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",null,"0",Replacer.ReplaceValue,{"FunctionAdjusted"}),
 				    #"Filtered Rows" = Table.SelectRows(#"Replaced Value", each true),
 				    #"Replaced Value1" = Table.ReplaceValue(#"Filtered Rows","20","",Replacer.ReplaceText,{"ActualityOrigin_new"}),
-				    #"Added Custom2" = Table.AddColumn(#"Replaced Value1", "Custom", each if [AdjustedFunctionId] = "20" and [ProjectClassType] =1 then 10 else [AdjustedFunctionId]),
+				    #"Added Custom2" = Table.AddColumn(#"Replaced Value1", "Custom", each if [FunctionAdjusted] = "20" and [ProjectClassType] =1 then 10 else [FunctionAdjusted]),
 				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom2",{{"Custom", type text}})
 				in
 				    #"Changed Type1"

@@ -112,8 +112,8 @@ relationship eba28c3e-da67-4887-b95d-bb63fa20775b
 	fromColumn: 'Project Transactions'.ProjectEmployeeId
 	toColumn: 'Catalyst Employee'.EmployeeId
 
-relationship 2334d658-9b9f-2a18-a426-1c7912620eaf
+relationship 0aa7e1bf-0666-0675-2c5a-aae67cd46d71
 	isActive: false
-	fromColumn: 'Project Transactions'.AdjustedFunctionId
+	fromColumn: 'Project Transactions'.FunctionAdjusted
 	toColumn: Function.FunctionId
 
