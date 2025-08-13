@@ -606,28 +606,28 @@ table 'Project Transactions'
 
 		annotation SummarizationSetBy = Automatic
 
-	column Custom
-		dataType: string
-		lineageTag: 57d11a6d-9dbb-4e20-9313-b34a91466825
-		summarizeBy: none
-		sourceColumn: Custom
-
-		annotation SummarizationSetBy = Automatic
-
-	column FunctionAdjusted
-		dataType: string
-		lineageTag: d9bc4df7-d968-494b-b817-1900d9288387
-		summarizeBy: none
-		sourceColumn: FunctionAdjusted
-
-		annotation SummarizationSetBy = Automatic
-
 	column TransactionTypeSortOrder
 		dataType: int64
 		formatString: 0
 		lineageTag: c08a49cb-8052-41f1-8533-461c4b9ce089
 		summarizeBy: sum
 		sourceColumn: TransactionTypeSortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column AdjustedFunction
+		dataType: string
+		lineageTag: 6ab2c9b7-d597-40ad-b259-78c32e3ebaa1
+		summarizeBy: none
+		sourceColumn: AdjustedFunction
+
+		annotation SummarizationSetBy = Automatic
+
+	column AdjustedFunction2
+		dataType: string
+		lineageTag: 27976bc5-5d39-4905-b40a-d392b4d9dbc9
+		summarizeBy: none
+		sourceColumn: AdjustedFunction2
 
 		annotation SummarizationSetBy = Automatic
 
@@ -645,13 +645,11 @@ table 'Project Transactions'
 				    #"Expanded Source Currency" = Table.ExpandTableColumn(Custom1, "Source Currency", {"CurrencyId"}, {"CurrencyId"}),
 				    #"Added Custom1" = Table.AddColumn(#"Expanded Source Currency", "ActualityOrigin_new", each if [ActualityOrigin] is null then "AC" else [ActualityOrigin]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom1",{{"ActualityOrigin_new", type text}}),
-				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",null,"0",Replacer.ReplaceValue,{"FunctionAdjusted"}),
-				    #"Filtered Rows" = Table.SelectRows(#"Replaced Value", each true),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true),
 				    #"Replaced Value1" = Table.ReplaceValue(#"Filtered Rows","20","",Replacer.ReplaceText,{"ActualityOrigin_new"}),
-				    #"Added Custom2" = Table.AddColumn(#"Replaced Value1", "Custom", each if [FunctionAdjusted] = "20" and [ProjectClassType] =1 then 10 else [FunctionAdjusted]),
-				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom2",{{"Custom", type text}})
+				    #"Replaced Value" = Table.ReplaceValue(#"Replaced Value1",null,"20",Replacer.ReplaceValue,{"AdjustedFunction2"})
 				in
-				    #"Changed Type1"
+				    #"Replaced Value"
 
 	annotation PBI_NavigationStepName = Navigation
 

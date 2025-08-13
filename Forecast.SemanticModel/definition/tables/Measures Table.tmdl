@@ -1116,30 +1116,30 @@ table 'Measures Table'
 			                    ),            
 			                    KEEPFILTERS ( NOT 'Employment Type'[EmploymentTypeId] IN { 4, 5 } ),
 			            KEEPFILTERS ( 'Project Transactions'[Actuality] = "AC" ),
-			            KEEPFILTERS('Project Transactions'[TransactionType] = 1),
-			            KEEPFILTERS('Project Transactions'[ProjectClassType] IN {1,2,3}),
+			            // KEEPFILTERS('Project Transactions'[TransactionType] = 1),
 			            KEEPFILTERS ( 'Project Transactions'[OverTime] = 0 ),
 			            'Calendar'[Year Month] = MAX ( 'Calendar'[Year Month] )
 			                ),
 			                CALCULATE(SUM ( 'Project Transactions'[NormalWorkingHoursMonthly] ),
-			                CROSSFILTER('Project Transactions'[Custom], 'Function'[FunctionId], none))
+			                CROSSFILTER('Project Transactions'[AdjustedFunction], 'Function'[FunctionId], none))
 			            )
 			
 			        )
 			        +
 			                    CALCULATE(
-			    SUM('Project Transactions'[FteFc]),
-			     KEEPFILTERS(
-			            NOT 'Employment Type'[EmploymentTypeId] IN {4,5}
-			        ))
+			    SUM('Project Transactions'[FteFc]))
+			    //  KEEPFILTERS(
+			    //         NOT 'Employment Type'[EmploymentTypeId] IN {4,5}
+			    //     ), trans)
 			    RETURN
 			        IF ( FTECalculation <> 0, FTECalculation )
 			)
 			
 			```
-		formatString: 0.0
 		displayFolder: HR
 		lineageTag: 8355551f-746a-4846-95e9-3edb8f73ea4f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure OFTE = ```
 			
@@ -1165,24 +1165,53 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Correct OH%' = if(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", DIVIDE(CALCULATE([Correct FTE], FILTER('Function', 'Function'[FunctionId] = "20")), [Correct FTE]), [SemiCorrectFCOH%] )
+	measure 'Correct OH%' =
+			
+			
+			VAR  FcFte = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4))
+			
+			
+			VAR FcFteProduction = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), KEEPFILTERS('Function'[FunctionId] = "20"), USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId])
+			, 'Function'[FunctionId])
+			
+			
+			VAR FcOhPerc = DIVIDE( FcFteProduction, FcFte)
+			
+			VAR Result = if(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", DIVIDE(CALCULATE([Correct FTE], KEEPFILTERS('Function'[FunctionId] =  "20")), [Correct FTE]), FcOhPerc )
+			
+			
+			RETURN Result
 		formatString: 0.00\ %;-0.00\ %;0.00\ %
 		displayFolder: KPIs
 		lineageTag: bb2813e4-7226-47f7-8765-77a986ac7449
 
-	measure SemiCorrectFCFTE = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), USERELATIONSHIP('Project Transactions'[FunctionAdjusted], 'Function'[FunctionId]))
+	measure SemiCorrectFCFTE = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4))
 		displayFolder: KPIs
 		lineageTag: 4759f5cc-e9b9-48db-9609-0934a2beb1eb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure SemiCorrectFCOH% =
+	measure SemiCorrectFCOH% = ```
 			
-			DIVIDE(
-			CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), KEEPFILTERS('Function'[FunctionId] = "20"), USERELATIONSHIP('Project Transactions'[FunctionAdjusted], 'Function'[FunctionId])
+			
+			
+			VAR  FcFte = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4))
+			
+			
+			
+			
+			
+			
+			VAR FcFteProduction = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4), KEEPFILTERS('Function'[FunctionId] = "20"), USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId])
 			, 'Function'[FunctionId])
-			,
-			[SemiCorrectFCFTE])
+			
+			
+			VAR Result = DIVIDE( FcFteProduction, FcFte)
+			
+			RETURN Result
+			
+			
+			```
 		formatString: 0.00\ %;-0.00\ %;0.00\ %
 		displayFolder: KPIs
 		lineageTag: 6a597d6e-9ae0-46cf-8420-20d914c8110e

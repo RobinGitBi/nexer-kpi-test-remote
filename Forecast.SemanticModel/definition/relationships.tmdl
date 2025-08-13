@@ -99,10 +99,6 @@ relationship 91f508ef-c878-41a0-b4ce-2e6d71bce0e9
 	fromColumn: 'Project Transactions'.CompanyId
 	toColumn: Company.CompanyId
 
-relationship 27a701de-99e6-b2dd-1bee-d26b1dac926f
-	fromColumn: 'Project Transactions'.Custom
-	toColumn: Function.FunctionId
-
 relationship 14ffe133-8f29-a51a-c2ff-6b729797232d
 	isActive: false
 	fromColumn: 'Project Transactions'.EmployeeFunctionId
@@ -112,8 +108,7 @@ relationship eba28c3e-da67-4887-b95d-bb63fa20775b
 	fromColumn: 'Project Transactions'.ProjectEmployeeId
 	toColumn: 'Catalyst Employee'.EmployeeId
 
-relationship 0aa7e1bf-0666-0675-2c5a-aae67cd46d71
-	isActive: false
-	fromColumn: 'Project Transactions'.FunctionAdjusted
+relationship 95ed2a59-bed8-6dd0-6dda-bb7e53baf173
+	fromColumn: 'Project Transactions'.AdjustedFunction
 	toColumn: Function.FunctionId
 
