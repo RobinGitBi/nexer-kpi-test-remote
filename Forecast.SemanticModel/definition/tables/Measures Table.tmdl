@@ -151,10 +151,24 @@ table 'Measures Table'
 			    //VAR SelectedActuality = SELECTEDVALUE ( ActualityOrgin[ActualityOrigin] )
 			    
 			    //RETURN
+			
+			VAR AcTotalHours =
 			        CALCULATE (
 			            SUM ( 'Project Transactions'[TotalHours] ),
 			            NOT 'Project Transactions'[EmploymentTypeID] in {4,5}
 			        )
+			
+			
+			VAR FcTotalHours = 
+			        CALCULATE (
+			            SUM ( 'Project Transactions'[TotalHours] ), USERELATIONSHIP('Project Transactions'[AdjustedFunction2], 'Function'[FunctionId]),
+			            NOT 'Project Transactions'[EmploymentTypeID] in {4,5}
+			        )
+			
+			VAR Result = IF(SELECTEDVALUE('Project Transactions'[Actuality] ) = "AC", AcTotalHours, FcTotalHours)
+			
+			RETURN Result
+			
 			```
 		displayFolder: HR
 		lineageTag: 71973251-aed1-458e-8a4c-ed99d36a08dd
@@ -416,6 +430,33 @@ table 'Measures Table'
 
 	measure 'Billable Hours' = ```
 			
+			
+			
+			 VAR AcBillableHours = 
+			 
+			    CALCULATE(
+			        SUM('Project Transactions'[TotalHours]),
+			        'Project Transactions'[ProjectClassType] = 1,
+			        'Project Transactions'[NonChargableId] = 0,
+			        KEEPFILTERS(NOT 'Project Transactions'[EmploymentTypeId] IN {4,5})
+			    )
+			   
+			
+			   VAR FcBillableHours = 
+			CALCULATE(
+			SUM('Project Transactions'[TotalHours]),
+			USERELATIONSHIP('Project Transactions'[AdjustedFunction2], 'Function'[FunctionId]),
+			// FILTER('Project Transactions', [TotalRevenue] <> 0),
+			KEEPFILTERS('Project Transactions'[NonChargableId] = 0),
+			            KEEPFILTERS(
+			                NOT 'Employment Type'[EmploymentTypeId] IN {4, 5}
+			            )
+			        )
+			
+			VAR Result = IF(SELECTEDVALUE('Project Transactions'[Actuality] ) = "AC", AcBillableHours, FcBillableHours)
+			
+			RETURN Result
+			
 			 
 			// VAR SelectedActuality = SELECTEDVALUE ( 'ActualityOrgin'[ActualityOrigin] )
 			 
@@ -446,28 +487,27 @@ table 'Measures Table'
 			
 			
 			
-			VAR SelectedActuality = SELECTEDVALUE ( 'ActualityOrgin'[ActualityOrigin] )
+			// VAR SelectedActuality = SELECTEDVALUE ( 'ActualityOrgin'[ActualityOrigin] )
 			 
-			RETURN
+			// RETURN
 			 
-			IF(
-			     SelectedActuality = "AC",
-			    CALCULATE(
-			        SUM('Project Transactions'[TotalHours]),
-			        'Project Transactions'[ProjectClassType] = 1,
-			        'Project Transactions'[NonChargableId] = 0,
-			        KEEPFILTERS(NOT 'Project Transactions'[EmploymentTypeId] IN {4,5})
-			    ),
+			// IF(
+			//      SelectedActuality = "AC",
+			//     CALCULATE(
+			//         SUM('Project Transactions'[TotalHours]),
+			//         'Project Transactions'[ProjectClassType] = 1,
+			//         'Project Transactions'[NonChargableId] = 0,
+			//         KEEPFILTERS(NOT 'Project Transactions'[EmploymentTypeId] IN {4,5})
+			//     ),
 			   
-			CALCULATE(
-			SUM('Project Transactions'[TotalHours]),
-			FILTER('Project Transactions', [TotalRevenue] <> 0)
-			            ,
-			            KEEPFILTERS(
-			                NOT 'Employment Type'[EmploymentTypeId] IN {4, 5}
-			            )
-			        )
-			)
+			// CALCULATE(
+			// SUM('Project Transactions'[TotalHours]),
+			// FILTER('Project Transactions', [TotalRevenue] <> 0),
+			//             KEEPFILTERS(
+			//                 NOT 'Employment Type'[EmploymentTypeId] IN {4, 5}
+			//             )
+			//         )
+			// )
 			```
 		displayFolder: HR
 		lineageTag: e55bea96-4911-422c-8361-499c4485a3c3
@@ -1047,10 +1087,20 @@ table 'Measures Table'
 	measure 'Correct Presence Hours AC' = ```
 			
 			
+			VAR 
+			AcPresenceHours =
 			    CALCULATE (
 			            SUM ( 'Project Transactions'[TotalHours] ),
 			            KEEPFILTERS('Project Transactions'[ProjectClassType] in {1,2}),
 			            NOT 'Project Transactions'[EmploymentTypeID] in {4,5})
+			
+			VAR FcPresenceHours = 
+			CALCULATE(SUM('Project Transactions'[TotalHours]), KEEPFILTERS('Function'[FunctionId] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in({1,2})), USERELATIONSHIP('Project Transactions'[AdjustedFunction2], 'Function'[FunctionId])) 
+			// CALCULATE(SUM('Project Transactions'[TotalHours]), KEEPFILTERS('Function'[FunctionId] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in({1,2}))) 
+			//  + CALCULATE(SUM('Project Transactions'[TotalHours]),KEEPFILTERS('Project Transactions'[FunctionAdjusted] = "20" ), KEEPFILTERS('Project Transactions'[ProjectClassType] = 1))
+			VAR Result = IF(SELECTEDVALUE('Project Transactions'[Actuality] ) = "AC", AcPresenceHours, FcPresenceHours)
+			
+			RETURN Result
 			```
 		displayFolder: HR
 		lineageTag: e80bc049-9151-4928-a9ae-6c68bff822d1
@@ -1069,8 +1119,8 @@ table 'Measures Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Correct Total Direct Costs' =
-			IF(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[FunctionAdjusted], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[FunctionAdjusted] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4)),
-			 CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[Custom], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3})))
+			IF(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[AdjustedFunction] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4)),
+			 CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunction2], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3})))
 		displayFolder: HR
 		lineageTag: 011c4945-1415-4e52-ade5-eeedaccb201b
 
@@ -1217,10 +1267,25 @@ table 'Measures Table'
 		lineageTag: 6a597d6e-9ae0-46cf-8420-20d914c8110e
 
 	measure 'Correct Revenue' = ```
+			
+			
+			VAR AcRevenue = 
 			CALCULATE([4. PT_Cal_ContextTransitionToMonth], 
-			 USERELATIONSHIP('Project Transactions'[FunctionAdjusted], 'Function'[FunctionId]),
-			  KEEPFILTERS('Project Transactions'[FunctionAdjusted] = "10")
+			 USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]),
+			  KEEPFILTERS('Project Transactions'[AdjustedFunction] = "10")
+			, KEEPFILTERS('Project Transactions'[ProjectClassType] = 1), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4))
+			
+			
+			VAR FcRevenue = 
+			CALCULATE([4. PT_Cal_ContextTransitionToMonth], 
+			 USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]),
+			  KEEPFILTERS('Project Transactions'[AdjustedFunction2] = "10")
 			, KEEPFILTERS('Project Transactions'[ProjectClassType] = 1), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3}))
+			
+			VAR Result = IF(SELECTEDVALUE('Project Transactions'[Actuality] ) = "AC", AcRevenue, FcRevenue)
+			
+			RETURN Result
+			
 			```
 		displayFolder: HR
 		lineageTag: 0e1daaa6-ab15-4133-a0ee-1326643b78cf
@@ -1228,9 +1293,9 @@ table 'Measures Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Correct Price Per Hour' = ```
-			DIVIDE([Correct Revenue], 
-			
-			// FILTER('Project Transactions', [Correct Revenue] <> 0),
+			DIVIDE(CALCULATE([Correct Revenue], 
+			KEEPFILTERS('Project Transactions'[TransactionType] = 1)),
+			// FILTER('Project Transactions', [Correct Revenue] <> 0)),
 			 [Billable Hours])
 			```
 		displayFolder: HR
@@ -1256,19 +1321,34 @@ table 'Measures Table'
 
 	measure 'Correct Gross Profit 1 Hours' =
 			
-			
-			var GrossProfit = CALCULATE([4. PT_Cal_ContextTransitionToMonth] + [4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[FunctionAdjusted], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[TransactionType] = 1), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3}), KEEPFILTERS('Project Transactions'[ProjectClassType] = 1) )
-			
-			VAR HourSubstraction = CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], KEEPFILTERS('Project Transactions'[ExpenseCode] = "98"))
-			
+			VAR GrossProfit =
+			    CALCULATE (
+			        [4. PT_Cal_ContextTransitionToMonth] + [4. PT_Cal_Costs_ContextTransitionToMonth],
+			        KEEPFILTERS ( 'Project Transactions'[TransactionType] = 1 ),
+			        KEEPFILTERS ( 'Project Transactions'[EmploymentTypeId] IN { 1, 2, 3 } ),
+			        KEEPFILTERS ( 'Project Transactions'[ProjectClassType] = 1 )
+			    )
+			VAR HourSubstraction =
+			    CALCULATE (
+			        [4. PT_Cal_Costs_ContextTransitionToMonth],
+			        KEEPFILTERS ( 'Project Transactions'[ExpenseCode] = "98" )
+			    )
 			VAR Result = GrossProfit + HourSubstraction
-			
-			RETURN Result
+			RETURN
+			    Result
 		formatString: #,0
 		displayFolder: HR
 		lineageTag: 7d112286-6332-4025-a3de-463db7b1bf92
 
-	measure 'Correct Gross Margin Hours' = DIVIDE([Correct Gross Profit 1 Hours], CALCULATE([Correct Revenue], 'Project Transactions'[TransactionType] = 1))
+	measure 'Correct Gross Margin Hours %' =
+			
+			DIVIDE (
+			    [Correct Gross Profit 1 Hours],
+			    CALCULATE (
+			        [Correct Revenue],
+			        KEEPFILTERS ( 'Project Transactions'[TransactionType] = 1 )
+			    )
+			)
 		formatString: 0.0\ %;-0.0\ %;0.0\ %
 		displayFolder: HR
 		lineageTag: 78898a1f-bb11-40f1-964c-cfc92c973994

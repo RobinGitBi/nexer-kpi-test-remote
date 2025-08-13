@@ -112,3 +112,8 @@ relationship 95ed2a59-bed8-6dd0-6dda-bb7e53baf173
 	fromColumn: 'Project Transactions'.AdjustedFunction
 	toColumn: Function.FunctionId
 
+relationship 10532e77-a44b-5ed3-f936-ebdcaf57f9f1
+	isActive: false
+	fromColumn: 'Project Transactions'.AdjustedFunction2
+	toColumn: Function.FunctionId
+
