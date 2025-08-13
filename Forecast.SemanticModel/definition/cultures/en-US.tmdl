@@ -21581,7 +21581,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Revenues"
+			          "ConceptualProperty": "Old_Revenues"
 			        }
 			      },
 			      "State": "Generated",
@@ -21647,7 +21647,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Price per hour"
+			          "ConceptualProperty": "Old_Price per hour"
 			        }
 			      },
 			      "State": "Generated",
@@ -21825,7 +21825,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "OH%"
+			          "ConceptualProperty": "Old_OH%"
 			        }
 			      },
 			      "State": "Generated",
@@ -21861,7 +21861,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "1. FTE"
+			          "ConceptualProperty": "Old_1. // FTE"
 			        }
 			      },
 			      "State": "Generated",
@@ -22151,7 +22151,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Presence"
+			          "ConceptualProperty": "Old_Presence"
 			        }
 			      },
 			      "State": "Generated",
@@ -22267,7 +22267,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "X_Hours"
+			          "ConceptualProperty": "Old_X_Hours"
 			        }
 			      },
 			      "State": "Generated",
@@ -22459,7 +22459,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "FTE"
+			          "ConceptualProperty": "Old_FTE"
 			        }
 			      },
 			      "State": "Generated",
@@ -25723,7 +25723,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Total Direct Cost"
+			          "ConceptualProperty": "Old_Total Direct Cost"
 			        }
 			      },
 			      "State": "Generated",
@@ -26031,7 +26031,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Gross Margin Hours"
+			          "ConceptualProperty": "Old_Gross Margin Hours"
 			        }
 			      },
 			      "State": "Generated",
@@ -26153,7 +26153,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "GM1 Total Direct Costs"
+			          "ConceptualProperty": "Old_GM1 Total Direct Costs"
 			        }
 			      },
 			      "State": "Generated",
@@ -26269,7 +26269,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Gross Margin Hours  %"
+			          "ConceptualProperty": "Old_Gross Margin Hours  %"
 			        }
 			      },
 			      "State": "Generated",
@@ -26474,7 +26474,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Other Leave Ratio"
+			          "ConceptualProperty": "Old_Other Leave Ratio"
 			        }
 			      },
 			      "State": "Generated",
@@ -26602,7 +26602,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Sick Leave Ratio"
+			          "ConceptualProperty": "Old_Sick Leave Ratio"
 			        }
 			      },
 			      "State": "Generated",
@@ -26730,7 +26730,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Vacation Ratio"
+			          "ConceptualProperty": "Old_Vacation Ratio"
 			        }
 			      },
 			      "State": "Generated",
