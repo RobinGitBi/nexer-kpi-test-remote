@@ -1031,36 +1031,20 @@ table 'Measures Table'
 			```
 		lineageTag: e5f3a4ac-ec84-4a6b-873b-1bb63aaf6528
 
-	measure '5. P&L_Cal_FilteredActuality_AC_Monthly' = ```
+	measure 'XXX5. P&L_Cal_FilteredActuality_AC_Monthly' = ```
 			
-			VAR ActualityTable =
-			    SUMMARIZE(
-			        'Calendar',
-			        'Calendar'[Year Month],
-			        "HasAC", 
-			            CALCULATE(
-			                COUNTROWS('P&L'),
-			                'P&L'[ActualityOrigin_new] = "AC"
-			            )
+			    
+			 VAR AcLocAmount   =
+			    CALCULATE(
+			        SUMX(
+			            'P&L', 
+			            'P&L'[ReportingAmount]
+			        ), 
+			        DATESYTD('Calendar'[Date]), 
+			        KEEPFILTERS('P&L'[Actuality] ="AC")
 			    )
 			
-			RETURN
-			SUMX(
-			    ActualityTable,
-			    VAR ThisMonth = [Year Month]
-			    VAR HasAC = [HasAC] > 0
-			
-			    RETURN
-			        CALCULATE(
-			            [3. P&L_Cal_YtdToMonth],
-			            KEEPFILTERS('Calendar'[Year Month] = ThisMonth),
-			            IF(
-			                HasAC,
-			                'Monthly Exchange Rates'[Actuality] = "AC",
-			                TRUE() -- no filter otherwise
-			            )
-			        )
-			)
+			    RETURN AcLocAmount
 			
 			```
 		displayFolder: P&L Currency Conversions
@@ -1364,7 +1348,7 @@ table 'Measures Table'
 			                'Calendar'[Year Month],    -- Monthly granularity
 			                'Source Currency'[CurrencyId]
 			            ),
-			            "@SalesAmount", [1. P&L_Cal_AmountYtd],
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "AC"),
 			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
 			            'Monthly Exchange Rates'[Actuality] = "AC",
 			            'Monthly Exchange Rates'[CurrencyType] = "M")
@@ -1401,7 +1385,8 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'AXC 2. Cal_CurrencyConversion Sales (YTD)' =
+	measure 'FC1 2. Cal_CurrencyConversion Sales (YTD)' =
+			
 			
 			IF (
 			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
@@ -1412,9 +1397,9 @@ table 'Measures Table'
 			                'Calendar'[Year Month],    -- Monthly granularity
 			                'Source Currency'[CurrencyId]
 			            ),
-			            "@SalesAmount", [1. P&L_Cal_AmountYtd],
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC1"),
 			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
-			            'Monthly Exchange Rates'[Actuality] = "AC",
+			            'Monthly Exchange Rates'[Actuality] = "FC1",
 			            'Monthly Exchange Rates'[CurrencyType] = "M")
 			        )
 			    VAR Result =
@@ -1430,6 +1415,108 @@ table 'Measures Table'
 			        Result)
 		displayFolder: P&L Currency Conversions
 		lineageTag: 6364b69c-86fd-4f79-95de-e0522a2a6002
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC1 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC1 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC1 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC1 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 6d524254-71a7-4b95-9820-163b57a214b1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC1 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC1 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 748b750d-8d9d-42c7-9b2d-097a2a20ade9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'AC P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "AC")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "AC" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "AC",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "AC")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "AC" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "AC",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 6f38d279-5dad-4508-9c32-b19e0c49b5a8
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 

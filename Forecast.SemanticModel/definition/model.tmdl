@@ -53,6 +53,7 @@ ref table 'Time Code'
 ref table ActualityOrgin
 ref table 'GL Account Hierarchy'
 ref table Goals
+ref table P&LValue
 
 ref cultureInfo en-US
 

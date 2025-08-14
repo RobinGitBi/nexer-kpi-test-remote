@@ -1,0 +1,48 @@
+table P&LValue
+	lineageTag: 385eb884-0e5d-4d17-9933-806a68685c73
+
+	column P&LValue
+		lineageTag: e14e3ba5-aa04-447b-8f04-88336d8fda7d
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'P&LValue Order'
+
+		relatedColumnDetails
+			groupByColumn: 'P&LValue Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'P&LValue Fields'
+		isHidden
+		lineageTag: d03c1882-89d3-4e8f-a99a-1681f33651cb
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'P&LValue Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'P&LValue Order'
+		isHidden
+		formatString: 0
+		lineageTag: 7903bcf9-de36-45de-9d2f-86b866dd765a
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition P&LValue = calculated
+		mode: import
+		source =
+				{
+				    ("AC - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[AC - 4. P&L_Cal_ContextTransitionToMonth]), 0),
+				    ("FC - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC1 - 4. P&L_Cal_ContextTransitionToMonth]), 1)
+				}
+
+	annotation PBI_Id = 3808fbb1df28439e9de9d641acdc3641
+
