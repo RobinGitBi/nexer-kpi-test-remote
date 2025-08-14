@@ -54,6 +54,7 @@ ref table ActualityOrgin
 ref table 'GL Account Hierarchy'
 ref table Goals
 ref table P&LValue
+ref table 'P&L Measure'
 
 ref cultureInfo en-US
 

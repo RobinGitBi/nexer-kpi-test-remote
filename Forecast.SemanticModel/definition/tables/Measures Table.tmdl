@@ -1520,6 +1520,1193 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure 'FC1 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC1")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC1" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC1",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC1")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "AC" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "AC",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 2890cee3-aca1-4347-b63e-e646a9a362eb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC2 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC2")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC2" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC2",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC2")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC2" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC2",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 030fb76a-4512-4260-9da3-8c87acd1c7d1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC3 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC3")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC3" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC3",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC3")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC3" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC3",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 6b6a515a-42a5-48ea-9cd2-ba7a20df03cb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC4 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC4")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC4" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC4",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC4")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC4" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC4",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 01165531-c656-459f-b903-bcc06bb80b06
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC5 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC5")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC5" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC5",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC5")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC5" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC5",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 0c256049-c2fc-4547-a9e1-165dfbec4f5d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC6 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC6")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC6" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC6",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC6")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC6" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC6",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: ee38f613-a3ca-41f2-8d6d-2a88b053ffbd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC7 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC7")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC7" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC7",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC7")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC7" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC7",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: ff938d93-04ab-4479-8ec9-fd867eacbdab
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC8 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC8")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC8" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC8",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC8")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC8" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC8",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 0bd3e368-89b3-4c8b-b8c1-34b0deb3bba8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC9 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC9")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC9" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC9",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC9")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC9" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC9",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: d345c00c-c159-4ea8-83a0-f011bc290ce3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC10 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC10")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC10" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC10",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC10")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC10" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC10",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: bde281cb-54a1-4a1d-949a-c0df236f6083
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC11 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC11")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC11" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC11",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC11")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC11" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC11",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 4d6e6832-2030-4123-b82e-d1605eb31f2d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC12 P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC12")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "FC12" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC12",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "FC12")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "FC12" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "FC12",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 9d615b18-9266-4ebf-9603-8350542899c9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'BU P&L' = ```
+			
+			VAR _ZeroTol = 0          -- sätt t.ex. 0.01 om du vill blanka “nästan 0”
+			VAR _PerMonth =
+			    ADDCOLUMNS (
+			        VALUES ( 'Calendar'[Year Month] ),
+			
+			        "__Monthly",
+			            VAR _MonthNo = CALCULATE ( SELECTEDVALUE ( 'Calendar'[Month Number] ) )
+			
+			            VAR _CurrYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTD =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "BU")
+			                        )
+			                    VAR _AggThis =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTD, 'P&L'[Actuality] = "BU" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "BU",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggThis, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        )
+			                )
+			
+			            VAR _PrevYTD_Conv =
+			                CALCULATE (
+			                    VAR _AcLocYTDp =
+			                        CALCULATE (
+			                            SUMX ( 'P&L', 'P&L'[ReportingAmount] ),
+			                            DATESYTD ( 'Calendar'[Date] ), KEEPFILTERS(Actuality[ActualityId] = "BU")
+			                        )
+			                    VAR _AggPrev =
+			                        ADDCOLUMNS (
+			                            SUMMARIZE (
+			                                'P&L',
+			                                'Calendar'[Year Month],
+			                                'Source Currency'[CurrencyId]
+			                            ),
+			                            "@SalesAmount", CALCULATE ( _AcLocYTDp, 'P&L'[Actuality] = "BU" ),
+			                            "@Rate",
+			                                CALCULATE (
+			                                    SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate] ),
+			                                    'Monthly Exchange Rates'[Actuality] = "BU",
+			                                    'Monthly Exchange Rates'[CurrencyType] = "M"
+			                                )
+			                        )
+			                    RETURN
+			                        IF (
+			                            HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			                            SUMX ( _AggPrev, IF ( NOT ISBLANK ( [@Rate] ), DIVIDE ( [@SalesAmount], [@Rate] ) ) )
+			                        ),
+			                    PREVIOUSMONTH ( 'Calendar'[Date] )
+			                )
+			
+			            VAR _MonVal =
+			                IF ( AND(_MonthNo > 1, _CurrYTD_Conv <> 0),
+			                    _CurrYTD_Conv - COALESCE ( _PrevYTD_Conv, 0 ),
+			                    _CurrYTD_Conv
+			                )
+			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
+			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			    )
+			RETURN
+			    SUMX ( _PerMonth, [__Monthly] )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 47ebfe02-81d4-4f69-a069-605601227f91
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FP Show by Actuality (any row)' = ```
+			
+			VAR RowGrain =
+			    -- Use the same row axes your visual uses (edit these columns to match)
+			    SUMMARIZE(
+			        'P&L',
+			        'P&L'[CompanyId],
+			        'P&L'[ActualityOrigin],
+			        'Calendar'[Year Month]
+			    )
+			VAR cntNonBlank =
+			    COUNTROWS(
+			        FILTER(
+			            RowGrain,
+			            NOT ISBLANK( CALCULATE( SELECTEDMEASURE() ) )
+			        )
+			    )
+			RETURN IF( cntNonBlank > 0, 1, 0 )
+			
+			```
+		formatString: 0
+		displayFolder: P&L Currency Conversions
+		lineageTag: 4547349f-5df0-4fe6-801a-a906b4e13597
+
+	measure 'P&L Switch (HideZero)' = ```
+			
+			// VAR ord = SELECTEDVALUE('P&L Measure'[P&L Measure Order])   -- use ORDER, not the label
+			VAR v =
+			    SWITCH (
+			        0,  [FC1 P&L],
+			        1,  [FC2 P&L],
+			        2,  [FC3 P&L],
+			        3,  [FC4 P&L],
+			        4,  [FC5 P&L],
+			        5,  [FC6 P&L],
+			        6,  [FC7 P&L],
+			        7,  [FC8 P&L],
+			        8,  [FC9 P&L],
+			        9,  [FC10 P&L],
+			        10, [FC11 P&L],
+			        11, [FC12 P&L],
+			        12, [AC P&L],
+			        13, [BU P&L],
+			        BLANK()
+			    )
+			-- hide zeros (and blanks) so the FP column disappears when "Show items with no data" is Off
+			RETURN IF( NOT ISBLANK(v) && v <> 0, v, BLANK() )
+			-- (If tiny rounding noise exists, use IF(ABS(v) < 1e-9, BLANK(), v) instead)
+			
+			```
+		formatString: 0
+		displayFolder: P&L Currency Conversions
+		lineageTag: dd97fddd-ad35-4fba-b118-4779b54327de
+
+	measure Measure = [AC P&L]+[BU P&L]+[FC1 P&L]+ [FC2 P&L] +[FC3 P&L] +[FC4 P&L] + [FC5 P&L] + [FC6 P&L] + [FC7 P&L] + [FC8 P&L] +[FC9 P&L] +[FC10 P&L] +[FC11 P&L]+ [FC12 P&L]
+		displayFolder: P&L Currency Conversions
+		lineageTag: 6d79609c-8df8-4bca-b7b9-1b28ab5bf49c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Measure 2' =
+			SUMX(
+			    SUMMARIZE('Project Transactions',
+			    'Organisation Manual'[Company], 'Calendar'[Year Month], Actuality[Actuality]), [Measure])
+		displayFolder: P&L Currency Conversions
+		lineageTag: dcbccac7-5106-4acb-8f64-e40d9eaf8ba3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition 'Measures Table' = m
 		mode: import
 		source =
