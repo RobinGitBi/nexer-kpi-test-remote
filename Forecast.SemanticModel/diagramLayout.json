@@ -4,8 +4,8 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 5105.9609391137155,
-        "y": 319.77297729572825
+        "x": 3661.0137357185249,
+        "y": 11.892345119206988
       },
       "nodes": [
         {
@@ -23,8 +23,8 @@
         },
         {
           "location": {
-            "x": 3082.550694188842,
-            "y": 530.042016442776
+            "x": 4077.9400043983969,
+            "y": 0
           },
           "nodeIndex": "Calendar",
           "nodeLineageTag": "65041477-06a8-4a16-9394-4c3344a61489",
@@ -319,7 +319,7 @@
         }
       ],
       "name": "All tables",
-      "zoomValue": 70.466657361944783,
+      "zoomValue": 56.058468207030124,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
