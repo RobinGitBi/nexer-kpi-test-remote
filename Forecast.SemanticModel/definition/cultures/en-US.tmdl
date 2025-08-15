@@ -7545,89 +7545,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "project_transaction.total_revenue": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Project Transactions",
-			          "ConceptualProperty": "TotalRevenue"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "total revenue": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "TotalRevenue": {
-			            "Type": "Noun",
-			            "State": "Generated",
-			            "Weight": 0.99
-			          }
-			        },
-			        {
-			          "total income": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "total profit": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "total turnover": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "total yield": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "aggregate revenue": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.582
-			          }
-			        },
-			        {
-			          "overall revenue": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.582
-			          }
-			        }
-			      ]
-			    },
 			    "project_transaction.salary_cost": {
 			      "Definition": {
 			        "Binding": {
@@ -7869,135 +7786,6 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.452
-			          }
-			        }
-			      ]
-			    },
-			    "project_transaction.total_cost": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Project Transactions",
-			          "ConceptualProperty": "TotalCost"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "total cost": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "TotalCost": {
-			            "Type": "Noun",
-			            "State": "Generated",
-			            "Weight": 0.99
-			          }
-			        },
-			        {
-			          "cost": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "aggregate cost": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.582
-			          }
-			        },
-			        {
-			          "overall cost": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.582
-			          }
-			        },
-			        {
-			          "total price": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "total charge": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "total rate": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "total fee": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "total total": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "charge": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "total expenditure": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "expenditure": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.466
 			          }
 			        }
 			      ]
@@ -22312,7 +22100,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "2. PT_Cal_CurrencyConversion Sales (YTD)"
+			          "ConceptualProperty": "2. AC PT_Cal_CurrencyConversion Sales (YTD)"
 			        }
 			      },
 			      "State": "Generated",
@@ -22334,29 +22122,13 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "3. PT_Cal_YtdToMonth"
+			          "ConceptualProperty": "3. AC PT_Cal_YtdToMonth"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
 			          "3. PT_Cal_YtdToMonth": {
-			            "State": "Generated"
-			          }
-			        }
-			      ]
-			    },
-			    "measures_table.entity_4__PT_Cal_ContextTransitionToMonth": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "4. PT_Cal_ContextTransitionToMonth"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "4. PT_Cal_ContextTransitionToMonth": {
 			            "State": "Generated"
 			          }
 			        }
@@ -26132,7 +25904,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "2. PT_Cal_CurrencyConversion Costs (YTD)"
+			          "ConceptualProperty": "2. AC PT_Cal_CurrencyConversion Costs (YTD)"
 			        }
 			      },
 			      "State": "Generated",
@@ -26154,7 +25926,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "3. PT_Cal_Costs_YtdToMonth"
+			          "ConceptualProperty": "3. AC PT_Cal_Costs_YtdToMonth"
 			        }
 			      },
 			      "State": "Generated",
@@ -26170,7 +25942,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "4. PT_Cal_Costs_ContextTransitionToMonth"
+			          "ConceptualProperty": "4. AC PT_Cal_Costs_ContextTransitionToMonth"
 			        }
 			      },
 			      "State": "Generated",

@@ -139,16 +139,6 @@ table 'Project Transactions'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	column TotalRevenue
-		dataType: double
-		lineageTag: 8850b3ea-da69-47fb-b222-9b27e0d6441c
-		summarizeBy: sum
-		sourceColumn: TotalRevenue
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column SalaryCost
 		dataType: double
 		lineageTag: 000b199d-eb89-4e50-910a-b4babcbc2a5b
@@ -164,16 +154,6 @@ table 'Project Transactions'
 		lineageTag: 24986ef2-570c-4eb5-913b-2f47884e303b
 		summarizeBy: sum
 		sourceColumn: Expenses
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column TotalCost
-		dataType: double
-		lineageTag: 8442ea49-55f2-4738-86d5-ff938d2d6090
-		summarizeBy: sum
-		sourceColumn: TotalCost
 
 		annotation SummarizationSetBy = Automatic
 
@@ -630,6 +610,26 @@ table 'Project Transactions'
 		sourceColumn: AdjustedFunction2
 
 		annotation SummarizationSetBy = Automatic
+
+	column TotalRevenue
+		dataType: double
+		lineageTag: df9b05bd-d2c9-4a4a-b9b5-2ee28f322562
+		summarizeBy: sum
+		sourceColumn: TotalRevenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TotalCost
+		dataType: double
+		lineageTag: 44d508b8-30ea-4ea7-8cb6-32f18b482cdc
+		summarizeBy: sum
+		sourceColumn: TotalCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition 'Project Transactions' = m
 		mode: import

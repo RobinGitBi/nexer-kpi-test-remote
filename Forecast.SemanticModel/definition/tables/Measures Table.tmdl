@@ -574,7 +574,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure '2. PT_Cal_CurrencyConversion Sales (YTD)' =
+	measure '2. AC PT_Cal_CurrencyConversion Sales (YTD)' =
 			
 			IF (
 			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
@@ -588,9 +588,9 @@ table 'Measures Table'
 			                'Source Currency'[CurrencyId]
 			            ),
 			            "@SalesAmount", [1. PT_Cal_AmountYtd],
-			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
-			            'Monthly Exchange Rates'[Actuality] = SelectedActuality,
-			            exchangeratesmonthly[CurrencyType] = SelectedCurrencyType)
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="AC",
+			            'Monthly Exchange Rates'[Actuality] = "AC",
+			            exchangeratesmonthly[CurrencyType] = "M")
 			            //,'Currency Type'[Calculation group column])
 			        )
 			    VAR Result =
@@ -609,30 +609,19 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure '3. PT_Cal_YtdToMonth' = ```
+	measure '3. AC PT_Cal_YtdToMonth' = ```
 			
 			    IF(
-			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
-			        [2. PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
-			            [2. PT_Cal_CurrencyConversion Sales (YTD)], 
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. AC PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. AC PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. AC PT_Cal_CurrencyConversion Sales (YTD)], 
 			            PREVIOUSMONTH('Calendar'[Date])
 			            ), 
-			        [2. PT_Cal_CurrencyConversion Sales (YTD)]
+			        [2. AC PT_Cal_CurrencyConversion Sales (YTD)]
 			    )
 			```
 		displayFolder: Project Transactions Revenue
 		lineageTag: a667b544-6a7f-41c0-8b7a-92cf2b123752
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure '4. PT_Cal_ContextTransitionToMonth' = ```
-			
-			    SUMX(
-			        VALUES('Calendar'[Year Month]), [3. PT_Cal_YtdToMonth]
-			    )
-			```
-		displayFolder: Project Transactions Revenue
-		lineageTag: ea294387-f04c-465f-bed6-85d2abebeac9
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -737,7 +726,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure '2. PT_Cal_CurrencyConversion Costs (YTD)' =
+	measure '2. AC PT_Cal_CurrencyConversion Costs (YTD)' =
 			
 			IF (
 			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
@@ -751,9 +740,9 @@ table 'Measures Table'
 			                'Source Currency'[CurrencyId]
 			            ),
 			            "@SalesAmount", [1. PT_Cal_CostsYtd],
-			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
-			            'Monthly Exchange Rates'[Actuality] = SelectedActuality,
-			            exchangeratesmonthly[CurrencyType] = SelectedCurrencyType)
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "AC",
+			            'Monthly Exchange Rates'[Actuality] = "AC",
+			            exchangeratesmonthly[CurrencyType] = "M")
 			            //,'Currency Type'[Calculation group column])
 			        )
 			    VAR Result =
@@ -772,15 +761,15 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure '3. PT_Cal_Costs_YtdToMonth' = ```
+	measure '3. AC PT_Cal_Costs_YtdToMonth' = ```
 			
 			    IF(
-			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
-			        [2. PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
-			            [2. PT_Cal_CurrencyConversion Costs (YTD)], 
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. AC PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. AC PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. AC PT_Cal_CurrencyConversion Costs (YTD)], 
 			            PREVIOUSMONTH('Calendar'[Date])
 			            ), 
-			        [2. PT_Cal_CurrencyConversion Costs (YTD)]
+			        [2. AC PT_Cal_CurrencyConversion Costs (YTD)]
 			    )
 			```
 		displayFolder: Project Transactions Costs
@@ -788,10 +777,10 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure '4. PT_Cal_Costs_ContextTransitionToMonth' = ```
+	measure '4. AC PT_Cal_Costs_ContextTransitionToMonth' = ```
 			
 			    SUMX(
-			        VALUES('Calendar'[Year Month]), [3. PT_Cal_Costs_YtdToMonth]
+			        VALUES('Calendar'[Year Month]), [3. AC PT_Cal_Costs_YtdToMonth]
 			    )
 			```
 		displayFolder: Project Transactions Costs
@@ -1055,14 +1044,14 @@ table 'Measures Table'
 	measure Orice =
 			
 			DIVIDE(
-			    CALCULATE([4. PT_Cal_ContextTransitionToMonth],
+			    CALCULATE([4. AC PT_Cal_ContextTransitionToMonth],
 			FILTER('Project Transactions', [Total Hours] <> 0)),
 			 [Billable Hours])
 		lineageTag: e5a57517-4ea5-4da0-b1db-f7268517747a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure fcrEV = CALCULATE([4. PT_Cal_ContextTransitionToMonth], FILTER('Project Transactions', 'Project Transactions'[TotalRevenue] <> 0))
+	measure fcrEV = CALCULATE([4. AC PT_Cal_ContextTransitionToMonth], FILTER('Project Transactions', 'Project Transactions'[TotalRevenue] <> 0))
 		displayFolder: KPIs
 		lineageTag: 1fcef201-a5ac-473e-98ff-0c6477a09336
 
@@ -1103,8 +1092,8 @@ table 'Measures Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Correct Total Direct Costs' =
-			IF(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[AdjustedFunction] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4)),
-			 CALCULATE([4. PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunction2], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3})))
+			IF(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", CALCULATE([4. AC PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[AdjustedFunction] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4)),
+			 CALCULATE([4. AC PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunction2], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3})))
 		displayFolder: HR
 		lineageTag: 011c4945-1415-4e52-ade5-eeedaccb201b
 
@@ -1254,14 +1243,14 @@ table 'Measures Table'
 			
 			
 			VAR AcRevenue = 
-			CALCULATE([4. PT_Cal_ContextTransitionToMonth], 
+			CALCULATE([4. AC PT_Cal_ContextTransitionToMonth], 
 			 USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]),
 			  KEEPFILTERS('Project Transactions'[AdjustedFunction] = "10")
 			, KEEPFILTERS('Project Transactions'[ProjectClassType] = 1), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4))
 			
 			
 			VAR FcRevenue = 
-			CALCULATE([4. PT_Cal_ContextTransitionToMonth], 
+			CALCULATE([4. AC PT_Cal_ContextTransitionToMonth], 
 			 USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]),
 			  KEEPFILTERS('Project Transactions'[AdjustedFunction2] = "10")
 			, KEEPFILTERS('Project Transactions'[ProjectClassType] = 1), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3}))
@@ -1307,14 +1296,14 @@ table 'Measures Table'
 			
 			VAR GrossProfit =
 			    CALCULATE (
-			        [4. PT_Cal_ContextTransitionToMonth] + [4. PT_Cal_Costs_ContextTransitionToMonth],
+			        [4. AC PT_Cal_ContextTransitionToMonth] + [4. AC PT_Cal_Costs_ContextTransitionToMonth],
 			        KEEPFILTERS ( 'Project Transactions'[TransactionType] = 1 ),
 			        KEEPFILTERS ( 'Project Transactions'[EmploymentTypeId] IN { 1, 2, 3 } ),
 			        KEEPFILTERS ( 'Project Transactions'[ProjectClassType] = 1 )
 			    )
 			VAR HourSubstraction =
 			    CALCULATE (
-			        [4. PT_Cal_Costs_ContextTransitionToMonth],
+			        [4. AC PT_Cal_Costs_ContextTransitionToMonth],
 			        KEEPFILTERS ( 'Project Transactions'[ExpenseCode] = "98" )
 			    )
 			VAR Result = GrossProfit + HourSubstraction
@@ -2770,7 +2759,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Measure 2' = [AC - 4. P&L_Cal_ContextTransitionToMonth]+[FC1 - 4. P&L_Cal_ContextTransitionToMonth] +[FC2 - 4. P&L_Cal_ContextTransitionToMonth]+[FC3 - 4. P&L_Cal_ContextTransitionToMonth]+[FC4 - 4. P&L_Cal_ContextTransitionToMonth]+[FC5 - 4. P&L_Cal_ContextTransitionToMonth]+[FC6 - 4. P&L_Cal_ContextTransitionToMonth]+[FC6 - 4. P&L_Cal_ContextTransitionToMonth]+[FC7 - 4. P&L_Cal_ContextTransitionToMonth]+[FC8 - 4. P&L_Cal_ContextTransitionToMonth]+[FC9 - 4. P&L_Cal_ContextTransitionToMonth]+[FC10 - 4. P&L_Cal_ContextTransitionToMonth]+[FC11 - 4. P&L_Cal_ContextTransitionToMonth]+[FC12 - 4. P&L_Cal_ContextTransitionToMonth]+[BU - 4. P&L_Cal_ContextTransitionToMonth]
+	measure 'P&L Master' = [AC - 4. P&L_Cal_ContextTransitionToMonth]+[FC1 - 4. P&L_Cal_ContextTransitionToMonth] +[FC2 - 4. P&L_Cal_ContextTransitionToMonth]+[FC3 - 4. P&L_Cal_ContextTransitionToMonth]+[FC4 - 4. P&L_Cal_ContextTransitionToMonth]+[FC5 - 4. P&L_Cal_ContextTransitionToMonth]+[FC6 - 4. P&L_Cal_ContextTransitionToMonth]+[FC6 - 4. P&L_Cal_ContextTransitionToMonth]+[FC7 - 4. P&L_Cal_ContextTransitionToMonth]+[FC8 - 4. P&L_Cal_ContextTransitionToMonth]+[FC9 - 4. P&L_Cal_ContextTransitionToMonth]+[FC10 - 4. P&L_Cal_ContextTransitionToMonth]+[FC11 - 4. P&L_Cal_ContextTransitionToMonth]+[FC12 - 4. P&L_Cal_ContextTransitionToMonth]+[BU - 4. P&L_Cal_ContextTransitionToMonth]
 		displayFolder: P&L Currency Conversions
 		lineageTag: 04b5b91c-f047-454d-84e9-161640a03b1c
 
@@ -3312,6 +3301,1658 @@ table 'Measures Table'
 			SUMX(VALUES('Calendar'[Year Month]), [BU - 3. P&L_Cal_YtdToMonth])
 		displayFolder: P&L Currency Conversions
 		lineageTag: e505c009-d474-49f2-83fb-aae778f2a7fe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC1 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC1",
+			            'Monthly Exchange Rates'[Actuality] = "FC1",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: 0ecdf3d3-b5cc-4359-ba52-515a9d84b244
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC2 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC2",
+			            'Monthly Exchange Rates'[Actuality] = "FC2",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: 150ba433-f0f3-4790-801b-ba902ebff092
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC3 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC3",
+			            'Monthly Exchange Rates'[Actuality] = "FC3",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: fab74b4a-4df2-45b8-a45d-9f03498ea551
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC4 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC4",
+			            'Monthly Exchange Rates'[Actuality] = "FC4",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: 83559f7b-76cb-40ea-8977-bb7548d343cb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC5 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC5",
+			            'Monthly Exchange Rates'[Actuality] = "FC5",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: 6730f5c4-b100-4630-b315-550f347b900b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC6 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC6",
+			            'Monthly Exchange Rates'[Actuality] = "FC6",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: f6396ebc-14c2-478b-b537-936c38b96f2e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC7 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC7",
+			            'Monthly Exchange Rates'[Actuality] = "FC7",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: e1f635c8-bf73-4df0-85b9-a69960ab673f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC8 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC8",
+			            'Monthly Exchange Rates'[Actuality] = "FC8",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: 38d7d73c-7d14-4c3c-bfc4-c9b21a1da3ef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC9 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC9",
+			            'Monthly Exchange Rates'[Actuality] = "FC9",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: 2fdd5b52-02e5-4f88-9b3f-356e0347bf72
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC10 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC10",
+			            'Monthly Exchange Rates'[Actuality] = "FC10",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: 03f14e3b-c519-45c6-b6d7-867f56fa0f50
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC11 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC11",
+			            'Monthly Exchange Rates'[Actuality] = "FC11",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: 4d77e906-cf3d-4387-b47a-92f27ccc7cce
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC12 PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "FC12",
+			            'Monthly Exchange Rates'[Actuality] = "FC12",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: 570fe15f-a431-419c-b9cb-723ccfa30881
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. BU PT_Cal_CurrencyConversion Costs (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_CostsYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] = "BU",
+			            'Monthly Exchange Rates'[Actuality] = "BU",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Costs
+		lineageTag: cada1672-e46c-43eb-819b-bbd3b86d57da
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC1 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC1 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC1 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC1 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC1 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: a9b231c9-389d-4999-82a6-9c2ff15819d8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC2 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC2 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC2 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC2 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC2 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: bb5658ff-eee9-4539-adcb-3fa7f0be24dd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC3 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC3 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC3 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC3 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC3 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: b56d7569-bf27-499e-8011-e45cb571132b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC4 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC4 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC4 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC4 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC4 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: a76ec3ed-7372-4835-afa9-dd67572644fe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC5 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC5 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC5 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC5 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC5 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 3abe0a13-a49f-4ef1-b9dc-4a24549ef6b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC6 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC6 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC6 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC6 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC6 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: e20e0153-87a3-41f2-bfc6-9bcfb9f8e750
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC7 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC7 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC7 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC7 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC7 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: fc43f99b-181d-41cc-991c-b5fb8b8ff266
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC8 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC8 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC8 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC8 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC8 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 643efc65-0628-4986-b255-48cb4e29c056
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC9 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC9 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC9 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC9 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC9 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 79210e83-ed94-4115-8002-1ebfd3745726
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC10 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC10 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC10 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC10 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC10 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: d33999a2-f866-4535-ad10-18f94c31bb23
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC11 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC11 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC11 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC11 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC11 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: c255fc1a-62ca-4183-8206-d2f9a8d0f07c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC12 PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC12 PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. FC12 PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. FC12 PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC12 PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: fe32a16e-8e89-47da-8f38-80b42b9ac1dd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. BU PT_Cal_Costs_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. BU PT_Cal_CurrencyConversion Costs (YTD)] <> 0),
+			        [2. BU PT_Cal_CurrencyConversion Costs (YTD)]- CALCULATE(
+			            [2. BU PT_Cal_CurrencyConversion Costs (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. BU PT_Cal_CurrencyConversion Costs (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 3cef9af4-02cd-4e28-a1dc-727a4c9935f7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC1 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC1 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 494239c2-bb61-4fdf-a4b5-52334ec65063
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC2 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC2 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: c3caf77b-a8f6-4f65-86fa-d29e3837d1b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC6 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC6 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: faec1b21-1e9f-44a2-a4bc-d182da61e56d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC7 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC7 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 3118b74f-2c7a-4f13-ad2e-d30660f8a22e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC8 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC8 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 5d21e84c-42b3-4b4f-b1aa-74a510e7cb2c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC9 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC9 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: a9544944-2038-48d6-95be-bc4be91b54e3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC10 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC10 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 0d12cc38-923a-4adc-96b1-4b48d3024659
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC11 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC11 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: ad8a1641-6cc0-4bb6-bb8f-189377bb21a0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC12 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC12 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: e98dcff9-bbb7-44ce-ad67-212683fa5d36
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. BU PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. BU PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: cc23438b-78cd-499d-aaf1-58f8dc7b0e22
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Project Costs' = [4. AC PT_Cal_Costs_ContextTransitionToMonth]+[4. FC1 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC2 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC3 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC4 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC5 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC6 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC7 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC8 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC9 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC10 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC11 PT_Cal_Costs_ContextTransitionToMonth]+[4. FC12 PT_Cal_Costs_ContextTransitionToMonth]+[4. BU PT_Cal_Costs_ContextTransitionToMonth]
+		displayFolder: Project Transactions Costs
+		lineageTag: a3f18cfa-b797-41bb-a258-6e17059ff3f2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC3 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC3 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 89b9fc65-134f-4266-aaca-06d3aa81f0d7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC4 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC4 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 72dc4720-4019-43e9-8c29-748a40dbf95f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC5 PT_Cal_Costs_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC5 PT_Cal_Costs_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Costs
+		lineageTag: 7ec79fe7-15c0-43ed-80d2-8d64a99e761d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC1 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC1",
+			            'Monthly Exchange Rates'[Actuality] = "FC1",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: 6f2f6f88-583a-44ed-9f06-2c0841f8f3b9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC2 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC2",
+			            'Monthly Exchange Rates'[Actuality] = "FC2",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: 6d253d71-d98e-442a-a103-fef4c6e3d7e7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC3 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC3",
+			            'Monthly Exchange Rates'[Actuality] = "FC3",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: 91e7dd83-9eee-4c00-99b0-23973944d9be
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC4 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC4",
+			            'Monthly Exchange Rates'[Actuality] = "FC4",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: 0ca40773-7bc3-4991-bff0-b54494fda1bc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC5 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC5",
+			            'Monthly Exchange Rates'[Actuality] = "FC5",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: 8555c8d9-da72-44ee-a70e-4860195377c1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC6 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC6",
+			            'Monthly Exchange Rates'[Actuality] = "FC6",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: cc746285-e32f-42e0-a538-76f1959a28a2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC7 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC7",
+			            'Monthly Exchange Rates'[Actuality] = "FC7",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: 26ae2dde-0dc0-4f36-adc1-fc7dbc851324
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC8 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC8",
+			            'Monthly Exchange Rates'[Actuality] = "FC8",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: 358de515-0a6b-4f81-9db4-92bad7270839
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC9 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC9",
+			            'Monthly Exchange Rates'[Actuality] = "FC9",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: e0827e43-ec57-41c5-b2f8-d6c637cec2df
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC10 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC10",
+			            'Monthly Exchange Rates'[Actuality] = "FC10",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: 4892cd76-33db-4381-96e9-3e4d7c1aa883
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC11 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC10",
+			            'Monthly Exchange Rates'[Actuality] = "FC10",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: b78d81b5-9bb1-4c51-92cc-c3d8a354e33e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. FC12 PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="FC12",
+			            'Monthly Exchange Rates'[Actuality] = "FC12",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: aff7112f-6986-4f82-8b17-50a997768d57
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. BU PT_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
+			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", [1. PT_Cal_AmountYtd],
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 'Project Transactions'[Actuality] ="BU",
+			            'Monthly Exchange Rates'[Actuality] = "BU",
+			            exchangeratesmonthly[CurrencyType] = "M")
+			            //,'Currency Type'[Calculation group column])
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: Project Transactions Revenue
+		lineageTag: 696dc05a-87e2-42d0-a9a9-c91ec6cb5244
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC1 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC1 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC1 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC1 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC1 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 4951e207-0eec-44c2-9a96-2ad0e1090aa9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC2 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC2 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC2 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC2 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC2 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: bf2ba31e-0217-4c0c-a078-e1335fef8940
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC3 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC3 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC3 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC3 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC3 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: b14a77d9-73f4-4be8-857f-985618352f12
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC4 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC4 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC4 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC4 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC4 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 4426a49a-fd18-4296-b168-bde0a2b3c94e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC5 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC5 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC5 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC5 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC5 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 47dd040b-3ed2-4fb6-8743-2803fb2cb39b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC6 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC6 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC6 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC6 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC6 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: bfbe88ca-11ea-41f5-a49b-0fe8d073de41
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC7 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC7 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC7 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC7 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC7 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 16f3d8bc-b4fa-4238-9ce5-deac43419068
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC8 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC8 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC8 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC8 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC8 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 84f88ba2-d95d-4c5f-9909-03a9390239f0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC9 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC9 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC9 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC9 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC9 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: fa754bd1-c2b2-4222-bdfd-e6c9e65fe600
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC10 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC10 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC10 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC10 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC10 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 3ec8302f-c932-4a39-a8db-af370386c49b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC11 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC11 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC11 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC11 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC11 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 5a148c6a-f8c3-41c7-8d3b-2574245e775a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. FC12 PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. FC12 PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. FC12 PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. FC12 PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. FC12 PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 0528f96e-5137-4778-8cd9-9727cc3e733f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. BU PT_Cal_YtdToMonth' = ```
+			
+			    IF(
+			          AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. BU PT_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. BU PT_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. BU PT_Cal_CurrencyConversion Sales (YTD)], 
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ), 
+			        [2. BU PT_Cal_CurrencyConversion Sales (YTD)]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 88fee30c-7e9c-473b-a4a9-deda789e469c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. AC PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. AC PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: f7b3e701-a5e4-4924-bc29-0db5da244403
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC1 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC1 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 265c7dc6-f637-4513-88a5-a631a7c9c6a9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC2 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC2 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 1974a2bd-2072-4361-97b7-e50088859cc0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC3 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC3 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 88d32f6d-12ae-4519-8e28-a6348a1fbe69
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC4 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC4 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: a27674cd-3659-4d2c-baa1-8b628f903c1a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC6 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC6 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 755e509a-117f-40df-a3e0-7c2a5e241590
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC7 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC7 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 87df8fdd-319f-4e3d-bcbb-d7c4d2f08564
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC8 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC8 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: a5b8e221-59d1-4ea2-a838-4a885466dda1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC9 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC9 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 1c747acd-9f5b-49de-add4-6578e5b8b81c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC10 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC10 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: e338bc25-7d97-4613-b15b-d82f66a40009
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC11 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC11 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: bacfa092-a44c-4b5a-805e-b9756580b43b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC12 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC12 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: a321d7b0-b22a-4a41-9555-3dcd92ccb718
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. BU PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. BU PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: ced5d730-7f09-41f3-805f-b58aab19e3b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Project Revenue' =
+			
+			[4. AC PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. BU PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC1 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC1 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC2 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC3 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC4 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC5 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC6 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC7 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC8 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC9 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC10 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC11 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. FC12 PT_Cal_Rev_ContextTransitionToMonth]+
+			[4. BU PT_Cal_Rev_ContextTransitionToMonth]
+		displayFolder: Project Transactions Revenue
+		lineageTag: ef057fc5-2fc8-4035-9df3-5e67531ed780
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. FC5 PT_Cal_Rev_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. FC5 PT_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 58e5cbdf-60ad-4662-8ab0-dd599c78f1f2
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
