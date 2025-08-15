@@ -17,38 +17,6 @@ table 'Project Transactions'
 
 		annotation SummarizationSetBy = Automatic
 
-	column CompanySupplierId
-		dataType: string
-		lineageTag: c486e3bd-e6ea-4651-9f73-9784a3172100
-		summarizeBy: none
-		sourceColumn: CompanySupplierId
-
-		annotation SummarizationSetBy = Automatic
-
-	column CompanyInvoiceNumber
-		dataType: string
-		lineageTag: 3e22c9e3-6129-44c7-95e9-604a1b27f83f
-		summarizeBy: none
-		sourceColumn: CompanyInvoiceNumber
-
-		annotation SummarizationSetBy = Automatic
-
-	column CompanyProjActivityType
-		dataType: string
-		lineageTag: 70341d76-d260-43e0-b0fd-ac9e897fdd17
-		summarizeBy: none
-		sourceColumn: CompanyProjActivityType
-
-		annotation SummarizationSetBy = Automatic
-
-	column CounterCompanyProjectId
-		dataType: string
-		lineageTag: 86d94f1a-b2d1-4890-9498-fad0eed99f38
-		summarizeBy: none
-		sourceColumn: CounterCompanyProjectId
-
-		annotation SummarizationSetBy = Automatic
-
 	column AccountingDate
 		dataType: dateTime
 		formatString: Long Date
@@ -76,28 +44,6 @@ table 'Project Transactions'
 
 		annotation SummarizationSetBy = Automatic
 
-	column InvoiceDate
-		dataType: dateTime
-		formatString: Long Date
-		lineageTag: bd18537a-8139-4391-bd79-68795b1cd3c0
-		summarizeBy: none
-		sourceColumn: InvoiceDate
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-	column EstEndDate
-		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 77f669de-2e08-4d7a-ad89-e0f3969ce7c9
-		summarizeBy: none
-		sourceColumn: EstEndDate
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
 	column IntendedDate
 		dataType: dateTime
 		formatString: Long Date
@@ -108,56 +54,6 @@ table 'Project Transactions'
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
-
-	column EarnedFee
-		dataType: double
-		lineageTag: 31b7f77b-bb6e-4c81-b19d-4ffa12a96361
-		summarizeBy: sum
-		sourceColumn: EarnedFee
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column EarnedExpenses
-		dataType: double
-		lineageTag: 5a542383-8816-42a7-b04f-9346b86e7cf2
-		summarizeBy: sum
-		sourceColumn: EarnedExpenses
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column AdjustmentExpenses
-		dataType: double
-		lineageTag: 872909fc-e04b-409c-905d-e57b40bd558e
-		summarizeBy: sum
-		sourceColumn: AdjustmentExpenses
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column SalaryCost
-		dataType: double
-		lineageTag: 000b199d-eb89-4e50-910a-b4babcbc2a5b
-		summarizeBy: sum
-		sourceColumn: SalaryCost
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column Expenses
-		dataType: double
-		lineageTag: 24986ef2-570c-4eb5-913b-2f47884e303b
-		summarizeBy: sum
-		sourceColumn: Expenses
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column TotalHours
 		dataType: double
@@ -199,46 +95,6 @@ table 'Project Transactions'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	column MarkUpPerc
-		dataType: double
-		lineageTag: 499cdb6f-9e18-49bf-86a8-10404a8a0561
-		summarizeBy: sum
-		sourceColumn: MarkUpPerc
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column TransferPricing
-		dataType: double
-		lineageTag: 391de8d4-e586-4b3a-a39b-7a7db942aeea
-		summarizeBy: sum
-		sourceColumn: TransferPricing
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column EstRemainingHours
-		dataType: double
-		lineageTag: 89705ac0-6abe-44a0-b83a-7b2d071ecaef
-		summarizeBy: sum
-		sourceColumn: EstRemainingHours
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column AmountSelfCost
-		dataType: double
-		lineageTag: e2c221a1-8ae5-4287-8b99-82c2d67f4bea
-		summarizeBy: sum
-		sourceColumn: AmountSelfCost
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column SourceCurrency
 		dataType: string
 		lineageTag: d5cffd01-ed9c-479f-b44f-fab43e091138
@@ -247,75 +103,11 @@ table 'Project Transactions'
 
 		annotation SummarizationSetBy = Automatic
 
-	column LocalAmountConsFee
-		dataType: double
-		lineageTag: 090a53a1-a45d-4d7b-ac80-fa233a7a689c
-		summarizeBy: sum
-		sourceColumn: LocalAmountConsFee
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column LocExpenseInclTotal
-		dataType: double
-		lineageTag: e049ca2e-3cb5-4860-abaa-8b2e867b3585
-		summarizeBy: sum
-		sourceColumn: LocExpenseInclTotal
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column LocExpenseExclTotal
-		dataType: double
-		lineageTag: 7be0e4b2-6a7c-4bcc-9244-9f9229796df5
-		summarizeBy: sum
-		sourceColumn: LocExpenseExclTotal
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column LocCurrency
-		dataType: string
-		lineageTag: 2b0ee442-5fde-4443-af1b-713d6146b333
-		summarizeBy: none
-		sourceColumn: LocCurrency
-
-		annotation SummarizationSetBy = Automatic
-
-	column ExchangeRate
-		dataType: double
-		lineageTag: a8ec226a-3010-4ffc-bc05-f8f91425a9a5
-		summarizeBy: sum
-		sourceColumn: ExchangeRate
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column EmployeeUnitId
 		dataType: string
 		lineageTag: 0037ee92-ea0c-42e7-bf0b-3308d93ba65b
 		summarizeBy: none
 		sourceColumn: EmployeeUnitId
-
-		annotation SummarizationSetBy = Automatic
-
-	column EmployeeObjectiveId
-		dataType: string
-		lineageTag: 42b158f4-d665-4ec3-93d3-d11124f8faf0
-		summarizeBy: none
-		sourceColumn: EmployeeObjectiveId
-
-		annotation SummarizationSetBy = Automatic
-
-	column CounterCompanyEmployeeId
-		dataType: string
-		lineageTag: 0e3b1b77-8a39-4ece-bf8e-c3c959f88fc1
-		summarizeBy: none
-		sourceColumn: CounterCompanyEmployeeId
 
 		annotation SummarizationSetBy = Automatic
 
@@ -344,38 +136,12 @@ table 'Project Transactions'
 
 		annotation SummarizationSetBy = Automatic
 
-	column JointProjectId
-		dataType: string
-		lineageTag: 87cf18c2-4583-43ce-b28d-6d9ef58f4331
-		summarizeBy: none
-		sourceColumn: JointProjectId
-
-		annotation SummarizationSetBy = Automatic
-
-	column CommissionId
-		dataType: int64
-		formatString: 0
-		lineageTag: d7169e1c-e55e-4034-82f0-5dbf9a2d5542
-		summarizeBy: count
-		sourceColumn: CommissionId
-
-		annotation SummarizationSetBy = Automatic
-
 	column NonChargableId
 		dataType: int64
 		formatString: 0
 		lineageTag: a3177ae9-4ea8-4aa4-b9a9-9def7facaee9
 		summarizeBy: count
 		sourceColumn: NonChargableId
-
-		annotation SummarizationSetBy = Automatic
-
-	column VerificationId
-		dataType: int64
-		formatString: 0
-		lineageTag: 50b6a19b-653d-4d13-bd48-de7ce7276261
-		summarizeBy: count
-		sourceColumn: VerificationId
 
 		annotation SummarizationSetBy = Automatic
 
@@ -393,14 +159,6 @@ table 'Project Transactions'
 		lineageTag: 8b7dd8f9-dbed-43c1-b9e3-c4752e7bb1a3
 		summarizeBy: none
 		sourceColumn: TimeCode
-
-		annotation SummarizationSetBy = Automatic
-
-	column CompanyTimeCode
-		dataType: string
-		lineageTag: 6bc2fd79-b58e-4efd-8852-85444a2a17c0
-		summarizeBy: none
-		sourceColumn: CompanyTimeCode
 
 		annotation SummarizationSetBy = Automatic
 
@@ -429,26 +187,6 @@ table 'Project Transactions'
 
 		annotation SummarizationSetBy = Automatic
 
-	column CreatedDate
-		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 0b784e3f-cb7d-44db-b33c-ae3284aec338
-		summarizeBy: none
-		sourceColumn: CreatedDate
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-	column _increment_timestamp
-		dataType: dateTime
-		formatString: General Date
-		lineageTag: 4cc8934a-d6b1-4ce7-b513-f27af1f3078f
-		summarizeBy: none
-		sourceColumn: _increment_timestamp
-
-		annotation SummarizationSetBy = Automatic
-
 	column FteFc
 		dataType: double
 		lineageTag: 3885a2a8-5e90-46f1-85e7-6f0cf71e2214
@@ -469,14 +207,6 @@ table 'Project Transactions'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	column Function
-		dataType: string
-		lineageTag: 78a78bdd-d7b7-4f12-a5a0-13b2cd500a7a
-		summarizeBy: none
-		sourceColumn: Function
-
-		annotation SummarizationSetBy = Automatic
-
 	column CurrencyId
 		dataType: int64
 		formatString: 0
@@ -491,15 +221,6 @@ table 'Project Transactions'
 		lineageTag: e469d43f-a1c9-4d0d-a8ce-9aa8bf7d9368
 		summarizeBy: none
 		sourceColumn: ActualityOrigin_new
-
-		annotation SummarizationSetBy = Automatic
-
-	column pk_projecttransactions
-		dataType: int64
-		formatString: 0
-		lineageTag: 5b6b0aa9-48eb-41b5-91b0-08d95724ac4e
-		summarizeBy: sum
-		sourceColumn: pk_projecttransactions
 
 		annotation SummarizationSetBy = Automatic
 
@@ -562,39 +283,6 @@ table 'Project Transactions'
 
 		annotation SummarizationSetBy = Automatic
 
-	column CompanyObjectiveId
-		dataType: string
-		lineageTag: 3c215a3d-042e-4eef-9d86-0049c4819eb0
-		summarizeBy: none
-		sourceColumn: CompanyObjectiveId
-
-		annotation SummarizationSetBy = Automatic
-
-	column TaskId
-		dataType: string
-		lineageTag: 0dc33ea2-b187-4866-ab55-a48796dcde03
-		summarizeBy: none
-		sourceColumn: TaskId
-
-		annotation SummarizationSetBy = Automatic
-
-	column ItemId
-		dataType: string
-		lineageTag: 6da82a3d-9157-4598-bd39-e2c0344f1f7c
-		summarizeBy: none
-		sourceColumn: ItemId
-
-		annotation SummarizationSetBy = Automatic
-
-	column TransactionTypeSortOrder
-		dataType: int64
-		formatString: 0
-		lineageTag: c08a49cb-8052-41f1-8533-461c4b9ce089
-		summarizeBy: sum
-		sourceColumn: TransactionTypeSortOrder
-
-		annotation SummarizationSetBy = Automatic
-
 	column AdjustedFunction
 		dataType: string
 		lineageTag: 6ab2c9b7-d597-40ad-b259-78c32e3ebaa1
@@ -647,9 +335,10 @@ table 'Project Transactions'
 				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom1",{{"ActualityOrigin_new", type text}}),
 				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true),
 				    #"Replaced Value1" = Table.ReplaceValue(#"Filtered Rows","20","",Replacer.ReplaceText,{"ActualityOrigin_new"}),
-				    #"Replaced Value" = Table.ReplaceValue(#"Replaced Value1",null,"20",Replacer.ReplaceValue,{"AdjustedFunction2"})
+				    #"Replaced Value" = Table.ReplaceValue(#"Replaced Value1",null,"20",Replacer.ReplaceValue,{"AdjustedFunction2"}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Replaced Value",{"pk_projecttransactions", "_increment_timestamp", "TransactionTypeSortOrder", "VerificationId", "CommissionId", "JointProjectId", "CounterCompanyEmployeeId", "EmployeeObjectiveId", "AmountSelfCost", "EstRemainingHours", "TransferPricing", "MarkUpPerc", "SalaryCost", "Expenses", "AdjustmentExpenses", "EarnedExpenses", "EarnedFee", "EstEndDate", "InvoiceDate", "ItemId", "TaskId", "CounterCompanyProjectId", "CompanyProjActivityType", "CompanyObjectiveId", "CompanyInvoiceNumber", "CompanySupplierId", "Function", "CreatedDate", "CompanyTimeCode", "LocCurrency", "ExchangeRate", "LocalAmountConsFee", "LocExpenseInclTotal", "LocExpenseExclTotal"})
 				in
-				    #"Replaced Value"
+				    #"Removed Columns"
 
 	annotation PBI_NavigationStepName = Navigation
 

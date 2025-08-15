@@ -23,7 +23,7 @@ annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBIDesktopVersion = 2.146.705.0 (25.08)+b71502aff0a01340c88f384884ef42771068f115
 
-annotation PBI_QueryOrder = ["Company","Function","GL Account Hierarchy","Goals","ActualityOrgin","Actuality","Calendar","BU","Time Code","Project Class Type","Employment Type","Catalyst Employee","Organisation Manual","Organisation Manual (2)","GL Account Local","crmreport","financereport","Project Transactions","P&L","Source Currency","exchangeratesmonthly","Reporting Currency","Measures Table","security"]
+annotation PBI_QueryOrder = ["Company","Function","GL Account Hierarchy","Goals","ActualityOrgin","Actuality","Calendar","BU","Time Code","Project Class Type","Employment Type","Catalyst Employee","Organisation Manual","Organisation Manual (2)","crmreport","financereport","Project Transactions","P&L","Source Currency","exchangeratesmonthly","Reporting Currency","Measures Table","security"]
 
 annotation __TEdtr = 1
 
@@ -32,7 +32,6 @@ annotation PBI_ProTooling = ["CalcGroup","DevMode","DaxQueryView_Desktop"]
 ref table Calendar
 ref table BU
 ref table 'Organisation Manual'
-ref table 'GL Account Local'
 ref table crmreport
 ref table Company
 ref table financereport
@@ -53,6 +52,7 @@ ref table 'Time Code'
 ref table ActualityOrgin
 ref table 'GL Account Hierarchy'
 ref table Goals
+ref table Parameter
 
 ref cultureInfo en-US
 

@@ -2,10 +2,6 @@ relationship AutoDetected_c46ca4dd-0363-4778-ac70-f2e2d6800074
 	fromColumn: P&L.CompanyUnitId
 	toColumn: 'Organisation Manual'.CompanyUnitId
 
-relationship da4918ae-4d62-a33e-64da-a299cb4a2a0f
-	fromColumn: P&L.CompanyGlId
-	toColumn: 'GL Account Local'.GLAccountID
-
 relationship 49072680-05ed-f5d9-f311-22fcfe31001c
 	fromColumn: 'Project Transactions'.EmploymentTypeId
 	toColumn: 'Employment Type'.EmploymentTypeId
@@ -54,10 +50,6 @@ relationship AutoDetected_ede204f8-ad8e-4a5a-a718-0f9e60fa7113
 	fromColumn: 'Project Transactions'.CurrencyId
 	toColumn: 'Source Currency'.CurrencyId
 
-relationship 5cdc0615-3937-2ed9-9fa5-3cbaa6f59e34
-	fromColumn: 'Project Transactions'.CompanyTimeCode
-	toColumn: 'Time Code'.CompanyTimeCodeId
-
 relationship 2d063492-a1ce-5817-2887-ae522361e5bf
 	isActive: false
 	fromColumn: P&L.ActualityDate
@@ -88,7 +80,6 @@ relationship 963bef18-7320-0ddf-02c7-dd2953447180
 	toColumn: Function.FunctionId
 
 relationship 96ab5417-e25a-d382-ddd7-a19b440789ee
-	isActive: false
 	fromColumn: P&L.CompanyId
 	toColumn: Company.CompanyId
 

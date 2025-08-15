@@ -1,23 +1,6 @@
 table Goals
 	lineageTag: 917df58c-2102-492e-b951-c9d4ccdb8b11
 
-	column pk_goals
-		dataType: int64
-		formatString: 0
-		lineageTag: 729f75f4-aef3-4bca-b314-df42308ea067
-		summarizeBy: sum
-		sourceColumn: pk_goals
-
-		annotation SummarizationSetBy = Automatic
-
-	column GoalId
-		dataType: string
-		lineageTag: 6058c2ae-b878-487b-a854-2131a36486b7
-		summarizeBy: none
-		sourceColumn: GoalId
-
-		annotation SummarizationSetBy = Automatic
-
 	column AccountingDate
 		dataType: dateTime
 		formatString: Long Date
@@ -42,63 +25,6 @@ table Goals
 		lineageTag: 7011f98b-6df1-4239-9084-0b66d4153f7c
 		summarizeBy: none
 		sourceColumn: Name
-
-		annotation SummarizationSetBy = Automatic
-
-	column UHR
-		dataType: string
-		lineageTag: 39cfce99-0459-4247-87fa-9dc4cc69d4b6
-		summarizeBy: none
-		sourceColumn: UHR
-
-		annotation SummarizationSetBy = Automatic
-
-	column OH
-		dataType: string
-		lineageTag: ea2b58ae-73c1-4a9d-9ebb-8edb07e5a617
-		summarizeBy: none
-		sourceColumn: OH
-
-		annotation SummarizationSetBy = Automatic
-
-	column RevNexer
-		dataType: string
-		lineageTag: 0a5d7796-4303-4506-9e3c-51d6c4648fd0
-		summarizeBy: none
-		sourceColumn: RevNexer
-
-		annotation SummarizationSetBy = Automatic
-
-	column EbitNexer
-		dataType: string
-		lineageTag: d5b66217-40f5-4e4e-8ffa-e8693356bb97
-		summarizeBy: none
-		sourceColumn: EbitNexer
-
-		annotation SummarizationSetBy = Automatic
-
-	column RevSC
-		dataType: string
-		lineageTag: 96809e13-875e-42d9-9b37-d8fed511161b
-		summarizeBy: none
-		sourceColumn: RevSC
-
-		annotation SummarizationSetBy = Automatic
-
-	column GM1SC
-		dataType: string
-		lineageTag: 0efea210-b23e-4e50-bfde-6dcb14754e20
-		summarizeBy: none
-		sourceColumn: GM1SC
-
-		annotation SummarizationSetBy = Automatic
-
-	column _increment_timestamp
-		dataType: dateTime
-		formatString: General Date
-		lineageTag: ac1477d9-5d98-4aeb-9dcf-e03128234570
-		summarizeBy: none
-		sourceColumn: _increment_timestamp
 
 		annotation SummarizationSetBy = Automatic
 
@@ -189,9 +115,10 @@ table Goals
 				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Changed Type2", {"pk_goals", "GoalId", "CompanyId", "AccountingDate", "CompanyUnitId", "ActualityDate", "Name", "UHR", "OH", "RevNexer", "EbitNexer", "RevSC", "GM1SC", "_increment_timestamp", "SourceCurrency", "CurrencyId"}, "Attribute", "Value"),
 				    #"Renamed Columns2" = Table.RenameColumns(#"Unpivoted Columns",{{"Attribute", "GlType"}}),
 				    #"Uppercased Text" = Table.TransformColumns(#"Renamed Columns2",{{"GlType", Text.Upper, type text}}),
-				    #"Renamed Columns3" = Table.RenameColumns(#"Uppercased Text",{{"Value", "ReportingAmount"}})
+				    #"Renamed Columns3" = Table.RenameColumns(#"Uppercased Text",{{"Value", "ReportingAmount"}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Renamed Columns3",{"pk_goals", "GoalId", "_increment_timestamp", "RevNexer", "EbitNexer", "RevSC", "GM1SC", "UHR", "OH"})
 				in
-				    #"Renamed Columns3"
+				    #"Removed Columns"
 
 	annotation PBI_NavigationStepName = Navigation
 

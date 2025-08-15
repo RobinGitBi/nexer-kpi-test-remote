@@ -1,0 +1,60 @@
+table Parameter
+	lineageTag: f6418b4e-5885-4a43-85b7-b41829dedb92
+
+	column Parameter
+		lineageTag: 093e95ee-8bb6-42d8-bf76-1b0a5eda5f1e
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: f9c6b168-6249-4483-89f1-0b242582a453
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 3cffc31d-374c-464b-b859-ccafb872fc57
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Parameter = calculated
+		mode: import
+		source =
+				{
+				    ("AC - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[AC - 4. P&L_Cal_ContextTransitionToMonth]), 0),
+				    ("BU - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[BU - 4. P&L_Cal_ContextTransitionToMonth]), 1),
+				    ("FC1 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC1 - 4. P&L_Cal_ContextTransitionToMonth]), 2),
+				    ("FC10 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC10 - 4. P&L_Cal_ContextTransitionToMonth]), 3),
+				    ("FC11 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC11 - 4. P&L_Cal_ContextTransitionToMonth]), 4),
+				    ("FC12 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC12 - 4. P&L_Cal_ContextTransitionToMonth]), 5),
+				    ("FC2 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC2 - 4. P&L_Cal_ContextTransitionToMonth]), 6),
+				    ("FC3 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC3 - 4. P&L_Cal_ContextTransitionToMonth]), 7),
+				    ("FC4 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC4 - 4. P&L_Cal_ContextTransitionToMonth]), 8),
+				    ("FC5 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC5 - 4. P&L_Cal_ContextTransitionToMonth]), 9),
+				    ("FC6 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC6 - 4. P&L_Cal_ContextTransitionToMonth]), 10),
+				    ("FC7 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC7 - 4. P&L_Cal_ContextTransitionToMonth]), 11),
+				    ("FC8 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC8 - 4. P&L_Cal_ContextTransitionToMonth]), 12),
+				    ("FC9 - 4. P&L_Cal_ContextTransitionToMonth", NAMEOF('Measures Table'[FC9 - 4. P&L_Cal_ContextTransitionToMonth]), 13)
+				}
+
+	annotation PBI_Id = 79ee26aeb9a04c079d5ebcf572b7facd
+

@@ -66,8 +66,7 @@ table 'Measures Table'
 			
 			IF (
 			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
-			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
-			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR ForecastVersion = SELECTEDVALUE('P&L'[Actuality])
 			    VAR AggregatedSalesInCurrency =
 			        ADDCOLUMNS (
 			            SUMMARIZE (
@@ -75,11 +74,10 @@ table 'Measures Table'
 			                'Calendar'[Year Month],    -- Monthly granularity
 			                'Source Currency'[CurrencyId]
 			            ),
-			            "@SalesAmount", [1. P&L_Cal_AmountYtd],
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = ForecastVersion),
 			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
-			            'Monthly Exchange Rates'[Actuality] = SelectedActuality,
-			            exchangeratesmonthly[CurrencyType] = SelectedCurrencyType)
-			            //,'Currency Type'[Calculation group column])
+			            'Monthly Exchange Rates'[Actuality] = ForecastVersion,
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
 			        )
 			    VAR Result =
 			        SUMX (
@@ -1045,10 +1043,10 @@ table 'Measures Table'
 
 	measure Orice =
 			
-			DIVIDE(
-			    CALCULATE([4. AC PT_Cal_ContextTransitionToMonth],
-			FILTER('Project Transactions', [Total Hours] <> 0)),
-			 [Billable Hours])
+			// DIVIDE(
+			//     CALCULATE([4. AC PT_Cal_ContextTransitionToMonth],
+			// FILTER('Project Transactions', [Total Hours] <> 0)),
+			//  [Billable Hours])
 		lineageTag: e5a57517-4ea5-4da0-b1db-f7268517747a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4990,34 +4988,129 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure '1. Goals _Cal_AmountYtd' = ```
+	measure '1. Goals _Cal_AmountYtd Should not be used in new report' = ```
 			
-			    CALCULATE(
-			        SUMX(
-			            'Goals', 
-			            'Goals'[ReportingAmount]
-			        ), 
-			        DATESYTD('Calendar'[Date])
-			    )
+			    // CALCULATE(
+			    //     SUMX(
+			    //         'Goals', 
+			    //         'Goals'[ReportingAmount]
+			    //     ), 
+			    //     DATESYTD('Calendar'[Date])
+			    // )
 			```
 		formatString: 0
 		displayFolder: P&L Currency Conversions
 		lineageTag: 1de12552-6389-453c-bb7a-e7fef53f796e
 
-	measure 'Goals - 2. P&L_Cal_CurrencyConversion Sales (YTD)' =
+	measure 'Goals - 2. P&L_Cal_CurrencyConversion Sales (YTD)  Should not be used in new report' =
+			
+			// IF (
+			//     HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			//     VAR AggregatedSalesInCurrency =
+			//         ADDCOLUMNS (
+			//             SUMMARIZE (
+			//                 'Goals',
+			//                 'Calendar'[Year Month],    -- Monthly granularity
+			//                 'Source Currency'[CurrencyId]
+			//             ),
+			//             "@SalesAmount", [1. Goals _Cal_AmountYtd Should not be used in new report],
+			//             "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			//             'Monthly Exchange Rates'[Actuality] = "BU",
+			//             'Monthly Exchange Rates'[CurrencyType] = "M")
+			//         )
+			//     VAR Result =
+			//         SUMX (
+			//             AggregatedSalesInCurrency,
+			//             IF (
+			//                 NOT ( ISBLANK ( [@Rate] ) ),
+			//                 [@SalesAmount] / [@Rate],
+			//                 "Missing Value"
+			//             )
+			//             )
+			//     RETURN
+			//         Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 75166be9-4e81-4dc2-8b07-9f1f4f84c859
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Goals - 3. P&L_Cal_YtdToMonth Should not be used in new report' =
+			
+			// IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [Goals - 2. P&L_Cal_CurrencyConversion Sales (YTD)  Should not be used in new report]- CALCULATE([Goals - 2. P&L_Cal_CurrencyConversion Sales (YTD)  Should not be used in new report], PREVIOUSMONTH('Calendar'[Date])), [Goals - 2. P&L_Cal_CurrencyConversion Sales (YTD)  Should not be used in new report])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 69b4e01d-d782-4079-ae5b-212048d44994
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Goals - 4. P&L_Cal_ContextTransitionToMonth Should not be used in new report' =
+			
+			// SUMX(VALUES('Calendar'[Year Month]), [Goals - 3. P&L_Cal_YtdToMonth Should not be used in new report])
+		displayFolder: P&L Currency Conversions
+		lineageTag: d7edfed6-8b65-4257-98e3-fc85799a7312
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Goals Revenue Should not be used in new report' =
+			
+			
+			
+			// CALCULATE([Goals - 4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS(Goals[GlType] = "REVENUE") )
+		displayFolder: P&L Currency Conversions
+		lineageTag: 6db4ac3c-14e4-4b4e-aba0-26db5df5139a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure sdasd =
+			SWITCH( SELECTEDVALUE('P&L'[Actuality]),
+			"AC", [AC - 4. P&L_Cal_ContextTransitionToMonth],
+			"BU", [BU - 4. P&L_Cal_ContextTransitionToMonth],
+			"FC1", [FC1 - 4. P&L_Cal_ContextTransitionToMonth],
+			"FC2", [FC2 - 4. P&L_Cal_ContextTransitionToMonth],
+			"FC3", [FC3 - 4. P&L_Cal_ContextTransitionToMonth],
+			"FC4", [FC4 - 4. P&L_Cal_ContextTransitionToMonth],
+			"FC5", [FC5 - 4. P&L_Cal_ContextTransitionToMonth],
+			"FC6", [FC6 - 4. P&L_Cal_ContextTransitionToMonth]
+			)
+		displayFolder: P&L Currency Conversions
+		lineageTag: cce2f683-65f1-4f06-b3a1-3f6122ea3e5f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Measure 2'
+		displayFolder: P&L Currency Conversions
+		lineageTag: 3edb2e2e-0541-4ce8-8429-333254d94edc
+
+		annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":null}
+
+		annotation 277cc1b9-af89-4597-8e15-cacc25c0886b = To use special characters in a measure name, enclose the entire name in brackets ( [] ) and add a ] to any closing brackets in the name.
+
+	measure 'Amount YTD (Local)' = CALCULATE( SUMX('P&L', 'P&L'[ReportingAmount]), DATESYTD('Calendar'[Date]) )
+		displayFolder: P&L Currency Conversions
+		lineageTag: 83bab35c-f207-4bac-8b83-c9726cfde8b1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FX Rate (M)' = CALCULATE( SELECTEDVALUE('Monthly Exchange Rates'[Rate]), KEEPFILTERS('Monthly Exchange Rates'[CurrencyType] = "M") )
+		displayFolder: P&L Currency Conversions
+		lineageTag: 2218d2c4-18dd-473f-acd8-ff0f8bf063ca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Dynamic =
 			
 			IF (
 			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR ForecastVersion = SELECTEDVALUE('P&L'[Actuality])
 			    VAR AggregatedSalesInCurrency =
 			        ADDCOLUMNS (
 			            SUMMARIZE (
-			                'Goals',
+			                'P&L',
 			                'Calendar'[Year Month],    -- Monthly granularity
 			                'Source Currency'[CurrencyId]
 			            ),
-			            "@SalesAmount", [1. Goals _Cal_AmountYtd],
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = ForecastVersion),
 			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
-			            'Monthly Exchange Rates'[Actuality] = "BU",
+			            'Monthly Exchange Rates'[Actuality] = ForecastVersion,
 			            'Monthly Exchange Rates'[CurrencyType] = "M")
 			        )
 			    VAR Result =
@@ -5032,29 +5125,7 @@ table 'Measures Table'
 			    RETURN
 			        Result)
 		displayFolder: P&L Currency Conversions
-		lineageTag: 75166be9-4e81-4dc2-8b07-9f1f4f84c859
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Goals - 3. P&L_Cal_YtdToMonth' =
-			
-			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [Goals - 2. P&L_Cal_CurrencyConversion Sales (YTD)]- CALCULATE([Goals - 2. P&L_Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [Goals - 2. P&L_Cal_CurrencyConversion Sales (YTD)])
-		displayFolder: P&L Currency Conversions
-		lineageTag: 69b4e01d-d782-4079-ae5b-212048d44994
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Goals - 4. P&L_Cal_ContextTransitionToMonth' =
-			
-			SUMX(VALUES('Calendar'[Year Month]), [Goals - 3. P&L_Cal_YtdToMonth])
-		displayFolder: P&L Currency Conversions
-		lineageTag: d7edfed6-8b65-4257-98e3-fc85799a7312
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Goals Revenue' = CALCULATE([Goals - 4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS(Goals[GlType] = "REVENUE") )
-		displayFolder: P&L Currency Conversions
-		lineageTag: 6db4ac3c-14e4-4b4e-aba0-26db5df5139a
+		lineageTag: 8863bdf2-9822-4b94-974b-97021bbe52d0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 

@@ -4,8 +4,8 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 3364.3445144358807,
-        "y": 17.243901401047982
+        "x": 4084.4729422995324,
+        "y": 15.460049590636594
       },
       "nodes": [
         {
@@ -32,7 +32,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 22
+          "zIndex": 20
         },
         {
           "location": {
@@ -46,19 +46,6 @@
             "width": 234
           },
           "zIndex": 13
-        },
-        {
-          "location": {
-            "x": 334,
-            "y": -0.25
-          },
-          "nodeIndex": "GL Account Local",
-          "nodeLineageTag": "feaa971a-5df6-44d6-8bc9-97e55424bd33",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 6
         },
         {
           "location": {
@@ -110,7 +97,7 @@
             "height": 248,
             "width": 234
           },
-          "zIndex": 23
+          "zIndex": 21
         },
         {
           "location": {
@@ -136,7 +123,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 20
+          "zIndex": 24
         },
         {
           "location": {
@@ -175,7 +162,7 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 24
+          "zIndex": 22
         },
         {
           "location": {
@@ -315,7 +302,20 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 21
+          "zIndex": 23
+        },
+        {
+          "location": {
+            "x": 5796.6552674583581,
+            "y": 497
+          },
+          "nodeIndex": "Parameter",
+          "nodeLineageTag": "f6418b4e-5885-4a43-85b7-b41829dedb92",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "All tables",
@@ -357,19 +357,6 @@
             "width": 234
           },
           "zIndex": 4
-        },
-        {
-          "location": {
-            "x": 664.66727832374227,
-            "y": 258.67826532833396
-          },
-          "nodeIndex": "GL Account Local",
-          "nodeLineageTag": "feaa971a-5df6-44d6-8bc9-97e55424bd33",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 5
         },
         {
           "location": {
@@ -525,19 +512,6 @@
             "width": 234
           },
           "zIndex": 6
-        },
-        {
-          "location": {
-            "x": 0,
-            "y": 690.75625028835873
-          },
-          "nodeIndex": "GL Account Local",
-          "nodeLineageTag": "feaa971a-5df6-44d6-8bc9-97e55424bd33",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 3
         },
         {
           "location": {
