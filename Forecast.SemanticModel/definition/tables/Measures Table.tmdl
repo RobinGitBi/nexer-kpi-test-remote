@@ -5,7 +5,7 @@ table 'Measures Table'
 			
 			    SUMX(
 			        VALUES('Calendar'[Year Month]), [3. P&L_Cal_YtdToMonth]
-			    )
+			    )/1000
 			```
 		formatString: #,0
 		displayFolder: P&L Currency Conversions
@@ -1419,6 +1419,41 @@ table 'Measures Table'
 	measure SlicerFilter_CompaniesWithNoValues = INT( NOT ISEMPTY('P&L'))
 		formatString: 0
 		lineageTag: 9bb93c32-d7dd-41e4-857b-1f655196a6dc
+
+	measure TextMeasure =
+			
+			
+			VAR ActualityTxt   = SELECTEDVALUE ( ActualityOrgin[ActualityOrigin], "Multiple Versions" )
+			VAR CurrTxt        = SELECTEDVALUE ( 'Reporting Currency'[SourceCurrency], "—" )
+			VAR MinMonthIdx    = MIN ( 'Calendar'[Month Number] )
+			VAR MaxMonthIdx    = MAX ( 'Calendar'[Month Number] )
+			VAR SelectedMonths = COUNTROWS ( VALUES ( 'Calendar'[Month Number] ) )
+			VAR ExpectedMonths = MaxMonthIdx - MinMonthIdx + 1
+			VAR IsContiguous   = SelectedMonths = ExpectedMonths
+			RETURN
+			IF (
+			    SelectedMonths = 0,
+			    "No month selected",
+			    IF (
+			        IsContiguous,
+			        "Now Presenting " & ActualityTxt & " in K" & CurrTxt & " "
+			            & FORMAT ( MIN ( 'Calendar'[Date] ), "yyyy-MM-dd" ) & " - "
+			            & FORMAT ( MAX ( 'Calendar'[Date] ), "yyyy-MM-dd" ),
+			        "Now Presenting " & ActualityTxt & " in K" & CurrTxt
+			            & " "
+			            & CONCATENATEX (
+			                VALUES ( 'Calendar'[Year Month] ),         -- t.ex. "2025-01"
+			                'Calendar'[Year Month],
+			                ", ",
+			                'Calendar'[Year Month]                     -- sortera rätt
+			            )
+			    )
+			)
+			
+			
+			// "Now Presenting "&SELECTEDVALUE(ActualityOrgin[ActualityOrigin], "Multiple Versions")&" in K"&SELECTEDVALUE('Reporting Currency'[SourceCurrency]) &" "& FORMAT(MIN('Calendar'[Date]), "YYYY-MM-DD") &" - " & FORMAT(MAX('Calendar'[Date]), "YYYY-MM-DD")
+		displayFolder: Project Transactions Revenue
+		lineageTag: bc28df31-a7bb-4859-8c12-7e1bf51539a9
 
 	partition 'Measures Table' = m
 		mode: import
