@@ -2,9 +2,10 @@ table P&L
 	lineageTag: b2c89209-e67d-42de-a87a-cabf1c3aacaa
 
 	column CompanyId
-		dataType: string
+		dataType: int64
+		formatString: 0
 		lineageTag: e34914b1-d848-4114-9bee-2f9f29e7cb82
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: CompanyId
 
 		annotation SummarizationSetBy = Automatic
@@ -264,9 +265,10 @@ table P&L
 				    #"Added Custom" = Table.AddColumn(#"Expanded Source Currency", "ActualityOrigin_new", each if [ActualityOrigin] is null then "AC" else [ActualityOrigin]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"ActualityOrigin_new", type text}}),
 				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",null,"0",Replacer.ReplaceValue,{"FunctionId"}),
-				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","20","",Replacer.ReplaceText,{"ActualityOrigin_new"})
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","20","",Replacer.ReplaceText,{"ActualityOrigin_new"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Replaced Value1",{{"CompanyId", Int64.Type}})
 				in
-				    #"Replaced Value1"
+				    #"Changed Type1"
 
 	annotation PBI_NavigationStepName = Navigation
 

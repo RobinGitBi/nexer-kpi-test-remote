@@ -88,6 +88,7 @@ relationship 963bef18-7320-0ddf-02c7-dd2953447180
 	toColumn: Function.FunctionId
 
 relationship 96ab5417-e25a-d382-ddd7-a19b440789ee
+	isActive: false
 	fromColumn: P&L.CompanyId
 	toColumn: Company.CompanyId
 
@@ -116,4 +117,18 @@ relationship 10532e77-a44b-5ed3-f936-ebdcaf57f9f1
 	isActive: false
 	fromColumn: 'Project Transactions'.AdjustedFunction2
 	toColumn: Function.FunctionId
+
+relationship AutoDetected_97ede75a-18f2-4056-a148-3a77d854c677
+	isActive: false
+	fromColumn: Company.SourceCurrency
+	toColumn: 'Source Currency'.SourceCurrency
+
+relationship AutoDetected_23980d9b-6fe2-4c64-abab-803fa329147b
+	fromColumn: Company.SourceCurrency
+	toColumn: 'Reporting Currency'.SourceCurrency
+
+relationship AutoDetected_39de18ea-5537-4a8d-8583-17e83f04d3f2
+	isActive: false
+	fromColumn: 'Catalyst Employee'.CompanyId
+	toColumn: Company.pk_company
 

@@ -1418,9 +1418,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'FC1 - 3. P&L_Cal_YtdToMonth' =
-			
-			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC1 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC1 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC1 2. Cal_CurrencyConversion Sales (YTD)])
+	measure 'FC1 - 3. P&L_Cal_YtdToMonth' = IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC1 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC1 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC1 2. Cal_CurrencyConversion Sales (YTD)])
 		displayFolder: P&L Currency Conversions
 		lineageTag: 6d524254-71a7-4b95-9820-163b57a214b1
 
@@ -1595,7 +1593,9 @@ table 'Measures Table'
 			                    _CurrYTD_Conv
 			                )
 			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
-			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			            RETURN IF ( NOT ISBLANK ( _MonVal ),
+			            //  && ABS ( _MonVal ) > _ZeroTol,
+			              _MonVal, BLANK() )
 			    )
 			RETURN
 			    SUMX ( _PerMonth, [__Monthly] )
@@ -2541,7 +2541,10 @@ table 'Measures Table'
 			                    _CurrYTD_Conv
 			                )
 			            -- BLANKA nollor (och nästan-nollor om _ZeroTol > 0)
-			            RETURN IF ( NOT ISBLANK ( _MonVal ) && ABS ( _MonVal ) > _ZeroTol, _MonVal, BLANK() )
+			            RETURN IF ( NOT ISBLANK ( _MonVal ), 
+			            // && 
+			            // ABS ( _MonVal ) > _ZeroTol,
+			             _MonVal, BLANK() )
 			    )
 			RETURN
 			    SUMX ( _PerMonth, [__Monthly] )
@@ -2692,18 +2695,623 @@ table 'Measures Table'
 		displayFolder: P&L Currency Conversions
 		lineageTag: dd97fddd-ad35-4fba-b118-4779b54327de
 
-	measure Measure = [AC P&L]+[BU P&L]+[FC1 P&L]+ [FC2 P&L] +[FC3 P&L] +[FC4 P&L] + [FC5 P&L] + [FC6 P&L] + [FC7 P&L] + [FC8 P&L] +[FC9 P&L] +[FC10 P&L] +[FC11 P&L]+ [FC12 P&L]
+	measure Measure = ```
+			
+			        [AC P&L]+[BU P&L]+[FC1 P&L]+ [FC2 P&L] +[FC3 P&L] +[FC4 P&L] + [FC5 P&L] + [FC6 P&L] + [FC7 P&L] + [FC8 P&L] +[FC9 P&L] +[FC10 P&L] +[FC11 P&L]+ [FC12 P&L]
+			```
 		displayFolder: P&L Currency Conversions
 		lineageTag: 6d79609c-8df8-4bca-b7b9-1b28ab5bf49c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Measure 2' =
+	measure 'Measure (CorrectTotals)' =
+			
 			SUMX(
-			    SUMMARIZE('Project Transactions',
-			    'Organisation Manual'[Company], 'Calendar'[Year Month], Actuality[Actuality]), [Measure])
+			    SUMMARIZE('P&L', 'Organisation Manual'[CompanyId],'Organisation Manual'[Company], 'GL Account Hierarchy'[AccountFirstLevelId], 'GL Account Hierarchy'[PxGlAccountId],'GL Account Hierarchy'[AccountSecondLevelId],'GL Account Hierarchy'[GlFunctionIcId]	, 'P&L'[ActualityOrigin], 'Calendar'[Year Month] ),
+			     [Measure]
+			     )
 		displayFolder: P&L Currency Conversions
 		lineageTag: dcbccac7-5106-4acb-8f64-e40d9eaf8ba3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure xxxx = SUM('P&L'[ReportingAmount])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 565a6b40-a26e-4d9a-9d90-c2b747818070
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC2 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC2"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC2",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 9b28a80a-f849-4b8e-94c4-08ff82aa0b2b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC2 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC2 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC2 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC2 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 4437a446-1d62-4e8e-aa96-5842721a4fb6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC2 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC2 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 8a475946-726f-4812-9e4e-06c093125959
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Measure 2' = [AC - 4. P&L_Cal_ContextTransitionToMonth]+[FC1 - 4. P&L_Cal_ContextTransitionToMonth] +[FC2 - 4. P&L_Cal_ContextTransitionToMonth]+[FC3 - 4. P&L_Cal_ContextTransitionToMonth]+[FC4 - 4. P&L_Cal_ContextTransitionToMonth]+[FC5 - 4. P&L_Cal_ContextTransitionToMonth]+[FC6 - 4. P&L_Cal_ContextTransitionToMonth]+[FC6 - 4. P&L_Cal_ContextTransitionToMonth]+[FC7 - 4. P&L_Cal_ContextTransitionToMonth]+[FC8 - 4. P&L_Cal_ContextTransitionToMonth]+[FC9 - 4. P&L_Cal_ContextTransitionToMonth]+[FC10 - 4. P&L_Cal_ContextTransitionToMonth]+[FC11 - 4. P&L_Cal_ContextTransitionToMonth]+[FC12 - 4. P&L_Cal_ContextTransitionToMonth]+[BU - 4. P&L_Cal_ContextTransitionToMonth]
+		displayFolder: P&L Currency Conversions
+		lineageTag: 04b5b91c-f047-454d-84e9-161640a03b1c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC3 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC3"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC3",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: b2a8d185-9977-4a70-932f-c086100c7e40
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC3 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC3 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC3 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC3 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 55c7c77e-fc4b-41ba-8772-dfecd0aa5d3b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC3 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC3 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 9ced12c2-c6a4-44fc-8fb6-59380f574ae7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC4 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC4"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC4",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: e4111d8e-1702-463b-b6db-665862a58a8e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC5 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC5"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC5",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: bc16a855-2c79-4177-b7aa-5a21963beee3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC6 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC6"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC6",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 6cde4c3f-126e-411f-b7a2-a9229573b3cd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC7 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC7"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC7",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 620995bc-e332-437d-880c-7f5a9551e190
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC8 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC8"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC8",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: fc70451a-ed1b-40d3-a842-c13b024383c6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC9 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC9"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC9",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 22bdfd74-e94d-45c1-b162-45774d51ec07
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC10 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC10"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC10",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 568bb1bd-b14b-440e-8285-e19079833998
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC11 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC11"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC11",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 13d25d34-1f3c-4625-800c-9e07cc3af50d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC12 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "FC12"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "FC12",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 5b768fbe-1757-478e-bbea-06f49bbc416c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'BU 2. Cal_CurrencyConversion Sales (YTD)' =
+			
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'P&L',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. P&L_Cal_AmountYtd], 'P&L'[Actuality] = "BU"),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = "BU",
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 4baa0052-ec48-4112-9f64-646dd0d61839
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC4 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC4 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC4 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC4 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: f51c3139-8f1b-46ac-8348-7dd737f596f9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC5 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC5 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC5 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC5 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 0f633124-81d8-4d11-b9e1-379d1fe64ffd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC6 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC6 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC6 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC6 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 6e36dd49-e222-4d3c-a2a1-4f6a62b14738
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC7 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC7 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC7 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC7 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 77e818f7-8d81-4c8f-af55-02d8fe88888f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC8 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC8 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC8 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC8 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: e7d88aa1-c718-4f6d-8afc-67918fc178e1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC9 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC9 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC9 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC9 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 05fb893b-bd03-467e-8372-a45e94235cd0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC10 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC10 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC10 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC10 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 5632078c-1c7f-4f38-abae-e38d7b626b1d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC11 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC11 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC11 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC11 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 60260ed1-2e97-4c19-8ec5-75dafaae8b9e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC12 - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [FC12 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([FC12 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [FC12 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: a666de07-abfd-4c5c-950c-1657418350a2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'BU - 3. P&L_Cal_YtdToMonth' =
+			
+			IF(SELECTEDVALUE('Calendar'[Month Number]) >1, [BU 2. Cal_CurrencyConversion Sales (YTD)]- CALCULATE([BU 2. Cal_CurrencyConversion Sales (YTD)], PREVIOUSMONTH('Calendar'[Date])), [BU 2. Cal_CurrencyConversion Sales (YTD)])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 770c3a72-dfad-421a-914a-05e2430220d3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC4 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC4 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: ed34a53a-d50e-49ba-9c4d-9ea2b307f12e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC5 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC5 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: f9d74f53-35f9-472d-b2f7-efd85b3d5ae3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC6 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC6 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: c91db4b9-230f-43ab-9607-e8e8f1330f37
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC7 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC7 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 3fbcbde5-7b48-4790-acb2-570e8ca45a84
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC8 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC7 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 374c78fa-8def-49d9-8479-072aa5796289
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC9 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC9 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: 02e5ade9-0795-4c8e-8547-aed9d6df5e84
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC10 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC10 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: dba4d177-cc3d-4c4d-94d2-fa47cc5dfe71
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC11 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC11 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: a236e96f-40fd-44a6-8963-88b9768890e6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FC12 - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [FC12 - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: dc56502f-a981-4cc3-b64f-0fcc63b04a16
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'BU - 4. P&L_Cal_ContextTransitionToMonth' =
+			
+			SUMX(VALUES('Calendar'[Year Month]), [BU - 3. P&L_Cal_YtdToMonth])
+		displayFolder: P&L Currency Conversions
+		lineageTag: e505c009-d474-49f2-83fb-aae778f2a7fe
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 

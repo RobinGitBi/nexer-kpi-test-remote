@@ -1,62 +1,12 @@
 table Company
 	lineageTag: 3710e1e1-3ef2-42cd-a805-2010e0dae563
 
-	column pk_erpcompany
+	column CompanyId
 		dataType: int64
 		formatString: 0
-		lineageTag: 828f4880-bbcf-41b4-ad0a-50c7604d18d5
-		summarizeBy: sum
-		sourceColumn: pk_erpcompany
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column CompanyId
-		dataType: string
 		lineageTag: 0dd97b9b-d4c5-4021-8778-115d7bcfa186
 		summarizeBy: none
 		sourceColumn: CompanyId
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Company
-		dataType: string
-		lineageTag: 5f740ef5-2e18-4ae1-9e0a-d3627219cd95
-		summarizeBy: none
-		sourceColumn: Company
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column CountryId
-		dataType: string
-		lineageTag: b5ebdb8e-759d-48cc-8cc9-909b1b27dfdc
-		summarizeBy: none
-		sourceColumn: CountryId
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Language
-		dataType: string
-		lineageTag: e5f51950-38a4-4d6b-93bd-1d5a6ba2d916
-		summarizeBy: none
-		sourceColumn: Language
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Currency
-		dataType: string
-		lineageTag: 568ebb74-68cd-4b94-a300-d3537a3a6d64
-		summarizeBy: none
-		sourceColumn: Currency
 
 		changedProperty = IsHidden
 
@@ -73,6 +23,87 @@ table Company
 
 		annotation SummarizationSetBy = Automatic
 
+	column pk_company
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a3fbae7-0207-47e9-bf87-234fefdda002
+		summarizeBy: sum
+		sourceColumn: pk_company
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyName
+		dataType: string
+		lineageTag: cf0ac63c-c1f1-4b85-a218-2d2cef9af13f
+		summarizeBy: none
+		sourceColumn: CompanyName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyGroupId
+		dataType: string
+		lineageTag: 1cdda12a-a338-422d-a998-694bdc413304
+		summarizeBy: none
+		sourceColumn: CompanyGroupId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyGroupParentId
+		dataType: string
+		lineageTag: c5b3ec75-b31f-4cc9-9058-face71c9ed91
+		summarizeBy: none
+		sourceColumn: CompanyGroupParentId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceCurrency
+		dataType: string
+		lineageTag: 5a5c87c1-52c3-4d14-a867-fa94a1bd4b12
+		summarizeBy: none
+		sourceColumn: SourceCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: a485a2c7-5746-43bf-9780-0eedb144675e
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 797f58a9-7ab3-4f67-90c5-91065de457d9
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: 6ae26cbf-0738-4f35-bd94-2cf02f5ad6bb
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column VatNumber
+		dataType: string
+		lineageTag: 91a1fae7-68cb-4f3a-9c45-2fdd3584b0fa
+		summarizeBy: none
+		sourceColumn: VatNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrganisationNumber
+		dataType: string
+		lineageTag: 9329bd2d-9804-437c-a0db-2b7deadf311e
+		summarizeBy: none
+		sourceColumn: OrganisationNumber
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Company = m
 		mode: import
 		source =
@@ -80,9 +111,10 @@ table Company
 				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
 				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
 				    shareddimensions_Schema = prod_gold_Database{[Name="shareddimensions",Kind="Schema"]}[Data],
-				    erpcompany_Table = shareddimensions_Schema{[Name="erpcompany",Kind="Table"]}[Data]
+				    company_Table = shareddimensions_Schema{[Name="company",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(company_Table,{{"CompanyId", Int64.Type}})
 				in
-				    erpcompany_Table
+				    #"Changed Type"
 
 	changedProperty = IsHidden
 
