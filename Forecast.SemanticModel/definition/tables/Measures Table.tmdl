@@ -729,8 +729,7 @@ table 'Measures Table'
 			
 			IF (
 			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
-			    VAR SelectedActuality = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
-			    VAR SelectedCurrencyType = SELECTEDVALUE ( 'Monthly Exchange Rates'[CurrencyType] )
+			    VAR ForecastVersion = SELECTEDVALUE ( 'Monthly Exchange Rates'[Actuality] )
 			    VAR AggregatedSalesInCurrency =
 			        ADDCOLUMNS (
 			            SUMMARIZE (
@@ -738,11 +737,10 @@ table 'Measures Table'
 			                'Calendar'[Year Month],    -- Monthly granularity
 			                'Source Currency'[CurrencyId]
 			            ),
-			            "@SalesAmount", CALCULATE([1. PT_Cal_CostsYtd], 'Project Transactions'[Actuality] = "AC"),
+			            "@SalesAmount", CALCULATE([1. PT_Cal_CostsYtd], 'Project Transactions'[Actuality] = ForecastVersion),
 			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]), 
-			            'Monthly Exchange Rates'[Actuality] = "AC",
+			            'Monthly Exchange Rates'[Actuality] = ForecastVersion,
 			            exchangeratesmonthly[CurrencyType] = "M")
-			            //,'Currency Type'[Calculation group column])
 			        )
 			    VAR Result =
 			        SUMX (
@@ -5126,6 +5124,154 @@ table 'Measures Table'
 			        Result)
 		displayFolder: P&L Currency Conversions
 		lineageTag: 8863bdf2-9822-4b94-974b-97021bbe52d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '1. ProjectCost_Cal_AmountYtd' = ```
+			
+			    CALCULATE(
+			        SUMX(
+			            'Project Transactions', 
+			            'Project Transactions'[TotalCost]
+			        ), 
+			        DATESYTD('Calendar'[Date])
+			    )
+			```
+		displayFolder: KPIs
+		lineageTag: f1f35301-f9f7-48d8-bb80-d19099a52748
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. ProjectCost_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR ForecastVersion = SELECTEDVALUE('Project Transactions'[Actuality])
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. ProjectCost_Cal_AmountYtd], 'Project Transactions'[Actuality] = ForecastVersion),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = ForecastVersion,
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: KPIs
+		lineageTag: 988d8814-b755-4630-bd90-577ad768cd81
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. ProjectCost_Cal_YtdToMonth' =
+			
+			IF(
+			        AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. ProjectCost_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. ProjectCost_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. ProjectCost_Cal_CurrencyConversion Sales (YTD)],
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ),
+			        [2. ProjectCost_Cal_CurrencyConversion Sales (YTD)]
+			    )
+		displayFolder: KPIs
+		lineageTag: b8f1c79b-e2ff-4d6d-a50c-ea9d46c2ea31
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. ProjectCost_Cal_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. ProjectCost_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: KPIs
+		lineageTag: 50295c2c-751a-4ee8-8a0d-28795a027fc0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '1. ProjectRevenue_Cal_AmountYtd' = ```
+			
+			    CALCULATE(
+			        SUMX(
+			            'Project Transactions', 
+			            'Project Transactions'[TotalRevenue]
+			        ), 
+			        DATESYTD('Calendar'[Date])
+			    )
+			```
+		displayFolder: KPIs
+		lineageTag: d8a91e58-cdf8-4c2d-b62c-d961d563aad5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. ProjectRevenue_Cal_CurrencyConversion Sales (YTD)' =
+			
+			IF (
+			    HASONEVALUE ( 'Reporting Currency'[SourceCurrency] ),
+			    VAR ForecastVersion = SELECTEDVALUE('Project Transactions'[Actuality])
+			    VAR AggregatedSalesInCurrency =
+			        ADDCOLUMNS (
+			            SUMMARIZE (
+			                'Project Transactions',
+			                'Calendar'[Year Month],    -- Monthly granularity
+			                'Source Currency'[CurrencyId]
+			            ),
+			            "@SalesAmount", CALCULATE([1. ProjectRevenue_Cal_AmountYtd], 'Project Transactions'[Actuality] = ForecastVersion),
+			            "@Rate", CALCULATE ( SELECTEDVALUE ( 'Monthly Exchange Rates'[Rate]),
+			            'Monthly Exchange Rates'[Actuality] = ForecastVersion,
+			            'Monthly Exchange Rates'[CurrencyType] = "M")
+			        )
+			    VAR Result =
+			        SUMX (
+			            AggregatedSalesInCurrency,
+			            IF (
+			                NOT ( ISBLANK ( [@Rate] ) ),
+			                [@SalesAmount] / [@Rate],
+			                "Missing Value"
+			            )
+			            )
+			    RETURN
+			        Result)
+		displayFolder: KPIs
+		lineageTag: c763d37f-b6ca-41b3-b201-6a61776f8b69
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. ProjectRevenue_Cal_YtdToMonth' =
+			
+			IF(
+			        AND(SELECTEDVALUE('Calendar'[Month Number]) >1, [2. ProjectRevenue_Cal_CurrencyConversion Sales (YTD)] <> 0),
+			        [2. ProjectRevenue_Cal_CurrencyConversion Sales (YTD)]- CALCULATE(
+			            [2. ProjectRevenue_Cal_CurrencyConversion Sales (YTD)],
+			            PREVIOUSMONTH('Calendar'[Date])
+			            ),
+			        [2. ProjectRevenue_Cal_CurrencyConversion Sales (YTD)]
+			    )
+		displayFolder: KPIs
+		lineageTag: 03012860-eac3-49d9-850e-06afcbf6f424
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4. ProjectRevenue_Cal_ContextTransitionToMonth' = ```
+			
+			    SUMX(
+			        VALUES('Calendar'[Year Month]), [3. ProjectRevenue_Cal_YtdToMonth]
+			    )
+			```
+		displayFolder: KPIs
+		lineageTag: c6c2a72e-3af0-4fbf-bd11-86aba035a1bc
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
