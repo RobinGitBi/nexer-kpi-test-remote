@@ -4,8 +4,8 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 3661.0137357185249,
-        "y": 9.5138766057296866
+        "x": 3364.3445144358807,
+        "y": 17.243901401047982
       },
       "nodes": [
         {
@@ -19,11 +19,11 @@
             "height": 272,
             "width": 234
           },
-          "zIndex": 15
+          "zIndex": 12
         },
         {
           "location": {
-            "x": 4077.9400043983969,
+            "x": 5868.3327499515262,
             "y": 0
           },
           "nodeIndex": "Calendar",
@@ -32,7 +32,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 16
+          "zIndex": 22
         },
         {
           "location": {
@@ -45,7 +45,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 17
+          "zIndex": 13
         },
         {
           "location": {
@@ -58,7 +58,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 8
+          "zIndex": 6
         },
         {
           "location": {
@@ -71,7 +71,7 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 18
+          "zIndex": 14
         },
         {
           "location": {
@@ -84,7 +84,7 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 9
+          "zIndex": 7
         },
         {
           "location": {
@@ -97,11 +97,11 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 10
+          "zIndex": 8
         },
         {
           "location": {
-            "x": 4401.9503485347923,
+            "x": 4607.0933067321021,
             "y": 0
           },
           "nodeIndex": "exchangeratesmonthly",
@@ -110,7 +110,7 @@
             "height": 248,
             "width": 234
           },
-          "zIndex": 26
+          "zIndex": 23
         },
         {
           "location": {
@@ -123,7 +123,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 21
+          "zIndex": 17
         },
         {
           "location": {
@@ -136,7 +136,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 24
+          "zIndex": 20
         },
         {
           "location": {
@@ -149,12 +149,12 @@
             "height": 224,
             "width": 234
           },
-          "zIndex": 11
+          "zIndex": 9
         },
         {
           "location": {
-            "x": 4779.9369805321257,
-            "y": 75.105413434016953
+            "x": 4751.395351565543,
+            "y": 433.65962732670624
           },
           "nodeIndex": "Catalyst Employee",
           "nodeLineageTag": "0a15209f-9a8f-487b-8dfd-4a598f0685a6",
@@ -162,12 +162,12 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 12
+          "zIndex": 10
         },
         {
           "location": {
-            "x": 3464.10974471701,
-            "y": 0
+            "x": 4457.715203116154,
+            "y": 469.15302613819546
           },
           "nodeIndex": "Source Currency",
           "nodeLineageTag": "3dae617e-9223-498e-8e11-0145436f39fe",
@@ -175,12 +175,12 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 13
+          "zIndex": 24
         },
         {
           "location": {
-            "x": 3480.8289339060789,
-            "y": 465.43050778488839
+            "x": 3520.0736737351294,
+            "y": 522.51376571805281
           },
           "nodeIndex": "Reporting Currency",
           "nodeLineageTag": "68c7171e-2698-4605-9185-7c2f84f8e15d",
@@ -188,7 +188,7 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 14
+          "zIndex": 11
         },
         {
           "location": {
@@ -201,7 +201,7 @@
             "height": 200,
             "width": 234
           },
-          "zIndex": 22
+          "zIndex": 18
         },
         {
           "location": {
@@ -213,7 +213,7 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 19
+          "zIndex": 15
         },
         {
           "location": {
@@ -226,7 +226,7 @@
             "height": 176,
             "width": 234
           },
-          "zIndex": 5
+          "zIndex": 3
         },
         {
           "location": {
@@ -239,7 +239,7 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 6
+          "zIndex": 4
         },
         {
           "location": {
@@ -252,7 +252,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 7
+          "zIndex": 5
         },
         {
           "location": {
@@ -265,12 +265,12 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 3
+          "zIndex": 1
         },
         {
           "location": {
-            "x": 6407.83527305282,
-            "y": 423.125
+            "x": 6648.6552674583581,
+            "y": 432.04425905205693
           },
           "nodeIndex": "GL Account Hierarchy",
           "nodeLineageTag": "37a68433-1c68-4845-9c40-c1bc720608db",
@@ -278,12 +278,12 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 23
+          "zIndex": 19
         },
         {
           "location": {
-            "x": 6975.6574486566951,
-            "y": 363.5223431231862
+            "x": 4146.46847734423,
+            "y": 0
           },
           "nodeIndex": "Goals",
           "nodeLineageTag": "917df58c-2102-492e-b951-c9d4ccdb8b11",
@@ -291,7 +291,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 4
+          "zIndex": 2
         },
         {
           "location": {
@@ -303,7 +303,7 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 20
+          "zIndex": 16
         },
         {
           "location": {
@@ -315,33 +315,7 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 25
-        },
-        {
-          "location": {
-            "x": 6925.6574486566951,
-            "y": 497.125
-          },
-          "nodeIndex": "P&LValue",
-          "nodeLineageTag": "385eb884-0e5d-4d17-9933-806a68685c73",
-          "size": {
-            "height": 152,
-            "width": 234
-          },
-          "zIndex": 2
-        },
-        {
-          "location": {
-            "x": 6925.6574486566951,
-            "y": 497.125
-          },
-          "nodeIndex": "P&L Measure",
-          "nodeLineageTag": "027babe0-2164-46c3-9b4a-4883e881aa12",
-          "size": {
-            "height": 152,
-            "width": 234
-          },
-          "zIndex": 1
+          "zIndex": 21
         }
       ],
       "name": "All tables",

@@ -19,34 +19,21 @@ table Goals
 		annotation SummarizationSetBy = Automatic
 
 	column AccountingDate
-		dataType: string
+		dataType: dateTime
+		formatString: Long Date
 		lineageTag: 20c8d6c4-944a-4c61-b6de-d7de24b90c08
 		summarizeBy: none
 		sourceColumn: AccountingDate
 
 		annotation SummarizationSetBy = Automatic
 
+		annotation UnderlyingDateTimeDataType = Date
+
 	column CompanyUnitId
 		dataType: string
 		lineageTag: e6b9fb9f-5858-4371-bd6f-812257624b9f
 		summarizeBy: none
 		sourceColumn: CompanyUnitId
-
-		annotation SummarizationSetBy = Automatic
-
-	column Revenue
-		dataType: string
-		lineageTag: d3a03265-5876-4b31-a051-714287fe6d95
-		summarizeBy: none
-		sourceColumn: Revenue
-
-		annotation SummarizationSetBy = Automatic
-
-	column EBIT
-		dataType: string
-		lineageTag: 50ad90cd-045f-48d5-8efe-6ed76693d672
-		summarizeBy: none
-		sourceColumn: EBIT
 
 		annotation SummarizationSetBy = Automatic
 
@@ -115,6 +102,61 @@ table Goals
 
 		annotation SummarizationSetBy = Automatic
 
+	column ActualityDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0558a673-6ee3-4566-a889-a0aa65454ca4
+		summarizeBy: none
+		sourceColumn: ActualityDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CompanyId
+		dataType: int64
+		formatString: 0
+		lineageTag: 02082a27-5750-4a21-a4d8-648a5fbccb99
+		summarizeBy: none
+		sourceColumn: CompanyId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceCurrency
+		dataType: string
+		lineageTag: 1cc99173-8e81-4350-9f06-94c8431ece6b
+		summarizeBy: none
+		sourceColumn: SourceCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyId
+		dataType: int64
+		formatString: 0
+		lineageTag: fde3b7ac-8d41-4ece-a1e5-55948da68812
+		summarizeBy: count
+		sourceColumn: CurrencyId
+
+		annotation SummarizationSetBy = Automatic
+
+	column GlType
+		dataType: string
+		lineageTag: 7a0cc308-8191-4ea2-b148-767f5e87d39f
+		summarizeBy: none
+		sourceColumn: GlType
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportingAmount
+		dataType: double
+		lineageTag: 2b2bdb52-6074-424d-b16f-a43e39dac3b4
+		summarizeBy: sum
+		sourceColumn: ReportingAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition Goals = m
 		mode: import
 		source =
@@ -122,9 +164,34 @@ table Goals
 				    Source = Databricks.Catalogs("adb-4061987743434543.3.azuredatabricks.net", "/sql/1.0/warehouses/b09a38ac31c647f4", null),
 				    prod_gold_Database = Source{[Name="prod_gold",Kind="Database"]}[Data],
 				    financereport_Schema = prod_gold_Database{[Name="financereport",Kind="Schema"]}[Data],
-				    goals_Table = financereport_Schema{[Name="goals",Kind="Table"]}[Data]
+				    goals_Table = financereport_Schema{[Name="goals",Kind="Table"]}[Data],
+				
+				    #"Changed Type" = Table.TransformColumnTypes(goals_Table,{{"AccountingDate", type date}}),
+				    // Add new column with first day of the year
+				    AddedYearStart = Table.AddColumn(
+				        #"Changed Type",
+				        "YearStart",
+				        each #date(Date.Year([AccountingDate]), 1, 1),
+				        type date
+				    ),
+				    #"Renamed Columns" = Table.RenameColumns(AddedYearStart,{{"YearStart", "ActualityDate"}}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Renamed Columns",{"pk_goals", "GoalId", "AccountingDate", "CompanyUnitId", "ActualityDate", "Revenue", "EBIT", "Name", "UHR", "OH", "RevNexer", "EbitNexer", "RevSC", "GM1SC", "_increment_timestamp"}),
+				    #"Inserted Text Before Delimiter" = Table.AddColumn(#"Reordered Columns", "Text Before Delimiter", each Text.BeforeDelimiter([CompanyUnitId], "-"), type text),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Inserted Text Before Delimiter",{{"Text Before Delimiter", "CompanyId"}}),
+				    #"Reordered Columns1" = Table.ReorderColumns(#"Renamed Columns1",{"pk_goals", "GoalId", "CompanyId", "AccountingDate", "CompanyUnitId", "ActualityDate", "Revenue", "EBIT", "Name", "UHR", "OH", "RevNexer", "EbitNexer", "RevSC", "GM1SC", "_increment_timestamp"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Reordered Columns1",{{"CompanyId", Int64.Type}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type1", {"CompanyId"}, Company, {"CompanyId"}, "Company", JoinKind.LeftOuter),
+				    #"Expanded Company" = Table.ExpandTableColumn(#"Merged Queries", "Company", {"SourceCurrency"}, {"SourceCurrency"}),
+				    #"Merged Queries1" = Table.NestedJoin(#"Expanded Company", {"SourceCurrency"}, #"Source Currency", {"SourceCurrency"}, "Source Currency", JoinKind.LeftOuter),
+				    #"Expanded Source Currency" = Table.ExpandTableColumn(#"Merged Queries1", "Source Currency", {"CurrencyId"}, {"CurrencyId"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Expanded Source Currency", each true),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Filtered Rows",{{"Revenue", type number}, {"EBIT", type number}}),
+				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Changed Type2", {"pk_goals", "GoalId", "CompanyId", "AccountingDate", "CompanyUnitId", "ActualityDate", "Name", "UHR", "OH", "RevNexer", "EbitNexer", "RevSC", "GM1SC", "_increment_timestamp", "SourceCurrency", "CurrencyId"}, "Attribute", "Value"),
+				    #"Renamed Columns2" = Table.RenameColumns(#"Unpivoted Columns",{{"Attribute", "GlType"}}),
+				    #"Uppercased Text" = Table.TransformColumns(#"Renamed Columns2",{{"GlType", Text.Upper, type text}}),
+				    #"Renamed Columns3" = Table.RenameColumns(#"Uppercased Text",{{"Value", "ReportingAmount"}})
 				in
-				    goals_Table
+				    #"Renamed Columns3"
 
 	annotation PBI_NavigationStepName = Navigation
 

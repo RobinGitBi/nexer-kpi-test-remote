@@ -27,7 +27,7 @@ table Company
 		dataType: int64
 		formatString: 0
 		lineageTag: 1a3fbae7-0207-47e9-bf87-234fefdda002
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: pk_company
 
 		annotation SummarizationSetBy = Automatic

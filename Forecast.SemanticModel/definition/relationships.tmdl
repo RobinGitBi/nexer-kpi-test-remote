@@ -97,6 +97,7 @@ relationship 53f216ae-8ef3-07e5-d804-53a30e3d81fc
 	toColumn: Calendar.Date
 
 relationship 91f508ef-c878-41a0-b4ce-2e6d71bce0e9
+	isActive: false
 	fromColumn: 'Project Transactions'.CompanyId
 	toColumn: Company.CompanyId
 
@@ -118,17 +119,21 @@ relationship 10532e77-a44b-5ed3-f936-ebdcaf57f9f1
 	fromColumn: 'Project Transactions'.AdjustedFunction2
 	toColumn: Function.FunctionId
 
-relationship AutoDetected_97ede75a-18f2-4056-a148-3a77d854c677
-	isActive: false
-	fromColumn: Company.SourceCurrency
-	toColumn: 'Source Currency'.SourceCurrency
-
-relationship AutoDetected_23980d9b-6fe2-4c64-abab-803fa329147b
-	fromColumn: Company.SourceCurrency
-	toColumn: 'Reporting Currency'.SourceCurrency
-
 relationship AutoDetected_39de18ea-5537-4a8d-8583-17e83f04d3f2
 	isActive: false
 	fromColumn: 'Catalyst Employee'.CompanyId
 	toColumn: Company.pk_company
+
+relationship AutoDetected_0d76d307-4a57-4aa4-bb14-6bfe7ede1ae8
+	fromColumn: Goals.CompanyId
+	toColumn: Company.CompanyId
+
+relationship AutoDetected_7c1b310a-6d8d-4029-a850-b895ada02fa7
+	fromColumn: Goals.SourceCurrency
+	toColumn: 'Source Currency'.SourceCurrency
+
+relationship AutoDetected_a187aa38-0016-4a61-8b9e-486c162f381b
+	isActive: false
+	fromColumn: Goals.SourceCurrency
+	toColumn: 'Reporting Currency'.SourceCurrency
 
