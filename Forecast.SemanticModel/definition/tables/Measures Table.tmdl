@@ -82,7 +82,7 @@ table 'Measures Table'
 			
 			// IF(
 			    // SelectedActuality = "AC",
-			    [Correct Presence Hours AC] - [Billable Hours]
+			    [Presence Hours] - [Billable Hours]
 			    // ,
 			    // CALCULATE(
 			    //     SUMX(
@@ -101,9 +101,9 @@ table 'Measures Table'
 	measure UHR = ```
 			
 			
-			    [Unbilable Hours] / [Correct Presence Hours AC]
+			    DIVIDE([Unbilable Hours] , [Presence Hours])
 			```
-		formatString: 0.0%;-0.0%;0.0%
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
 		displayFolder: HR
 		lineageTag: cb99a819-7ea9-411a-8f99-44fb440c4aa0
 
@@ -132,10 +132,11 @@ table 'Measures Table'
 			RETURN Result
 			
 			```
+		formatString: #,0
 		displayFolder: HR
 		lineageTag: 71973251-aed1-458e-8a4c-ed99d36a08dd
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure Old_Revenues = ```
 			
@@ -211,7 +212,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Presence Hours FC' = ```
+	measure 'Old_Presence Hours FC' = ```
 			
 			
 			    // VAR SelectedActuality = SELECTEDVALUE ( 'ActualityOrgin'[ActualityOrigin] )
@@ -416,7 +417,7 @@ table 'Measures Table'
 			
 			VAR Result = IF(SELECTEDVALUE('Project Transactions'[Actuality] ) = "AC", AcBillableHours, FcBillableHours)
 			
-			RETURN Result
+			RETURN IF(Result <> 0 , Result)
 			
 			 
 			// VAR SelectedActuality = SELECTEDVALUE ( 'ActualityOrgin'[ActualityOrigin] )
@@ -470,14 +471,15 @@ table 'Measures Table'
 			//         )
 			// )
 			```
+		formatString: #,0
 		displayFolder: HR
 		lineageTag: e55bea96-4911-422c-8361-499c4485a3c3
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure Absence = ```
 			
-			    DIVIDE(([Total Hours] - [Correct Presence Hours AC]) ,[Total Hours])
+			    DIVIDE(([Total Hours] - [Presence Hours]) ,[Total Hours])
 			```
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: HR
@@ -627,7 +629,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure ContextTransition = SUMX(VALUES('Calendar'[Year Month]), [Presence Hours FC])
+	measure ContextTransition = SUMX(VALUES('Calendar'[Year Month]), [Old_Presence Hours FC])
 		displayFolder: KPIs
 		lineageTag: a093e87f-285f-4432-9632-4688dc2652d7
 
@@ -987,7 +989,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Correct Presence Hours AC' = ```
+	measure 'Presence Hours' = ```
 			
 			
 			VAR 
@@ -998,17 +1000,23 @@ table 'Measures Table'
 			            NOT 'Project Transactions'[EmploymentTypeID] in {4,5})
 			
 			VAR FcPresenceHours = 
-			CALCULATE(SUM('Project Transactions'[TotalHours]), KEEPFILTERS('Function'[FunctionId] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in({1,2})), USERELATIONSHIP('Project Transactions'[AdjustedFunction2], 'Function'[FunctionId])) 
+			CALCULATE(SUM('Project Transactions'[TotalHours]), KEEPFILTERS('Function'[FunctionId] in { "10", "20"}), KEEPFILTERS('Project Transactions'[ProjectClassType] in({1,2})), USERELATIONSHIP('Project Transactions'[AdjustedFunction2], 'Function'[FunctionId])) 
 			// CALCULATE(SUM('Project Transactions'[TotalHours]), KEEPFILTERS('Function'[FunctionId] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in({1,2}))) 
-			//  + CALCULATE(SUM('Project Transactions'[TotalHours]),KEEPFILTERS('Project Transactions'[FunctionAdjusted] = "20" ), KEEPFILTERS('Project Transactions'[ProjectClassType] = 1))
-			VAR Result = IF(SELECTEDVALUE('Project Transactions'[Actuality] ) = "AC", AcPresenceHours, FcPresenceHours)
+			//  + CALCULATE(SUM('Project Transactions'[TotalHours]),KEEPFILTERS('Project Transactions'[AdjustedFunction] = "20" ), KEEPFILTERS('Project Transactions'[ProjectClassType] = 1))
 			
-			RETURN Result
+			VAR Result1 = IF(SELECTEDVALUE('Project Transactions'[Actuality] ) = "AC", AcPresenceHours, FcPresenceHours)
+			
+			VAR Result2 = IF(Result1 <> 0,Result1)
+			
+			
+			
+			RETURN Result2
 			```
+		formatString: #,0
 		displayFolder: HR
 		lineageTag: e80bc049-9151-4928-a9ae-6c68bff822d1
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure 'Old_Merged Presence' =
 			
@@ -1021,9 +1029,9 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Correct Total Direct Costs' =
-			IF(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", CALCULATE([4. AC PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[AdjustedFunction] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4)),
-			 CALCULATE([4. AC PT_Cal_Costs_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunction2], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3})))
+	measure 'Total Direct Costs' =
+			IF(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", CALCULATE([4. ProjectCost_Cal_ContextTransitionToMonth] , USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[AdjustedFunction] = "10"), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4)),
+			 CALCULATE([4. ProjectCost_Cal_ContextTransitionToMonth], USERELATIONSHIP('Project Transactions'[AdjustedFunction2], 'Function'[FunctionId]), KEEPFILTERS('Project Transactions'[ProjectClassType] in { 1 }), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3})))
 		displayFolder: HR
 		lineageTag: 011c4945-1415-4e52-ade5-eeedaccb201b
 
@@ -1179,14 +1187,14 @@ table 'Measures Table'
 			
 			
 			VAR AcRevenue = 
-			CALCULATE([4. AC PT_Cal_ContextTransitionToMonth], 
+			CALCULATE([4. ProjectRevenue_Cal_ContextTransitionToMonth], 
 			 USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]),
 			  KEEPFILTERS('Project Transactions'[AdjustedFunction] = "10")
 			, KEEPFILTERS('Project Transactions'[ProjectClassType] = 1), KEEPFILTERS('Project Transactions'[EmploymentTypeId] <4))
 			
 			
 			VAR FcRevenue = 
-			CALCULATE([4. AC PT_Cal_ContextTransitionToMonth], 
+			CALCULATE([4. ProjectRevenue_Cal_ContextTransitionToMonth], 
 			 USERELATIONSHIP('Project Transactions'[AdjustedFunction], 'Function'[FunctionId]),
 			  KEEPFILTERS('Project Transactions'[AdjustedFunction2] = "10")
 			, KEEPFILTERS('Project Transactions'[ProjectClassType] = 1), KEEPFILTERS('Project Transactions'[EmploymentTypeId] in {1,2,3}))
@@ -1196,28 +1204,30 @@ table 'Measures Table'
 			RETURN Result
 			
 			```
+		formatString: 0
 		displayFolder: HR
 		lineageTag: 0e1daaa6-ab15-4133-a0ee-1326643b78cf
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"isDecimal":true}
 
-	measure 'Correct Price Per Hour' = ```
+	measure 'Price Per Hour' = ```
 			DIVIDE(CALCULATE([Correct Revenue], 
 			KEEPFILTERS('Project Transactions'[TransactionType] = 1)),
 			// FILTER('Project Transactions', [Correct Revenue] <> 0)),
 			 [Billable Hours])
 			```
+		formatString: 0
 		displayFolder: HR
 		lineageTag: 265454e2-70a3-4e8c-a767-df320ff66a9f
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure 'Correct Gross Margin %' =
 			
 			
 			VAR Revenue = [Correct Revenue]
 			
-			VAR GrossProfit = [Correct Revenue]+[Correct Total Direct Costs]
+			VAR GrossProfit = [Correct Revenue]+[Total Direct Costs]
 			
 			VAR GrossMarginPerc = DIVIDE(GrossProfit, [Correct Revenue])
 			
@@ -1232,14 +1242,14 @@ table 'Measures Table'
 			
 			VAR GrossProfit =
 			    CALCULATE (
-			        [4. AC PT_Cal_ContextTransitionToMonth] + [4. AC PT_Cal_Costs_ContextTransitionToMonth],
+			        [4. ProjectRevenue_Cal_ContextTransitionToMonth] + [4. ProjectCost_Cal_ContextTransitionToMonth],
 			        KEEPFILTERS ( 'Project Transactions'[TransactionType] = 1 ),
 			        KEEPFILTERS ( 'Project Transactions'[EmploymentTypeId] IN { 1, 2, 3 } ),
 			        KEEPFILTERS ( 'Project Transactions'[ProjectClassType] = 1 )
 			    )
 			VAR HourSubstraction =
 			    CALCULATE (
-			        [4. AC PT_Cal_Costs_ContextTransitionToMonth],
+			        [4. ProjectCost_Cal_ContextTransitionToMonth],
 			        KEEPFILTERS ( 'Project Transactions'[ExpenseCode] = "98" )
 			    )
 			VAR Result = GrossProfit + HourSubstraction
@@ -1249,7 +1259,7 @@ table 'Measures Table'
 		displayFolder: HR
 		lineageTag: 7d112286-6332-4025-a3de-463db7b1bf92
 
-	measure 'Correct Gross Margin Hours %' =
+	measure 'Gross Margin Hours %' =
 			
 			DIVIDE (
 			    [Correct Gross Profit 1 Hours],

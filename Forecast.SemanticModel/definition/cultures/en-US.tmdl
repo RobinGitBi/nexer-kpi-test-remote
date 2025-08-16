@@ -16403,30 +16403,18 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.presence_hours_FC": {
+			    "measures_table.Old_Presence_hours_FC": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Presence Hours FC"
+			          "ConceptualProperty": "Old_Presence Hours FC"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "presence hours FC": {
+			          "Old_Presence hours FC": {
 			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "FC": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "hours FC": {
-			            "State": "Generated",
-			            "Weight": 0.97
 			          }
 			        }
 			      ]
@@ -16551,7 +16539,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.correct_absence": {
+			    "measures_table.absence": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
@@ -16561,44 +16549,8 @@ cultureInfo en-US
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "correct absence": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
 			          "absence": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "correct nonappearance": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "correct absenteeism": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "correct nonattendance": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
+			            "State": "Generated"
 			          }
 			        },
 			        {
@@ -16632,43 +16584,53 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "correct nonexistence": {
+			          "nonexistence": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.475
+			            "Weight": 0.466
 			          }
 			        },
 			        {
-			          "correct deficiency": {
+			          "deficiency": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.475
+			            "Weight": 0.466
 			          }
 			        },
 			        {
-			          "correct dearth": {
+			          "dearth": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.475
+			            "Weight": 0.466
 			          }
 			        },
 			        {
-			          "correct privation": {
+			          "privation": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.475
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "lack": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.452
 			          }
 			        }
 			      ]
@@ -22168,16 +22130,6 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "version": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
 			          "interpretation": {
 			            "Type": "Noun",
 			            "State": "Suggested",
@@ -22195,6 +22147,16 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "cognos gl description": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.482
 			          }
 			        }
 			      ]
@@ -26617,36 +26579,58 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.correct_presence_hours_AC": {
+			    "measures_table.presence_hours": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Correct Presence Hours AC"
+			          "ConceptualProperty": "Presence Hours"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "correct presence hours AC": {
+			          "presence hours": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "AC": {
-			            "State": "Generated",
-			            "Weight": 0.97
+			          "presence period": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
 			          }
 			        },
 			        {
-			          "hours AC": {
-			            "State": "Generated",
-			            "Weight": 0.97
+			          "presence eras": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
 			          }
 			        },
 			        {
-			          "presence hours AC": {
-			            "State": "Generated",
-			            "Weight": 0.97
+			          "presence epoch": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "presence age": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
 			          }
 			        }
 			      ]
@@ -26767,118 +26751,118 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.correct_total_direct_costs": {
+			    "measures_table.total_direct_costs": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Correct Total Direct Costs"
+			          "ConceptualProperty": "Total Direct Costs"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "correct total direct costs": {
+			          "total direct costs": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "correct aggregate direct cost": {
+			          "aggregate direct cost": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.599
+			            "Weight": 0.591
 			          }
 			        },
 			        {
-			          "correct overall direct cost": {
+			          "overall direct cost": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.599
+			            "Weight": 0.591
 			          }
 			        },
 			        {
-			          "correct total direct expenditure": {
+			          "total direct expenditure": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.514
+			            "Weight": 0.508
 			          }
 			        },
 			        {
-			          "correct total direct price": {
+			          "total direct price": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct total direct charge": {
+			          "total direct charge": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct total direct budget": {
+			          "total direct budget": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct total direct expense": {
+			          "total direct expense": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct total direct outlay": {
+			          "total direct outlay": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct total direct overhead": {
+			          "total direct overhead": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct total direct rate": {
+			          "total direct rate": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.474
+			            "Weight": 0.468
 			          }
 			        }
 			      ]
@@ -26915,7 +26899,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.correct_OH": {
+			    "measures_table.oh": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
@@ -26925,28 +26909,28 @@ cultureInfo en-US
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "correct OH%": {
+			          "oh%": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "correct oh percentage": {
+			          "oh percentage": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.762
+			            "Weight": 0.75
 			          }
 			        },
 			        {
-			          "correct oh pct": {
+			          "oh pct": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.739
+			            "Weight": 0.727
 			          }
 			        }
 			      ]
@@ -27112,17 +27096,17 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.correct_price_per_hour": {
+			    "measures_table.price_per_hour": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Correct Price Per Hour"
+			          "ConceptualProperty": "Price Per Hour"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "correct price per hour": {
+			          "price per hour": {
 			            "State": "Generated"
 			          }
 			        },
@@ -27133,103 +27117,103 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "correct value per hour": {
+			          "value per hour": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct worth per hour": {
+			          "worth per hour": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct fee per hour": {
+			          "fee per hour": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct charge per hour": {
+			          "charge per hour": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct amount per hour": {
+			          "amount per hour": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct bill per hour": {
+			          "bill per hour": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct rate per hour": {
+			          "rate per hour": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct expense per hour": {
+			          "expense per hour": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct cost per hour": {
+			          "cost per hour": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        },
 			        {
-			          "correct outlay per hour": {
+			          "outlay per hour": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.499
+			            "Weight": 0.492
 			          }
 			        }
 			      ]
@@ -27454,88 +27438,88 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.correct_gross_margin_hours_": {
+			    "measures_table.gross_margin_hours_": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Correct Gross Margin Hours %"
+			          "ConceptualProperty": "Gross Margin Hours %"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "correct gross margin hours %": {
+			          "gross margin hours %": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "correct gross margin hour percentage": {
+			          "gross margin hour percentage": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.78
+			            "Weight": 0.771
 			          }
 			        },
 			        {
-			          "correct gross margin hour pct": {
+			          "gross margin hour pct": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.757
+			            "Weight": 0.748
 			          }
 			        },
 			        {
-			          "correct aggregate margin hour %": {
+			          "aggregate margin hour %": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.673
+			            "Weight": 0.665
 			          }
 			        },
 			        {
-			          "correct overall margin hour %": {
+			          "overall margin hour %": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.673
+			            "Weight": 0.665
 			          }
 			        },
 			        {
-			          "correct whole margin hour %": {
+			          "whole margin hour %": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.673
+			            "Weight": 0.665
 			          }
 			        },
 			        {
-			          "correct sum margin hour %": {
+			          "sum margin hour %": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.605
+			            "Weight": 0.599
 			          }
 			        },
 			        {
-			          "correct total margin hour %": {
+			          "total margin hour %": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.605
+			            "Weight": 0.599
 			          }
 			        }
 			      ]
@@ -29249,6 +29233,131 @@ cultureInfo en-US
 			    }
 			  },
 			  "Relationships": {
+			    "project_transaction_has_calendar": {
+			      "Binding": {
+			        "ConceptualEntity": "Project Transactions"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "project_transaction": {
+			          "Target": {
+			            "Entity": "project_transaction"
+			          }
+			        },
+			        "calendar": {
+			          "Target": {
+			            "Entity": "calendar"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "project_transaction"
+			            },
+			            "Object": {
+			              "Role": "calendar"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "project_transactions_have_calendars"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "calendar"
+			            },
+			            "Object": {
+			              "Role": "project_transaction"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "calendars_have_project_transactions"
+			        }
+			      ]
+			    },
+			    "project_transaction_has_employment_type": {
+			      "Binding": {
+			        "ConceptualEntity": "Project Transactions"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "project_transaction": {
+			          "Target": {
+			            "Entity": "project_transaction"
+			          }
+			        },
+			        "employment_type": {
+			          "Target": {
+			            "Entity": "employment_type"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "project_transaction"
+			            },
+			            "Object": {
+			              "Role": "employment_type"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "project_transactions_have_employment_types"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "employment_type"
+			            },
+			            "Object": {
+			              "Role": "project_transaction"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "employment_types_have_project_transactions"
+			        }
+			      ]
+			    },
+			    "reporting_currency_has_measures_table_text_measure": {
+			      "Binding": {
+			        "ConceptualEntity": "Reporting Currency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "reporting_currency": {
+			          "Target": {
+			            "Entity": "reporting_currency"
+			          }
+			        },
+			        "measures_table.text_measure": {
+			          "Target": {
+			            "Entity": "measures_table.text_measure"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "reporting_currency"
+			            },
+			            "Object": {
+			              "Role": "measures_table.text_measure"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "reporting_currencies_have_text_measure"
+			        }
+			      ]
+			    },
 			    "calendar_has_measures_table_text_measure": {
 			      "Binding": {
 			        "ConceptualEntity": "Calendar"
@@ -29903,7 +30012,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_correct_gross_margin_hours_": {
+			    "measures_table_has_gross_margin_hours_": {
 			      "Binding": {
 			        "ConceptualEntity": "Measures Table"
 			      },
@@ -29914,9 +30023,9 @@ cultureInfo en-US
 			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.correct_gross_margin_hours_": {
+			        "measures_table.gross_margin_hours_": {
 			          "Target": {
-			            "Entity": "measures_table.correct_gross_margin_hours_"
+			            "Entity": "measures_table.gross_margin_hours_"
 			          }
 			        }
 			      },
@@ -29927,12 +30036,12 @@ cultureInfo en-US
 			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.correct_gross_margin_hours_"
+			              "Role": "measures_table.gross_margin_hours_"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_correct_gross_margin_hours_"
+			          "ID": "measures_tables_have_gross_margin_hours_"
 			        }
 			      ]
 			    },
@@ -30002,7 +30111,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_correct_price_per_hour": {
+			    "measures_table_has_price_per_hour": {
 			      "Binding": {
 			        "ConceptualEntity": "Measures Table"
 			      },
@@ -30013,9 +30122,9 @@ cultureInfo en-US
 			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.correct_price_per_hour": {
+			        "measures_table.price_per_hour": {
 			          "Target": {
-			            "Entity": "measures_table.correct_price_per_hour"
+			            "Entity": "measures_table.price_per_hour"
 			          }
 			        }
 			      },
@@ -30026,12 +30135,12 @@ cultureInfo en-US
 			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.correct_price_per_hour"
+			              "Role": "measures_table.price_per_hour"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_correct_price_per_hour"
+			          "ID": "measures_tables_have_price_per_hour"
 			        },
 			        {
 			          "Adjective": {
@@ -30053,12 +30162,12 @@ cultureInfo en-US
 			              }
 			            ],
 			            "Measurement": {
-			              "Role": "measures_table.correct_price_per_hour"
+			              "Role": "measures_table.price_per_hour"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "correct_price_per_hour_indicates_how_expensive_measures_tables_are"
+			          "ID": "price_per_hour_indicates_how_expensive_measures_tables_are"
 			        }
 			      ]
 			    },
@@ -30161,7 +30270,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "project_transaction_has_measures_table_correct_OH": {
+			    "project_transaction_has_measures_table_oh": {
 			      "Binding": {
 			        "ConceptualEntity": "Project Transactions"
 			      },
@@ -30172,9 +30281,9 @@ cultureInfo en-US
 			            "Entity": "project_transaction"
 			          }
 			        },
-			        "measures_table.correct_OH": {
+			        "measures_table.oh": {
 			          "Target": {
-			            "Entity": "measures_table.correct_OH"
+			            "Entity": "measures_table.oh"
 			          }
 			        }
 			      },
@@ -30185,12 +30294,12 @@ cultureInfo en-US
 			              "Role": "project_transaction"
 			            },
 			            "Object": {
-			              "Role": "measures_table.correct_OH"
+			              "Role": "measures_table.oh"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "project_transactions_have_correct_OH"
+			          "ID": "project_transactions_have_oh"
 			        }
 			      ]
 			    },
@@ -30260,7 +30369,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_correct_total_direct_costs": {
+			    "measures_table_has_total_direct_costs": {
 			      "Binding": {
 			        "ConceptualEntity": "Measures Table"
 			      },
@@ -30271,9 +30380,9 @@ cultureInfo en-US
 			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.correct_total_direct_costs": {
+			        "measures_table.total_direct_costs": {
 			          "Target": {
-			            "Entity": "measures_table.correct_total_direct_costs"
+			            "Entity": "measures_table.total_direct_costs"
 			          }
 			        }
 			      },
@@ -30284,12 +30393,12 @@ cultureInfo en-US
 			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.correct_total_direct_costs"
+			              "Role": "measures_table.total_direct_costs"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_correct_total_direct_costs"
+			          "ID": "measures_tables_have_total_direct_costs"
 			        }
 			      ]
 			    },
@@ -30326,7 +30435,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "project_transaction_has_measures_table_correct_presence_hours_AC": {
+			    "project_transaction_has_measures_table_presence_hours": {
 			      "Binding": {
 			        "ConceptualEntity": "Project Transactions"
 			      },
@@ -30337,9 +30446,9 @@ cultureInfo en-US
 			            "Entity": "project_transaction"
 			          }
 			        },
-			        "measures_table.correct_presence_hours_AC": {
+			        "measures_table.presence_hours": {
 			          "Target": {
-			            "Entity": "measures_table.correct_presence_hours_AC"
+			            "Entity": "measures_table.presence_hours"
 			          }
 			        }
 			      },
@@ -30350,12 +30459,12 @@ cultureInfo en-US
 			              "Role": "project_transaction"
 			            },
 			            "Object": {
-			              "Role": "measures_table.correct_presence_hours_AC"
+			              "Role": "measures_table.presence_hours"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "project_transactions_have_correct_presence_hours_AC"
+			          "ID": "project_transactions_have_presence_hours"
 			        }
 			      ]
 			    },
@@ -33644,7 +33753,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "project_transaction_has_measures_table_correct_absence": {
+			    "project_transaction_has_measures_table_absence": {
 			      "Binding": {
 			        "ConceptualEntity": "Project Transactions"
 			      },
@@ -33655,9 +33764,9 @@ cultureInfo en-US
 			            "Entity": "project_transaction"
 			          }
 			        },
-			        "measures_table.correct_absence": {
+			        "measures_table.absence": {
 			          "Target": {
-			            "Entity": "measures_table.correct_absence"
+			            "Entity": "measures_table.absence"
 			          }
 			        }
 			      },
@@ -33668,12 +33777,12 @@ cultureInfo en-US
 			              "Role": "project_transaction"
 			            },
 			            "Object": {
-			              "Role": "measures_table.correct_absence"
+			              "Role": "measures_table.absence"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "project_transactions_have_correct_absence"
+			          "ID": "project_transactions_have_absence"
 			        }
 			      ]
 			    },
@@ -33776,7 +33885,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_presence_hours_FC": {
+			    "measures_table_has_Old_Presence_hours_FC": {
 			      "Binding": {
 			        "ConceptualEntity": "Measures Table"
 			      },
@@ -33787,9 +33896,9 @@ cultureInfo en-US
 			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.presence_hours_FC": {
+			        "measures_table.Old_Presence_hours_FC": {
 			          "Target": {
-			            "Entity": "measures_table.presence_hours_FC"
+			            "Entity": "measures_table.Old_Presence_hours_FC"
 			          }
 			        }
 			      },
@@ -33800,12 +33909,12 @@ cultureInfo en-US
 			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.presence_hours_FC"
+			              "Role": "measures_table.Old_Presence_hours_FC"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_presence_hours_FC"
+			          "ID": "measures_tables_have_Old_Presence_hours_FC"
 			        }
 			      ]
 			    },
@@ -39389,131 +39498,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.9,
 			          "ID": "project_transactions_are_accounted_on_accounting_dates"
-			        }
-			      ]
-			    },
-			    "reporting_currency_has_measures_table_text_measure": {
-			      "Binding": {
-			        "ConceptualEntity": "Reporting Currency"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "reporting_currency": {
-			          "Target": {
-			            "Entity": "reporting_currency"
-			          }
-			        },
-			        "measures_table.text_measure": {
-			          "Target": {
-			            "Entity": "measures_table.text_measure"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "reporting_currency"
-			            },
-			            "Object": {
-			              "Role": "measures_table.text_measure"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "reporting_currencies_have_text_measure"
-			        }
-			      ]
-			    },
-			    "project_transaction_has_employment_type": {
-			      "Binding": {
-			        "ConceptualEntity": "Project Transactions"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "project_transaction": {
-			          "Target": {
-			            "Entity": "project_transaction"
-			          }
-			        },
-			        "employment_type": {
-			          "Target": {
-			            "Entity": "employment_type"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "project_transaction"
-			            },
-			            "Object": {
-			              "Role": "employment_type"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "project_transactions_have_employment_types"
-			        },
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "employment_type"
-			            },
-			            "Object": {
-			              "Role": "project_transaction"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "employment_types_have_project_transactions"
-			        }
-			      ]
-			    },
-			    "project_transaction_has_calendar": {
-			      "Binding": {
-			        "ConceptualEntity": "Project Transactions"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "project_transaction": {
-			          "Target": {
-			            "Entity": "project_transaction"
-			          }
-			        },
-			        "calendar": {
-			          "Target": {
-			            "Entity": "calendar"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "project_transaction"
-			            },
-			            "Object": {
-			              "Role": "calendar"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "project_transactions_have_calendars"
-			        },
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "calendar"
-			            },
-			            "Object": {
-			              "Role": "project_transaction"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "calendars_have_project_transactions"
 			        }
 			      ]
 			    },
