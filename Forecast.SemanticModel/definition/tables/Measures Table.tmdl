@@ -325,66 +325,65 @@ table 'Measures Table'
 
 	measure 'Old_1. // FTE' = ```
 			
-			// SUMX (
-			//     VALUES ( 'Project Transactions'[ProjectEmployeeId] ),
-			//     VAR FTECalculation =
-			//         CALCULATE (
-			//             DIVIDE (
-			//                 CALCULATE (
-			//                     SUM ( 'Project Transactions'[TotalHours] ),
-			//                     FILTER (
-			//                         ALL ( 'Time Code'[TimeCode] ),
-			//                         ISBLANK ( 'Time Code'[TimeCode] )
-			//                             || 'Time Code'[TimeCode]
-			//                             IN {
-			//                                 "400",
-			//                                 "401",
-			//                                 "402",
-			//                                 "403",
-			//                                 "8020",
-			//                                 "8040",
-			//                                 "8060",
-			//                                 "8080",
-			//                                 "9900",
-			//                                 "9911",
-			//                                 "9915",
-			//                                 "9916",
-			//                                 "9920",
-			//                                 "9922",
-			//                                 "9924",
-			//                                 "9930",
-			//                                 "9935",
-			//                                 "9940",
-			//                                 "9950",
-			//                                 "9960",
-			//                                 "9980",
-			//                                 "9982"
-			//                             }
-			//                     )
-			//                 ),
-			//                 CALCULATE(SUM('Project Transactions'[NormalWorkingHoursMonthly]), CROSSFILTER('Project Transactions'[Custom], 'Function'[FunctionId], none))
-			//             //     SUM ( 'Project Transactions'[NormalWorkingHoursMonthly] )
-			//             // ),
-			//             // KEEPFILTERS ( NOT 'Employment Type'[EmploymentTypeId] IN { 4, 5 } ),
-			//             // KEEPFILTERS ( 'Project Transactions'[Actuality] = "AC" ),
-			//             // KEEPFILTERS ( 'Project Transactions'[OverTime] = 0 ),
-			//             // 'Calendar'[Year Month] = MAX ( 'Calendar'[Year Month] ), USERELATIONSHIP('Project Transactions'[EmployeeFunctionId],'Function'[FunctionId])
-			//         // )
-			// VAR FcFte =
-			//             CALCULATE(
-			//     SUM('Project Transactions'[FteFc]),
-			//      KEEPFILTERS(
-			//             NOT 'Employment Type'[EmploymentTypeId] IN {4,5}
-			//         ))
+			SUMX (
+			    VALUES ( 'Project Transactions'[ProjectEmployeeId] ),
+			    VAR FTECalculation =
+			        CALCULATE (
+			            DIVIDE (
+			                CALCULATE (
+			                    SUM ( 'Project Transactions'[TotalHours] ),
+			                    FILTER (
+			                        ALL ( 'Time Code'[TimeCode] ),
+			                        ISBLANK ( 'Time Code'[TimeCode] )
+			                            || 'Time Code'[TimeCode]
+			                            IN {
+			                                "400",
+			                                "401",
+			                                "402",
+			                                "403",
+			                                "8020",
+			                                "8040",
+			                                "8060",
+			                                "8080",
+			                                "9900",
+			                                "9911",
+			                                "9915",
+			                                "9916",
+			                                "9920",
+			                                "9922",
+			                                "9924",
+			                                "9930",
+			                                "9935",
+			                                "9940",
+			                                "9950",
+			                                "9960",
+			                                "9980",
+			                                "9982"
+			                            }
+			                    )
+			                ),
+			                CALCULATE(SUM('Project Transactions'[NormalWorkingHoursMonthly]), CROSSFILTER('Project Transactions'[AdjustedFunction], 'Function'[FunctionId], none)))
+			            //     SUM ( 'Project Transactions'[NormalWorkingHoursMonthly] )
+			            // ),
+			            // KEEPFILTERS ( NOT 'Employment Type'[EmploymentTypeId] IN { 4, 5 } ),
+			            // KEEPFILTERS ( 'Project Transactions'[Actuality] = "AC" ),
+			            // KEEPFILTERS ( 'Project Transactions'[OverTime] = 0 ),
+			            // 'Calendar'[Year Month] = MAX ( 'Calendar'[Year Month] ), USERELATIONSHIP('Project Transactions'[EmployeeFunctionId],'Function'[FunctionId])
+			        // )
+			VAR FcFte =
+			            CALCULATE(
+			    SUM('Project Transactions'[FteFc]),
+			     KEEPFILTERS(
+			            NOT 'Employment Type'[EmploymentTypeId] IN {4,5}
+			        ))
 			
-			// VAR Result = FTECalculation+FcFte
+			VAR Result = FTECalculation+FcFte
 			
-			//     RETURN
-			//         IF ( Result <> 0, Result )
-			// )
+			    RETURN
+			        IF ( Result <> 0, Result )
+			)
 			
 			```
-		formatString: 0
 		displayFolder: HR
 		lineageTag: ac4c81db-67e2-4b8a-92c8-f6262e019652
 
@@ -1040,9 +1039,12 @@ table 'Measures Table'
 			                CALCULATE (
 			                    SUM ( 'Project Transactions'[TotalHours] ),
 			                    FILTER (
-			                        ALL ( 'Time Code'[TimeCode] ),
-			                        ISBLANK ( 'Time Code'[TimeCode] )
-			                            || 'Time Code'[TimeCode]
+			                        ALL ( 'Project Transactions'[TimeCode] ),
+			                        
+			                        ISBLANK ( 'Project Transactions'[TimeCode] )
+			                            // || 'Project Transactions'[TimeCode] <> "" 
+			                            ||
+			                             'Project Transactions'[TimeCode]
 			                            IN {
 			                                "400",
 			                                "401",
@@ -1065,7 +1067,8 @@ table 'Measures Table'
 			                                "9950",
 			                                "9960",
 			                                "9980",
-			                                "9982"
+			                                "9982",
+			                                ""
 			                            }
 			                    ),            
 			                    KEEPFILTERS ( NOT 'Employment Type'[EmploymentTypeId] IN { 4, 5 } ),
@@ -1073,9 +1076,12 @@ table 'Measures Table'
 			            // KEEPFILTERS('Project Transactions'[TransactionType] = 1),
 			            KEEPFILTERS ( 'Project Transactions'[OverTime] = 0 ),
 			            'Calendar'[Year Month] = MAX ( 'Calendar'[Year Month] )
-			                ),
-			                CALCULATE(SUM ( 'Project Transactions'[NormalWorkingHoursMonthly] ),
-			                CROSSFILTER('Project Transactions'[AdjustedFunction], 'Function'[FunctionId], none))
+			                )
+			                ,
+			                CALCULATE(SUM ( 'Project Transactions'[NormalWorkingHoursMonthly] )
+			                ,
+			                CROSSFILTER('Project Transactions'[AdjustedFunction], 'Function'[FunctionId], none)
+			                )
 			            )
 			
 			        )
