@@ -53,6 +53,7 @@ ref table ActualityOrgin
 ref table 'GL Account Hierarchy'
 ref table Goals
 ref table Parameter
+ref table ForecastVersionMap
 
 ref cultureInfo en-US
 

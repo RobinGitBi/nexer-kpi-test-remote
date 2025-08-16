@@ -1470,6 +1470,191 @@ table 'Measures Table'
 		displayFolder: Project Transactions Revenue
 		lineageTag: bc28df31-a7bb-4859-8c12-7e1bf51539a9
 
+	measure FC+Actuals = ```
+			IF(SELECTEDVALUE(Actuality[Actuality]) = "FC2", 
+			CALCULATE([4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS(Actuality[ActualityId] ="AC") ,FILTER(ALL('Calendar'), 'Calendar'[Month Number] = 1))) 
+			
+			+ CALCULATE([4. P&L_Cal_ContextTransitionToMonth], Actuality[ActualityId] = "FC2")
+			```
+		displayFolder: Financials
+		lineageTag: 475eecf5-f785-469e-b507-158e9dd11dad
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Full Year (AC + FC)' = ```
+			
+			VAR CurrentYear = YEAR ( MAX ( 'Calendar'[Date] ) )
+			VAR YearStart   = DATE ( CurrentYear, 1, 1 )
+			VAR YearEnd     = DATE ( CurrentYear, 12, 31 )
+			VAR DatesInYear = DATESBETWEEN ( 'Calendar'[Date], YearStart, YearEnd )
+			
+			-- sista datum där AC faktiskt har värde inom året
+			VAR LastACDateInYear =
+			    CALCULATE (
+			        MAX ( 'Calendar'[Date] ),
+			        'P&L'[Actuality] = "AC",                 -- enkel kolumn=jämförelse funkar
+			        DatesInYear,                              -- årsurval som tabellfilter
+			        FILTER ( DatesInYear, NOT ISBLANK ( [Amount (AC)] ) )   -- måttvillkor i FILTER()
+			    )
+			
+			VAR AC_Part =
+			    IF (
+			        NOT ISBLANK ( LastACDateInYear ),
+			        CALCULATE ( [Amount (AC)], DATESBETWEEN ( 'Calendar'[Date], YearStart, LastACDateInYear ) )
+			    )
+			
+			VAR FirstFCDate = IF ( NOT ISBLANK ( LastACDateInYear ), LastACDateInYear + 1, YearStart )
+			
+			VAR FC_Part =
+			    CALCULATE ( [Amount (FC)], DATESBETWEEN ( 'Calendar'[Date], FirstFCDate, YearEnd ) )
+			
+			RETURN
+			    AC_Part + FC_Part
+			
+			```
+		displayFolder: Financials
+		lineageTag: e0156f0b-1399-410d-9eb7-3763dc0c60a4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Remaining Forecast' =
+			
+			VAR LastDateWithSales =
+			    CALCULATE (
+			        CALCULATE(MAX ( 'P&L'[AccountingDate] ), KEEPFILTERS(Actuality[ActualityId] ="AC")),
+			        ALL ( 'P&L' )
+			    )
+			VAR Result =
+			        CALCULATE([4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS('P&L'[Actuality] ="FC2"),
+			        KEEPFILTERS ( 'Calendar'[Date] > LastDateWithSales ))
+			RETURN
+			    Result
+		formatString: General Date
+		displayFolder: P&L Currency Conversions
+		lineageTag: dbf612a5-9748-4e42-b646-1a04aa324c1a
+
+	measure 'Amount (AC)' = ```
+			
+			CALCULATE ( [4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS ( 'P&L'[Actuality] = "AC" ) )
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: c6b74f14-6858-4699-a053-66f8817fd941
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Amount (BU)' =
+			
+			CALCULATE ( [4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS ( 'P&L'[Actuality] = "BU" ) )
+		displayFolder: P&L Currency Conversions
+		lineageTag: 7d605b4c-ab4a-4abc-a76e-e52beb2ee20a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Amount (FC - Selected)' =
+			
+			VAR v = SELECTEDVALUE ( 'P&L'[Actuality] )
+			RETURN
+			CALCULATE ( [4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS ( 'P&L'[Actuality] = v ) )
+		displayFolder: P&L Currency Conversions
+		lineageTag: 6ff9ceed-6419-49e6-b6cd-a9e0ab7cd237
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Monthly (AC or FC or BU by Version)' = ```
+			
+			VAR v         = SELECTEDVALUE ( 'P&L'[Actuality] )
+			VAR MonthEnd  = EOMONTH ( MAX ( 'Calendar'[Date] ), 0 )
+			VAR YearStart = DATE ( YEAR ( MonthEnd ), 1, 1 )
+			
+			-- cutoff från mappingtabellen (gäller endast FC1..FC12)
+			VAR CutoffMonth =
+			    LOOKUPVALUE ( ForecastVersionMap[CutoffMonth], ForecastVersionMap[Version], v )
+			
+			VAR CutoffEnd =
+			    IF ( NOT ISBLANK ( CutoffMonth ) && CutoffMonth > 0,
+			         EOMONTH ( YearStart, CutoffMonth - 1 ),
+			         BLANK ()
+			    )
+			
+			RETURN
+			SWITCH (
+			    TRUE (),
+			    v = "AC", [Amount (AC)],
+			    v = "BU", [Amount (BU)],
+			
+			    -- FC1: hel FC
+			    NOT ISBLANK ( CutoffMonth ) && CutoffMonth = 0, [Amount (FC - Selected)],
+			
+			    -- FC2..FC12: AC t.o.m. cutoff, annars vald FC-version
+			    NOT ISBLANK ( CutoffMonth ),
+			        IF ( MonthEnd <= CutoffEnd, [Amount (AC)], [Amount (FC - Selected)] ),
+			
+			    -- fallback om inget är valt: visa AC
+			    [Amount (AC)]
+			)
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: 51b8d6a0-5dfc-4294-9a32-6b2949fe637d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Full Year (AC + FC or BU by Version)' = ```
+			
+			VAR v         = SELECTEDVALUE ( 'P&L'[Actuality] )
+			VAR Anchor    = MAX ( 'Calendar'[Date] )
+			VAR Y         = YEAR ( Anchor )
+			VAR YearStart = DATE ( Y, 1, 1 )
+			VAR YearEnd   = DATE ( Y, 12, 31 )
+			
+			VAR CutoffMonth =
+			    LOOKUPVALUE ( ForecastVersionMap[CutoffMonth], ForecastVersionMap[Version], v )
+			
+			VAR CutoffEnd =
+			    IF ( NOT ISBLANK ( CutoffMonth ) && CutoffMonth > 0,
+			         EOMONTH ( YearStart, CutoffMonth - 1 ),
+			         BLANK ()
+			    )
+			
+			VAR AC_Part =
+			    -- AC-del finns endast om CutoffMonth > 0 (dvs FC2..FC12)
+			    IF (
+			        NOT ISBLANK ( CutoffMonth ) && CutoffMonth > 0,
+			        CALCULATE ( [Amount (AC)], DATESBETWEEN ( 'Calendar'[Date], YearStart, CutoffEnd ) )
+			    )
+			
+			VAR FC_Part =
+			    -- FC1: hela året FC
+			    IF (
+			        NOT ISBLANK ( CutoffMonth ) && CutoffMonth = 0,
+			        CALCULATE ( [Amount (FC - Selected)], DATESBETWEEN ( 'Calendar'[Date], YearStart, YearEnd ) ),
+			        -- FC2..FC12: FC från dagen efter cutoff t.o.m. YearEnd
+			        IF (
+			            NOT ISBLANK ( CutoffMonth ),
+			            CALCULATE ( [Amount (FC - Selected)], DATESBETWEEN ( 'Calendar'[Date], CutoffEnd + 1, YearEnd ) )
+			        )
+			    )
+			
+			RETURN
+			SWITCH (
+			    TRUE (),
+			    v = "AC",
+			        CALCULATE ( [Amount (AC)], DATESBETWEEN ( 'Calendar'[Date], YearStart, YearEnd ) ),
+			    v = "BU",
+			        CALCULATE ( [Amount (BU)], DATESBETWEEN ( 'Calendar'[Date], YearStart, YearEnd ) ),
+			    NOT ISBLANK ( CutoffMonth ),
+			        COALESCE ( AC_Part, 0 ) + COALESCE ( FC_Part, 0 ),
+			    -- fallback om inget är valt: visa helår AC
+			    CALCULATE ( [Amount (AC)], DATESBETWEEN ( 'Calendar'[Date], YearStart, YearEnd ) )
+			)
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: b9c15ebb-dcc1-4711-8943-fb4e1e76ac0e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition 'Measures Table' = m
 		mode: import
 		source =
