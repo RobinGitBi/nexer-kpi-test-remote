@@ -475,9 +475,9 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Correct Absence' = ```
+	measure Absence = ```
 			
-			    ([Total Hours] - [Correct Presence Hours AC]) / [Total Hours]
+			    DIVIDE(([Total Hours] - [Correct Presence Hours AC]) ,[Total Hours])
 			```
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: HR
@@ -1124,7 +1124,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Correct OH%' =
+	measure OH% =
 			
 			
 			VAR  FcFte = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4))
@@ -1140,8 +1140,8 @@ table 'Measures Table'
 			
 			
 			RETURN Result
-		formatString: 0.00\ %;-0.00\ %;0.00\ %
-		displayFolder: KPIs
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: HR
 		lineageTag: bb2813e4-7226-47f7-8765-77a986ac7449
 
 	measure SemiCorrectFCFTE = CALCULATE(SUM('Project Transactions'[FteFc]), KEEPFILTERS('Employment Type'[EmploymentTypeId] <4))
