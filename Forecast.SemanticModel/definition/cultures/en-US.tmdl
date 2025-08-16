@@ -26911,7 +26911,7 @@ cultureInfo en-US
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Correct FTE"
+			          "ConceptualProperty": "FTE"
 			        }
 			      },
 			      "State": "Generated",

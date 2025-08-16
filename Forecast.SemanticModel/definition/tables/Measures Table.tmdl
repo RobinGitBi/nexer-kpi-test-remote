@@ -1029,7 +1029,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Correct FTE' = ```
+	measure FTE = ```
 			
 			SUMX (
 			    VALUES ( 'Project Transactions'[ProjectEmployeeId] ),
@@ -1087,7 +1087,7 @@ table 'Measures Table'
 			        )
 			        +
 			                    CALCULATE(
-			    SUM('Project Transactions'[FteFc]))
+			    SUM('Project Transactions'[FteFc]), KEEPFILTERS(not 'Project Transactions'[EmploymentTypeId] in {4,5}))
 			    //  KEEPFILTERS(
 			    //         NOT 'Employment Type'[EmploymentTypeId] IN {4,5}
 			    //     ), trans)
@@ -1096,10 +1096,9 @@ table 'Measures Table'
 			)
 			
 			```
+		formatString: 0.0
 		displayFolder: HR
 		lineageTag: 8355551f-746a-4846-95e9-3edb8f73ea4f
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure OFTE = ```
 			
@@ -1137,7 +1136,7 @@ table 'Measures Table'
 			
 			VAR FcOhPerc = DIVIDE( FcFteProduction, FcFte)
 			
-			VAR Result = if(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", DIVIDE(CALCULATE([Correct FTE], KEEPFILTERS('Function'[FunctionId] =  "20")), [Correct FTE]), FcOhPerc )
+			VAR Result = if(SELECTEDVALUE('Project Transactions'[Actuality]) = "AC", DIVIDE(CALCULATE([FTE], KEEPFILTERS('Function'[FunctionId] =  "20")), [FTE]), FcOhPerc )
 			
 			
 			RETURN Result
