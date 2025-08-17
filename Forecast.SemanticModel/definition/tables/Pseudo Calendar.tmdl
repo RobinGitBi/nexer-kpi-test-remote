@@ -24,6 +24,7 @@ table 'Pseudo Calendar'
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: Calendar[Year Month]
+		sortByColumn: Year
 
 		annotation SummarizationSetBy = Automatic
 

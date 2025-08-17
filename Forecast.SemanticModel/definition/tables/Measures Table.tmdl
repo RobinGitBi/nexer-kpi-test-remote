@@ -1435,7 +1435,7 @@ table 'Measures Table'
 		formatString: 0
 		lineageTag: 9bb93c32-d7dd-41e4-857b-1f655196a6dc
 
-	measure TextMeasure =
+	measure TextMeasure = ```
 			
 			
 			VAR ActualityTxt   = SELECTEDVALUE ( ActualityOrgin[ActualityOrigin], "Multiple Versions" )
@@ -1457,16 +1457,17 @@ table 'Measures Table'
 			        "Now Presenting " & ActualityTxt & " in K" & CurrTxt
 			            & " "
 			            & CONCATENATEX (
-			                VALUES ( 'Calendar'[Year Month] ),         -- t.ex. "2025-01"
+			                VALUES ( 'Calendar'[Year Month] ),      
 			                'Calendar'[Year Month],
 			                ", ",
-			                'Calendar'[Year Month]                     -- sortera rätt
+			                'Calendar'[Year Month]                   
 			            )
 			    )
 			)
 			
 			
-			// "Now Presenting "&SELECTEDVALUE(ActualityOrgin[ActualityOrigin], "Multiple Versions")&" in K"&SELECTEDVALUE('Reporting Currency'[SourceCurrency]) &" "& FORMAT(MIN('Calendar'[Date]), "YYYY-MM-DD") &" - " & FORMAT(MAX('Calendar'[Date]), "YYYY-MM-DD")
+			
+			```
 		displayFolder: Project Transactions Revenue
 		lineageTag: bc28df31-a7bb-4859-8c12-7e1bf51539a9
 
@@ -1764,19 +1765,19 @@ table 'Measures Table'
 
 	measure 'Actual & Budget' = ```
 			
-			//  [Sales Until] + [Budgets Until]
+			 [Sales Until] + [Budgets Until]
 			
 			
-			VAR SelectedVers =
-			    VALUES ( 'ActualityOrgin'[ActualityOrigin] )          -- what the slicer selected
-			VAR SelectedPlusAC =
-			    UNION ( SelectedVers, ROW ( "ActualityOrigin", "AC" ) ) -- force AC in
-			RETURN
-			CALCULATE (
-			    [Sales Until] + [Budgets Until],                                              -- your base measure
-			    REMOVEFILTERS ( 'ActualityOrgin'[ActualityOrigin] ),  -- clear slicer filter
-			    TREATAS ( SelectedPlusAC, 'ActualityOrgin'[ActualityOrigin] )
-			)
+			// VAR SelectedVers =
+			//     VALUES ( 'ActualityOrgin'[ActualityOrigin] )          -- what the slicer selected
+			// VAR SelectedPlusAC =
+			//     UNION ( SelectedVers, ROW ( "ActualityOrigin", "AC" ) ) -- force AC in
+			// RETURN
+			// CALCULATE (
+			//     [Sales Until] + [Budgets Until],                                              -- your base measure
+			//     REMOVEFILTERS ( 'ActualityOrgin'[ActualityOrigin] ),  -- clear slicer filter
+			//     TREATAS ( SelectedPlusAC, 'ActualityOrgin'[ActualityOrigin] )
+			// )
 			
 			```
 		displayFolder: Financials
@@ -1907,8 +1908,24 @@ table 'Measures Table'
 			    EndDate
 			)
 			VAR FC1 = 
-			    CALCULATE([4. P&L_Cal_ContextTransitionToMonth], LEFT('P&L'[Actuality],2) = "FC",
+			    CALCULATE([4. P&L_Cal_ContextTransitionToMonth], 'P&L'[Actuality] = "FC1",
 			    Period,
+			    USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
+			    )
+			
+			
+			
+			VAR StartDate4 = MIN('Calendar'[Date]) 
+			VAR EndDate4 = ENDOFYEAR('Calendar'[Date])
+			VAR Period4 = 
+			DATESBETWEEN(
+			    'Calendar'[Date],
+			    StartDate4,
+			    EndDate4
+			)
+			VAR BU = 
+			    CALCULATE([4. P&L_Cal_ContextTransitionToMonth], 'P&L'[Actuality] = "BU",
+			    Period4,
 			    USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
 			    )
 			
@@ -1927,8 +1944,24 @@ table 'Measures Table'
 			    USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
 			    )
 			
+			// VAR StartDate3 = MIN('Calendar'[Date]) 
+			// VAR EndDate3 = ENDOFYEAR('Calendar'[Date])
+			// VAR Period3 = 
+			// DATESBETWEEN(
+			//     'Calendar'[Date],
+			//     StartDate3,
+			//     EndDate3
+			// )
+			// VAR Actuals = 
+			//     CALCULATE([4. P&L_Cal_ContextTransitionToMonth], 'P&L'[Actuality] = "AC",
+			//     Period3,
+			//     USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
+			//     )
 			
-			RETURN IF(SELECTEDVALUE(Actuality[ActualityId]) = "FC1", FC1, FC2)
+			
+			
+			
+			 RETURN IF(SELECTEDVALUE('P&L'[Actuality]) ="FC1",FC1,IF(SELECTEDVALUE('P&L'[Actuality]) = "BU", BU, FC2))
 			
 			```
 		displayFolder: Financials
@@ -1957,14 +1990,27 @@ table 'Measures Table'
 			    StartDate2,
 			    EndDate2
 			)
-			VAR  FC2 = 
+			VAR  FC2To12 = 
 			CALCULATE([4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS('P&L'[Actuality] = "AC"), Period2,
+			USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])) 
+			
+			VAR StartDate3 = MIN('Calendar'[Date])
+			VAR EndDate3 = ENDOFYEAR('Calendar'[Date])
+			VAR Period3 = DATESBETWEEN(
+			    'Calendar'[Date],
+			    StartDate3,
+			    EndDate3
+			)
+			VAR  Actuals = 
+			CALCULATE([4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS('P&L'[Actuality] = "AC"), Period3,
 			USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])) 
 			
 			
 			
 			
-			RETURN IF(SELECTEDVALUE(Actuality[ActualityId]) = "FC1", FC1, FC2)
+			
+			
+			RETURN IF(SELECTEDVALUE(Actuality[ActualityId]) IN {"BU", "FC1"} , FC1, IF(SELECTEDVALUE('P&L'[Actuality]) = "AC", Actuals, FC2To12))
 			```
 		displayFolder: Financials
 		lineageTag: 8fbef769-dddc-43f9-bfaa-1d4d4d0f11f6
@@ -1973,25 +2019,65 @@ table 'Measures Table'
 
 	measure 'Actual & Budget2' = ```
 			
-			 [Sales Until2] + [Budgets Until2]
+			//  [Sales Until2] + [Budgets Until2]
 			
 			
-			// VAR SelectedVers =
-			//     VALUES ( 'ActualityOrgin'[ActualityOrigin] )          -- what the slicer selected
-			// VAR SelectedPlusAC =
-			//     UNION ( SelectedVers, ROW ( "ActualityOrigin", "AC" ) ) -- force AC in
-			// RETURN
-			// CALCULATE (
-			//     [Sales Until] + [Budgets Until],                                              -- your base measure
-			//     REMOVEFILTERS ( 'ActualityOrgin'[ActualityOrigin] ),  -- clear slicer filter
-			//     TREATAS ( SelectedPlusAC, 'ActualityOrgin'[ActualityOrigin] )
-			// )
+			VAR SelectedVers =
+			    VALUES ( 'ActualityOrgin'[ActualityOrigin] )          -- what the slicer selected
+			VAR SelectedPlusAC =
+			    UNION ( SelectedVers, ROW ( "ActualityOrigin", "AC" ) ) -- force AC in
+			RETURN
+			CALCULATE (
+			    [Sales Until2] + [Budgets Until2],                                              -- your base measure
+			    REMOVEFILTERS ( 'ActualityOrgin'[ActualityOrigin] ),  -- clear slicer filter
+			    TREATAS ( SelectedPlusAC, 'ActualityOrgin'[ActualityOrigin] )
+			)
 			
 			```
 		displayFolder: Financials
 		lineageTag: 48007a0d-654b-485e-a805-ce3bbbee7ccd
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Actuals and Budget3' =
+			
+			
+			VAR SelectedVers =
+			    VALUES ( 'ActualityOrgin'[ActualityOrigin] )          -- what the slicer selected
+			VAR SelectedPlusAC =
+			    UNION ( SelectedVers, ROW ( "ActualityOrigin", "AC" ) ) -- force AC in
+			RETURN
+			CALCULATE (
+			    [Sales Until2] + [Budgets Until2],                                              -- your base measure
+			    REMOVEFILTERS ( 'ActualityOrgin'[ActualityOrigin] ),  -- clear slicer filter
+			    TREATAS ( SelectedPlusAC, 'ActualityOrgin'[ActualityOrigin] )
+			)
+		displayFolder: Financials
+		lineageTag: 2728c1ef-9689-46b8-9ec7-3fccff922a97
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'P&L Revenue' = ```
+			
+			 
+			 VAR TotalRevenue = 
+			        CALCULATE(
+			            [4. P&L_Cal_ContextTransitionToMonth],
+			            'GL Account Hierarchy'[FirstLevelIdAndName] = "30 Total Revenues"
+			        )
+			
+			        RETURN
+			
+			        TotalRevenue
+			```
+		displayFolder: Financials
+		lineageTag: 156b00f8-2e10-48c0-a4d2-cd2b3b8b00c7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'P&L Revenue Budget' = CALCULATE()
+		displayFolder: Financials
+		lineageTag: a5cc088f-eba9-4bd8-85b8-85f17e1d0847
 
 	partition 'Measures Table' = m
 		mode: import
