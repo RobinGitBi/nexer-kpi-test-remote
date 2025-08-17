@@ -1906,11 +1906,29 @@ table 'Measures Table'
 			    StartDate,
 			    EndDate
 			)
-			RETURN
+			VAR FC1 = 
 			    CALCULATE([4. P&L_Cal_ContextTransitionToMonth], LEFT('P&L'[Actuality],2) = "FC",
 			    Period,
 			    USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
 			    )
+			
+			
+			VAR StartDate2 = MIN('Project Transactions'[Actualitydate]) 
+			VAR EndDate2 = ENDOFYEAR('Calendar'[Date])
+			VAR Period2 = 
+			DATESBETWEEN(
+			    'Calendar'[Date],
+			    StartDate2,
+			    EndDate2
+			)
+			VAR FC2 = 
+			    CALCULATE([4. P&L_Cal_ContextTransitionToMonth], LEFT('P&L'[Actuality],2) = "FC",
+			    Period2,
+			    USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
+			    )
+			
+			
+			RETURN IF(SELECTEDVALUE(Actuality[ActualityId]) = "FC1", FC1, FC2)
 			
 			```
 		displayFolder: Financials
@@ -1918,7 +1936,7 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Sales Until2' =
+	measure 'Sales Until2' = ```
 			
 			
 			VAR StartDate = BLANK()
@@ -1928,9 +1946,26 @@ table 'Measures Table'
 			    StartDate,
 			    EndDate
 			)
-			RETURN
+			VAR  FC1 = 
 			CALCULATE([4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS('P&L'[Actuality] = "AC"), Period,
-			USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date]))
+			USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])) 
+			
+			VAR StartDate2 = MIN('Calendar'[Date])
+			VAR EndDate2 = MAX('P&L'[ActualityDate]) -1 
+			VAR Period2 = DATESBETWEEN(
+			    'Calendar'[Date],
+			    StartDate2,
+			    EndDate2
+			)
+			VAR  FC2 = 
+			CALCULATE([4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS('P&L'[Actuality] = "AC"), Period2,
+			USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])) 
+			
+			
+			
+			
+			RETURN IF(SELECTEDVALUE(Actuality[ActualityId]) = "FC1", FC1, FC2)
+			```
 		displayFolder: Financials
 		lineageTag: 8fbef769-dddc-43f9-bfaa-1d4d4d0f11f6
 
