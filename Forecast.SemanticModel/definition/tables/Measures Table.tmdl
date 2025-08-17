@@ -1735,9 +1735,10 @@ table 'Measures Table'
 			RETURN
 			CALCULATE([4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS('P&L'[Actuality] = "AC"), Period,
 			USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date]))
-		formatString: 0
 		displayFolder: Financials
 		lineageTag: eddfa65f-fe12-43c5-a358-0ce2d216b300
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Budgets Until' = ```
 			
@@ -1750,7 +1751,7 @@ table 'Measures Table'
 			    EndDate
 			)
 			RETURN
-			    CALCULATE([4. P&L_Cal_ContextTransitionToMonth], 'P&L'[Actuality] = "FC2",
+			    CALCULATE([4. P&L_Cal_ContextTransitionToMonth], LEFT('P&L'[Actuality],2) = "FC",
 			    Period,
 			    USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
 			    )
@@ -1761,9 +1762,23 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Actual & Budget' =
+	measure 'Actual & Budget' = ```
 			
-			[Sales Until] + [Budgets Until]
+			//  [Sales Until] + [Budgets Until]
+			
+			
+			VAR SelectedVers =
+			    VALUES ( 'ActualityOrgin'[ActualityOrigin] )          -- what the slicer selected
+			VAR SelectedPlusAC =
+			    UNION ( SelectedVers, ROW ( "ActualityOrigin", "AC" ) ) -- force AC in
+			RETURN
+			CALCULATE (
+			    [Sales Until] + [Budgets Until],                                              -- your base measure
+			    REMOVEFILTERS ( 'ActualityOrgin'[ActualityOrigin] ),  -- clear slicer filter
+			    TREATAS ( SelectedPlusAC, 'ActualityOrgin'[ActualityOrigin] )
+			)
+			
+			```
 		displayFolder: Financials
 		lineageTag: 9ecb91af-9442-4368-9d36-d395ba94e3f7
 
@@ -1781,6 +1796,167 @@ table 'Measures Table'
 			)
 		displayFolder: Financials
 		lineageTag: 138df3af-260e-4f16-a235-4bc5cef7e619
+
+	measure Measure = IF(SELECTEDVALUE('Pseudo Calendar'[Month Number]) =1, [4. P&L_Cal_ContextTransitionToMonth], [Actual & Budget])
+		displayFolder: Financials
+		lineageTag: 3e6cf370-176f-4a66-bdf4-923335559cfc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Selected ShortCode' = ```
+			
+			SELECTEDVALUE ( ActualityOrgin[ActualityOrigin] )   -- "AC","BU","FC1".."FC12"
+			
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 4ebd888b-e4bd-4fe5-9f09-bb06777edba1
+
+	measure 'Sales Until (Scenario)' = ```
+			
+			
+			VAR StartDate = STARTOFYEAR('Calendar'[Date])
+			VAR EndDate   = MAX('Calendar'[Date])
+			VAR Period    = DATESBETWEEN('Calendar'[Date], StartDate, EndDate)
+			
+			VAR lbl = SELECTEDVALUE('P&L'[Actuality])   -- ex "FC202502", "BU", "AC"
+			VAR n   = VALUE(RIGHT(lbl,2))               -- 02, 03 … 12  (hämtar sista två siffrorna)
+			
+			RETURN
+			SWITCH (
+			    TRUE(),
+			    lbl = "AC",
+			        CALCULATE(
+			            [4. P&L_Cal_ContextTransitionToMonth],
+			            KEEPFILTERS('P&L'[Actuality] = "AC"),
+			            Period,
+			            USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
+			        ),
+			    lbl = "BU", 0,
+			    LEFT(lbl,2) = "FC",
+			        CALCULATE(
+			            [4. P&L_Cal_ContextTransitionToMonth],
+			            KEEPFILTERS('P&L'[Actuality] = "AC"),
+			            Period,
+			            KEEPFILTERS(MONTH('Calendar'[Date]) < n),
+			            USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
+			        )
+			)
+			
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: a7b6e7b8-3979-4ce5-bf5d-095c70ba0464
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Budgets Until (Scenario)' = ```
+			
+			
+			VAR StartDate = MAX('Calendar'[Date]) + 1
+			VAR EndDate   = ENDOFYEAR('Calendar'[Date])
+			VAR Period    = DATESBETWEEN('Calendar'[Date], StartDate, EndDate)
+			
+			VAR lbl = SELECTEDVALUE('P&L'[Actuality])   -- ex "FC202502", "BU", "AC"
+			VAR n   = VALUE(RIGHT(lbl,2))
+			
+			RETURN
+			SWITCH (
+			    TRUE(),
+			    lbl = "AC", 0,
+			    lbl = "BU",
+			        CALCULATE(
+			            [4. P&L_Cal_ContextTransitionToMonth],
+			            KEEPFILTERS('P&L'[Actuality] = "BU"),
+			            DATESBETWEEN('Calendar'[Date], STARTOFYEAR('Calendar'[Date]), ENDOFYEAR('Calendar'[Date])),
+			            USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
+			        ),
+			    LEFT(lbl,2) = "FC",
+			        CALCULATE(
+			            [4. P&L_Cal_ContextTransitionToMonth],
+			            KEEPFILTERS('P&L'[Actuality] = lbl),   -- använd exakt vald FCxxxx
+			            Period,
+			            KEEPFILTERS(MONTH('Calendar'[Date]) >= n),
+			            USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
+			        )
+			)
+			
+			
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 0db54ff5-e23f-4105-a1b3-ada790512666
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Actual & Budget (Scenario)' = ```
+			
+			[Sales Until (Scenario)] + [Budgets Until (Scenario)]
+			
+			```
+		displayFolder: Project Transactions Revenue
+		lineageTag: 70cdd0e1-a7a5-438d-ac5f-c9b0bb158223
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Budgets Until2' = ```
+			
+			VAR StartDate = MIN('Calendar'[Date]) 
+			VAR EndDate = ENDOFYEAR('Calendar'[Date])
+			VAR Period = 
+			DATESBETWEEN(
+			    'Calendar'[Date],
+			    StartDate,
+			    EndDate
+			)
+			RETURN
+			    CALCULATE([4. P&L_Cal_ContextTransitionToMonth], LEFT('P&L'[Actuality],2) = "FC",
+			    Period,
+			    USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
+			    )
+			
+			```
+		displayFolder: Financials
+		lineageTag: fc66dee2-816b-45ce-9032-3c1dd37b4eec
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Until2' =
+			
+			
+			VAR StartDate = BLANK()
+			VAR EndDate = BLANK()
+			VAR Period = DATESBETWEEN(
+			    'Calendar'[Date],
+			    StartDate,
+			    EndDate
+			)
+			RETURN
+			CALCULATE([4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS('P&L'[Actuality] = "AC"), Period,
+			USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date]))
+		displayFolder: Financials
+		lineageTag: 8fbef769-dddc-43f9-bfaa-1d4d4d0f11f6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Actual & Budget2' = ```
+			
+			 [Sales Until2] + [Budgets Until2]
+			
+			
+			// VAR SelectedVers =
+			//     VALUES ( 'ActualityOrgin'[ActualityOrigin] )          -- what the slicer selected
+			// VAR SelectedPlusAC =
+			//     UNION ( SelectedVers, ROW ( "ActualityOrigin", "AC" ) ) -- force AC in
+			// RETURN
+			// CALCULATE (
+			//     [Sales Until] + [Budgets Until],                                              -- your base measure
+			//     REMOVEFILTERS ( 'ActualityOrgin'[ActualityOrigin] ),  -- clear slicer filter
+			//     TREATAS ( SelectedPlusAC, 'ActualityOrgin'[ActualityOrigin] )
+			// )
+			
+			```
+		displayFolder: Financials
+		lineageTag: 48007a0d-654b-485e-a805-ce3bbbee7ccd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition 'Measures Table' = m
 		mode: import
