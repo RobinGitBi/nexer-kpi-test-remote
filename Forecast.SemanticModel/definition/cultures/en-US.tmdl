@@ -16258,35 +16258,205 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.old_revenues": {
+			    "pseudo_calendar.px_week_num": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Revenues"
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "PxWeekNum"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "old revenues": {
+			          "px week num": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "Old_Revenues": {
+			          "PxWeekNum": {
 			            "Type": "Noun",
 			            "State": "Generated",
 			            "Weight": 0.99
 			          }
 			        },
 			        {
-			          "revenues": {
+			          "px week number": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        }
+			      ]
+			    },
+			    "pseudo_calendar.PX_year_week": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "PX Year Week"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "PX year week": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "year week": {
 			            "State": "Generated",
 			            "Weight": 0.97
 			          }
 			        },
 			        {
-			          "old income": {
+			          "px yr week": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "yr week": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.6
+			          }
+			        }
+			      ]
+			    },
+			    "pseudo_calendar.week_of_year": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "Week Of Year"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "week of year": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "week of yr": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        }
+			      ]
+			    },
+			    "pseudo_calendar.current_year_offset": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "Current Year Offset"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "current year offset": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "offset": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "year offset": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "current yr offset": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "yr offset": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.6
+			          }
+			        },
+			        {
+			          "latest year offset": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "contemporary year offset": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "present year offset": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "current year equalizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "current year compensation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "year equalizer": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
@@ -16296,189 +16466,39 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "income": {
+			          "year compensation": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.491
+			            "Weight": 0.5
 			          }
 			        },
 			        {
-			          "old proceeds": {
+			          "current year counterbalance": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "old profit": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "old return": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "old taking": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "proceeds": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "profit": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "return": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "taking": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
+			            "Weight": 0.492
 			          }
 			        }
 			      ]
 			    },
-			    "measures_table.Old_Price_per_hour": {
+			    "pseudo_calendar.day": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Price per hour"
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "Day"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Old_Price per hour": {
+			          "day": {
 			            "State": "Generated"
-			          }
-			        }
-			      ]
-			    },
-			    "measures_table.Old_Presence_hours_FC": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Presence Hours FC"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Old_Presence hours FC": {
-			            "State": "Generated"
-			          }
-			        }
-			      ]
-			    },
-			    "measures_table.Old_OH": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_OH%"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Old_OH%": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "old_oh percentage": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "old_oh pct": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        }
-			      ]
-			    },
-			    "measures_table.Old_1_____FTE": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_1. // FTE"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Old_1. // FTE": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "Old_1.": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "Old_1 . FTE": {
-			            "State": "Generated",
-			            "Weight": 0.97
 			          }
 			        }
 			      ]
@@ -16741,392 +16761,225 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.old_presence": {
+			    "pseudo_calendar.day_number": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Presence"
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "Day Number"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "old presence": {
+			          "day number": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "Old_Presence": {
+			          "day no": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "pseudo_calendar.month_year_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "MonthYearName"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "month year name": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "MonthYearName": {
 			            "Type": "Noun",
 			            "State": "Generated",
 			            "Weight": 0.99
 			          }
 			        },
 			        {
-			          "presence": {
+			          "month year": {
 			            "State": "Generated",
 			            "Weight": 0.97
 			          }
 			        },
 			        {
-			          "old attendance": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old occurrence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old incidence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old existence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old manifestation": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "attendance": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "occurrence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "incidence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "existence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "manifestation": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        }
-			      ]
-			    },
-			    "measures_table.old_X_hours": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_X_Hours"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "old X hours": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "Old_X_Hours": {
-			            "Type": "Noun",
-			            "State": "Generated",
-			            "Weight": 0.99
-			          }
-			        },
-			        {
-			          "X hours": {
+			          "year name": {
 			            "State": "Generated",
 			            "Weight": 0.97
 			          }
 			        },
 			        {
-			          "old x period": {
+			          "month yr": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.492
+			            "Weight": 0.75
 			          }
 			        },
 			        {
-			          "x period": {
+			          "month year nickname": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.485
+			            "Weight": 0.739
 			          }
 			        },
 			        {
-			          "old x eras": {
+			          "month year title": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.482
+			            "Weight": 0.739
 			          }
 			        },
 			        {
-			          "old x epoch": {
+			          "month year label": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.482
+			            "Weight": 0.739
 			          }
 			        },
 			        {
-			          "x eras": {
+			          "month year tag": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.475
+			            "Weight": 0.739
 			          }
 			        },
 			        {
-			          "x epoch": {
+			          "year nickname": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.475
+			            "Weight": 0.727
 			          }
 			        },
 			        {
-			          "old x age": {
+			          "year title": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.468
+			            "Weight": 0.727
 			          }
 			        },
 			        {
-			          "x age": {
+			          "year label": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.461
+			            "Weight": 0.727
+			          }
+			        },
+			        {
+			          "year tag": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        },
+			        {
+			          "mth year name": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
 			          }
 			        }
 			      ]
 			    },
-			    "measures_table.context_transition": {
+			    "pseudo_calendar.month": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "ContextTransition"
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "Month"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "context transition": {
+			          "month": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "ContextTransition": {
-			            "Type": "Noun",
-			            "State": "Generated",
-			            "Weight": 0.99
-			          }
-			        },
-			        {
-			          "transition": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "context changeover": {
+			          "mth": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "context evolution": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "context conversion": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "context alteration": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "context modification": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "changeover": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "evolution": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "conversion": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "alteration": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "modification": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
+			            "Weight": 0.736
 			          }
 			        }
 			      ]
 			    },
-			    "measures_table.old_FTE": {
+			    "pseudo_calendar.month_number": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_FTE"
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "Month Number"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "old FTE": {
+			          "month number": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "Old_FTE": {
+			          "month no": {
 			            "Type": "Noun",
-			            "State": "Generated",
-			            "Weight": 0.99
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        },
+			        {
+			          "mth number": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.6
 			          }
 			        }
 			      ]
@@ -20323,118 +20176,28 @@ cultureInfo en-US
 			      ],
 			      "NameType": "Identifier"
 			    },
-			    "measures_table.Old_Total_direct_cost": {
+			    "pseudo_calendar.quarter": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Total Direct Cost"
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "Quarter"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Old_Total direct cost": {
+			          "quarter": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "old_total direct price": {
+			          "qtr": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_total direct charge": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_total direct rate": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_total direct fee": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_total direct total": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_total direct expenditure": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "old_total direct budget": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "old_total direct amount": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "old_total direct outlay": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "old_total direct expense": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
+			            "Weight": 0.818
 			          }
 			        }
 			      ]
@@ -20509,78 +20272,121 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.gross_margin": {
+			    "pseudo_calendar.year_month": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Gross Margin"
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "Year Month"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "gross margin": {
+			          "year month": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "margin": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "aggregate margin": {
+			          "year mth": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.647
+			            "Weight": 0.75
 			          }
 			        },
 			        {
-			          "overall margin": {
+			          "yr month": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.647
+			            "Weight": 0.6
+			          }
+			        }
+			      ]
+			    },
+			    "pseudo_calendar.year": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "Year"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "year": {
+			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "whole margin": {
+			          "yr": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.647
+			            "Weight": 0.736
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "pseudo_calendar.date": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Pseudo Calendar",
+			          "ConceptualProperty": "Date"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "date": {
+			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "sum margin": {
+			          "moment": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.582
+			            "Weight": 0.736
 			          }
 			        },
 			        {
-			          "total margin": {
+			          "period": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.582
+			            "Weight": 0.714
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "pseudo_calendar": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Pseudo Calendar"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "pseudo calendar": {
+			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "gross boundary": {
+			          "pseudo almanac": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
@@ -20590,7 +20396,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "gross perimeter": {
+			          "pseudo datebook": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
@@ -20600,7 +20406,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "gross periphery": {
+			          "pseudo agenda": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
@@ -20610,237 +20416,53 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "boundary": {
+			          "pseudo logbook": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.491
+			            "Weight": 0.5
 			          }
 			        },
 			        {
-			          "perimeter": {
+			          "pseudo diary": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.491
-			          }
-			        }
-			      ]
-			    },
-			    "measures_table.Old_Gross_margin_hours": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Gross Margin Hours"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Old_Gross margin hours": {
-			            "State": "Generated"
+			            "Weight": 0.5
 			          }
 			        },
 			        {
-			          "old_gross margin period": {
+			          "pseudo chart": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.492
+			            "Weight": 0.485
 			          }
 			        },
 			        {
-			          "old_gross margin eras": {
+			          "pseudo schedule": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.482
+			            "Weight": 0.485
 			          }
 			        },
 			        {
-			          "old_gross margin epoch": {
+			          "pseudo timetable": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "old_gross margin age": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        }
-			      ]
-			    },
-			    "measures_table.Old_GM1_total_direct_costs": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_GM1 Total Direct Costs"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Old_GM1 total direct costs": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "old_gm1 aggregate direct cost": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.599
-			          }
-			        },
-			        {
-			          "old_gm1 overall direct cost": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.599
-			          }
-			        },
-			        {
-			          "old_gm1 total direct expenditure": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.514
-			          }
-			        },
-			        {
-			          "old_gm1 total direct price": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.499
-			          }
-			        },
-			        {
-			          "old_gm1 total direct charge": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.499
-			          }
-			        },
-			        {
-			          "old_gm1 total direct budget": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.499
-			          }
-			        },
-			        {
-			          "old_gm1 total direct expense": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.499
-			          }
-			        },
-			        {
-			          "old_gm1 total direct outlay": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.499
-			          }
-			        },
-			        {
-			          "old_gm1 total direct overhead": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.499
-			          }
-			        },
-			        {
-			          "old_gm1 total direct rate": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.474
-			          }
-			        }
-			      ]
-			    },
-			    "measures_table.Old_Gross_margin_hours__": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Gross Margin Hours  %"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Old_Gross margin hours  %": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "Old_Gross margin hours %": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "old_gross margin hour percentage": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.771
-			          }
-			        },
-			        {
-			          "old_gross margin hour pct": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.748
+			            "Weight": 0.485
 			          }
 			        }
 			      ]
@@ -20958,290 +20580,130 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.Old_Other_leave_ratio": {
+			    "measures_table.PL_revenue": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Other Leave Ratio"
+			          "ConceptualProperty": "P&L Revenue"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Old_Other leave ratio": {
+			          "P&L revenue": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "old_other leave relation": {
+			          "p&l income": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.508
+			            "Weight": 0.75
 			          }
 			        },
 			        {
-			          "old_other leave percentage": {
+			          "p&l profit": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.508
+			            "Weight": 0.727
 			          }
 			        },
 			        {
-			          "old_other leave quotient": {
+			          "p&l turnover": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.508
+			            "Weight": 0.727
 			          }
 			        },
 			        {
-			          "old_other leave relationship": {
+			          "p&l yield": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "old_other leave proportion": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_other leave share": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_other leave fraction": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_other leave part": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
+			            "Weight": 0.727
 			          }
 			        }
 			      ]
 			    },
-			    "measures_table.Old_Sick_leave_ratio": {
+			    "measures_table.actual__Budget2": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Sick Leave Ratio"
+			          "ConceptualProperty": "Actual & Budget2"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Old_Sick leave ratio": {
+			          "actual & Budget2": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "old_sick leave relation": {
+			          "real & budget2": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.508
+			            "Weight": 0.591
 			          }
 			        },
 			        {
-			          "old_sick leave percentage": {
+			          "existent & budget2": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.508
+			            "Weight": 0.591
 			          }
 			        },
 			        {
-			          "old_sick leave quotient": {
+			          "tangible & budget2": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "old_sick leave relationship": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "old_sick leave proportion": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_sick leave share": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_sick leave fraction": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "old_sick leave part": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
+			            "Weight": 0.591
 			          }
 			        }
 			      ]
 			    },
-			    "measures_table.Old_Vacation_ratio": {
+			    "measures_table.sales_Until2": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Vacation Ratio"
+			          "ConceptualProperty": "Sales Until2"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Old_Vacation ratio": {
+			          "sales Until2": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "old_vacation relation": {
+			          "sale until2": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old_vacation percentage": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old_vacation quotient": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old_vacation relationship": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old_vacation proportion": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "old_vacation share": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "old_vacation fraction": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "old_vacation part": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
+			            "Weight": 0.582
 			          }
 			        }
 			      ]
@@ -26556,25 +26018,18 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.fcr_EV": {
+			    "measures_table.budgets_Until2": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "fcrEV"
+			          "ConceptualProperty": "Budgets Until2"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "fcr EV": {
+			          "budgets Until2": {
 			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "fcrEV": {
-			            "Type": "Noun",
-			            "State": "Generated",
-			            "Weight": 0.99
 			          }
 			        }
 			      ]
@@ -26635,118 +26090,18 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.Old_Merged_presence": {
+			    "measures_table.cf": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "Old_Merged Presence"
+			          "ConceptualProperty": "CF"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Old_Merged presence": {
+			          "cf": {
 			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "old_merged attendance": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old_merged occurrence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old_merged incidence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old_merged existence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old_merged manifestation": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "old_merged company": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "old_merged dignity": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "old_merged charisma": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "old_merged aura": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "old_merged authority": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
 			          }
 			        }
 			      ]
@@ -26883,18 +26238,78 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.ofte": {
+			    "measures_table.actual__budget": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "OFTE"
+			          "ConceptualProperty": "Actual & Budget"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "ofte": {
+			          "actual & budget": {
 			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "actual & account": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "actual & cost": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "actual & finance": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "real & budget": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "existent & budget": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "tangible & budget": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
 			          }
 			        }
 			      ]
@@ -26935,55 +26350,78 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table.semi_correct_FCFTE": {
+			    "measures_table.budgets_until": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "SemiCorrectFCFTE"
+			          "ConceptualProperty": "Budgets Until"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "semi correct FCFTE": {
+			          "budgets until": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "SemiCorrectFCFTE": {
-			            "Type": "Noun",
-			            "State": "Generated",
-			            "Weight": 0.99
-			          }
-			        }
-			      ]
-			    },
-			    "measures_table.SemiCorrectFCOH": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Measures Table",
-			          "ConceptualProperty": "SemiCorrectFCOH%"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "SemiCorrectFCOH%": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "semicorrectfcoh percentage": {
+			          "finance until": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.75
+			            "Weight": 0.485
 			          }
 			        },
 			        {
-			          "semicorrectfcoh pct": {
+			          "fund until": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "resource until": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "account until": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.sales_until": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures Table",
+			          "ConceptualProperty": "Sales Until"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "sales until": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "sale until": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
@@ -30204,20 +29642,20 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "project_transaction_has_measures_table_SemiCorrectFCOH": {
+			    "measures_table_has_sales_until": {
 			      "Binding": {
-			        "ConceptualEntity": "Project Transactions"
+			        "ConceptualEntity": "Measures Table"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "project_transaction": {
+			        "measures_table": {
 			          "Target": {
-			            "Entity": "project_transaction"
+			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.SemiCorrectFCOH": {
+			        "measures_table.sales_until": {
 			          "Target": {
-			            "Entity": "measures_table.SemiCorrectFCOH"
+			            "Entity": "measures_table.sales_until"
 			          }
 			        }
 			      },
@@ -30225,32 +29663,32 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "project_transaction"
+			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.SemiCorrectFCOH"
+			              "Role": "measures_table.sales_until"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "project_transactions_have_SemiCorrectFCOH"
+			          "ID": "measures_tables_have_sales_until"
 			        }
 			      ]
 			    },
-			    "project_transaction_has_measures_table_semi_correct_FCFTE": {
+			    "measures_table_has_budgets_until": {
 			      "Binding": {
-			        "ConceptualEntity": "Project Transactions"
+			        "ConceptualEntity": "Measures Table"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "project_transaction": {
+			        "measures_table": {
 			          "Target": {
-			            "Entity": "project_transaction"
+			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.semi_correct_FCFTE": {
+			        "measures_table.budgets_until": {
 			          "Target": {
-			            "Entity": "measures_table.semi_correct_FCFTE"
+			            "Entity": "measures_table.budgets_until"
 			          }
 			        }
 			      },
@@ -30258,15 +29696,15 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "project_transaction"
+			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.semi_correct_FCFTE"
+			              "Role": "measures_table.budgets_until"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "project_transactions_have_semi_correct_FCFTE"
+			          "ID": "measures_tables_have_budgets_until"
 			        }
 			      ]
 			    },
@@ -30303,7 +29741,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_ofte": {
+			    "measures_table_has_actual__budget": {
 			      "Binding": {
 			        "ConceptualEntity": "Measures Table"
 			      },
@@ -30314,9 +29752,9 @@ cultureInfo en-US
 			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.ofte": {
+			        "measures_table.actual__budget": {
 			          "Target": {
-			            "Entity": "measures_table.ofte"
+			            "Entity": "measures_table.actual__budget"
 			          }
 			        }
 			      },
@@ -30327,12 +29765,12 @@ cultureInfo en-US
 			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.ofte"
+			              "Role": "measures_table.actual__budget"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_ofte"
+			          "ID": "measures_tables_have_actual__budget"
 			        }
 			      ]
 			    },
@@ -30402,20 +29840,20 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_Merged_presence": {
+			    "pseudo_calendar_has_measures_table_cf": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.Old_Merged_presence": {
+			        "measures_table.cf": {
 			          "Target": {
-			            "Entity": "measures_table.Old_Merged_presence"
+			            "Entity": "measures_table.cf"
 			          }
 			        }
 			      },
@@ -30423,15 +29861,48 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_Merged_presence"
+			              "Role": "measures_table.cf"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_Merged_presence"
+			          "ID": "pseudo_calendars_have_cf"
+			        }
+			      ]
+			    },
+			    "calendar_has_measures_table_cf": {
+			      "Binding": {
+			        "ConceptualEntity": "Calendar"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "calendar": {
+			          "Target": {
+			            "Entity": "calendar"
+			          }
+			        },
+			        "measures_table.cf": {
+			          "Target": {
+			            "Entity": "measures_table.cf"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "calendar"
+			            },
+			            "Object": {
+			              "Role": "measures_table.cf"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "calendars_have_cf"
 			        }
 			      ]
 			    },
@@ -30468,7 +29939,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_fcr_EV": {
+			    "measures_table_has_budgets_Until2": {
 			      "Binding": {
 			        "ConceptualEntity": "Measures Table"
 			      },
@@ -30479,9 +29950,9 @@ cultureInfo en-US
 			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.fcr_EV": {
+			        "measures_table.budgets_Until2": {
 			          "Target": {
-			            "Entity": "measures_table.fcr_EV"
+			            "Entity": "measures_table.budgets_Until2"
 			          }
 			        }
 			      },
@@ -30492,12 +29963,12 @@ cultureInfo en-US
 			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.fcr_EV"
+			              "Role": "measures_table.budgets_Until2"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_fcr_EV"
+			          "ID": "measures_tables_have_budgets_Until2"
 			        }
 			      ]
 			    },
@@ -32104,7 +31575,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_Vacation_ratio": {
+			    "measures_table_has_sales_Until2": {
 			      "Binding": {
 			        "ConceptualEntity": "Measures Table"
 			      },
@@ -32115,9 +31586,9 @@ cultureInfo en-US
 			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.Old_Vacation_ratio": {
+			        "measures_table.sales_Until2": {
 			          "Target": {
-			            "Entity": "measures_table.Old_Vacation_ratio"
+			            "Entity": "measures_table.sales_Until2"
 			          }
 			        }
 			      },
@@ -32128,16 +31599,16 @@ cultureInfo en-US
 			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_Vacation_ratio"
+			              "Role": "measures_table.sales_Until2"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_Vacation_ratio"
+			          "ID": "measures_tables_have_sales_Until2"
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_Sick_leave_ratio": {
+			    "measures_table_has_actual__Budget2": {
 			      "Binding": {
 			        "ConceptualEntity": "Measures Table"
 			      },
@@ -32148,9 +31619,9 @@ cultureInfo en-US
 			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.Old_Sick_leave_ratio": {
+			        "measures_table.actual__Budget2": {
 			          "Target": {
-			            "Entity": "measures_table.Old_Sick_leave_ratio"
+			            "Entity": "measures_table.actual__Budget2"
 			          }
 			        }
 			      },
@@ -32161,16 +31632,16 @@ cultureInfo en-US
 			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_Sick_leave_ratio"
+			              "Role": "measures_table.actual__Budget2"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_Sick_leave_ratio"
+			          "ID": "measures_tables_have_actual__Budget2"
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_Other_leave_ratio": {
+			    "measures_table_has_PL_revenue": {
 			      "Binding": {
 			        "ConceptualEntity": "Measures Table"
 			      },
@@ -32181,9 +31652,9 @@ cultureInfo en-US
 			            "Entity": "measures_table"
 			          }
 			        },
-			        "measures_table.Old_Other_leave_ratio": {
+			        "measures_table.PL_revenue": {
 			          "Target": {
-			            "Entity": "measures_table.Old_Other_leave_ratio"
+			            "Entity": "measures_table.PL_revenue"
 			          }
 			        }
 			      },
@@ -32194,12 +31665,12 @@ cultureInfo en-US
 			              "Role": "measures_table"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_Other_leave_ratio"
+			              "Role": "measures_table.PL_revenue"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_Other_leave_ratio"
+			          "ID": "measures_tables_have_PL_revenue"
 			        }
 			      ]
 			    },
@@ -32236,20 +31707,20 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_Gross_margin_hours__": {
+			    "pseudo_calendar_has_date": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.Old_Gross_margin_hours__": {
+			        "pseudo_calendar.date": {
 			          "Target": {
-			            "Entity": "measures_table.Old_Gross_margin_hours__"
+			            "Entity": "pseudo_calendar.date"
 			          }
 			        }
 			      },
@@ -32257,32 +31728,32 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_Gross_margin_hours__"
+			              "Role": "pseudo_calendar.date"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_Gross_margin_hours__"
+			          "ID": "pseudo_calendars_have_dates"
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_GM1_total_direct_costs": {
+			    "pseudo_calendar_has_year": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.Old_GM1_total_direct_costs": {
+			        "pseudo_calendar.year": {
 			          "Target": {
-			            "Entity": "measures_table.Old_GM1_total_direct_costs"
+			            "Entity": "pseudo_calendar.year"
 			          }
 			        }
 			      },
@@ -32290,32 +31761,32 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_GM1_total_direct_costs"
+			              "Role": "pseudo_calendar.year"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_GM1_total_direct_costs"
+			          "ID": "pseudo_calendars_have_years"
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_Gross_margin_hours": {
+			    "pseudo_calendar_has_year_month": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.Old_Gross_margin_hours": {
+			        "pseudo_calendar.year_month": {
 			          "Target": {
-			            "Entity": "measures_table.Old_Gross_margin_hours"
+			            "Entity": "pseudo_calendar.year_month"
 			          }
 			        }
 			      },
@@ -32323,48 +31794,15 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_Gross_margin_hours"
+			              "Role": "pseudo_calendar.year_month"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_Gross_margin_hours"
-			        }
-			      ]
-			    },
-			    "measures_table_has_gross_margin": {
-			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "measures_table": {
-			          "Target": {
-			            "Entity": "measures_table"
-			          }
-			        },
-			        "measures_table.gross_margin": {
-			          "Target": {
-			            "Entity": "measures_table.gross_margin"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "measures_table"
-			            },
-			            "Object": {
-			              "Role": "measures_table.gross_margin"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "measures_tables_have_gross_margin"
+			          "ID": "pseudo_calendars_have_year_months"
 			        }
 			      ]
 			    },
@@ -32500,20 +31938,20 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_Total_direct_cost": {
+			    "pseudo_calendar_has_quarter": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.Old_Total_direct_cost": {
+			        "pseudo_calendar.quarter": {
 			          "Target": {
-			            "Entity": "measures_table.Old_Total_direct_cost"
+			            "Entity": "pseudo_calendar.quarter"
 			          }
 			        }
 			      },
@@ -32521,15 +31959,15 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_Total_direct_cost"
+			              "Role": "pseudo_calendar.quarter"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_Total_direct_cost"
+			          "ID": "pseudo_calendars_have_quarters"
 			        }
 			      ]
 			    },
@@ -33456,20 +32894,20 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_old_FTE": {
+			    "pseudo_calendar_has_month_number": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.old_FTE": {
+			        "pseudo_calendar.month_number": {
 			          "Target": {
-			            "Entity": "measures_table.old_FTE"
+			            "Entity": "pseudo_calendar.month_number"
 			          }
 			        }
 			      },
@@ -33477,32 +32915,32 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.old_FTE"
+			              "Role": "pseudo_calendar.month_number"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_old_FTE"
+			          "ID": "pseudo_calendars_have_month_numbers"
 			        }
 			      ]
 			    },
-			    "measures_table_has_context_transition": {
+			    "pseudo_calendar_has_month": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.context_transition": {
+			        "pseudo_calendar.month": {
 			          "Target": {
-			            "Entity": "measures_table.context_transition"
+			            "Entity": "pseudo_calendar.month"
 			          }
 			        }
 			      },
@@ -33510,32 +32948,32 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.context_transition"
+			              "Role": "pseudo_calendar.month"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_context_transition"
+			          "ID": "pseudo_calendars_have_months"
 			        }
 			      ]
 			    },
-			    "measures_table_has_old_X_hours": {
+			    "pseudo_calendar_has_month_year_name": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.old_X_hours": {
+			        "pseudo_calendar.month_year_name": {
 			          "Target": {
-			            "Entity": "measures_table.old_X_hours"
+			            "Entity": "pseudo_calendar.month_year_name"
 			          }
 			        }
 			      },
@@ -33543,32 +32981,32 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.old_X_hours"
+			              "Role": "pseudo_calendar.month_year_name"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_old_X_hours"
+			          "ID": "pseudo_calendars_have_month_year_names"
 			        }
 			      ]
 			    },
-			    "measures_table_has_old_presence": {
+			    "pseudo_calendar_has_day_number": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.old_presence": {
+			        "pseudo_calendar.day_number": {
 			          "Target": {
-			            "Entity": "measures_table.old_presence"
+			            "Entity": "pseudo_calendar.day_number"
 			          }
 			        }
 			      },
@@ -33576,15 +33014,15 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.old_presence"
+			              "Role": "pseudo_calendar.day_number"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_old_presence"
+			          "ID": "pseudo_calendars_have_day_numbers"
 			        }
 			      ]
 			    },
@@ -33819,20 +33257,20 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_1_____FTE": {
+			    "pseudo_calendar_has_day": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.Old_1_____FTE": {
+			        "pseudo_calendar.day": {
 			          "Target": {
-			            "Entity": "measures_table.Old_1_____FTE"
+			            "Entity": "pseudo_calendar.day"
 			          }
 			        }
 			      },
@@ -33840,32 +33278,32 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_1_____FTE"
+			              "Role": "pseudo_calendar.day"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_1_____FTE"
+			          "ID": "pseudo_calendars_have_days"
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_OH": {
+			    "pseudo_calendar_has_current_year_offset": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.Old_OH": {
+			        "pseudo_calendar.current_year_offset": {
 			          "Target": {
-			            "Entity": "measures_table.Old_OH"
+			            "Entity": "pseudo_calendar.current_year_offset"
 			          }
 			        }
 			      },
@@ -33873,32 +33311,32 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_OH"
+			              "Role": "pseudo_calendar.current_year_offset"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_OH"
+			          "ID": "pseudo_calendars_have_current_year_offsets"
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_Presence_hours_FC": {
+			    "pseudo_calendar_has_week_of_year": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.Old_Presence_hours_FC": {
+			        "pseudo_calendar.week_of_year": {
 			          "Target": {
-			            "Entity": "measures_table.Old_Presence_hours_FC"
+			            "Entity": "pseudo_calendar.week_of_year"
 			          }
 			        }
 			      },
@@ -33906,32 +33344,32 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_Presence_hours_FC"
+			              "Role": "pseudo_calendar.week_of_year"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_Presence_hours_FC"
+			          "ID": "pseudo_calendars_have_week_of_year"
 			        }
 			      ]
 			    },
-			    "measures_table_has_Old_Price_per_hour": {
+			    "pseudo_calendar_has_PX_year_week": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.Old_Price_per_hour": {
+			        "pseudo_calendar.PX_year_week": {
 			          "Target": {
-			            "Entity": "measures_table.Old_Price_per_hour"
+			            "Entity": "pseudo_calendar.PX_year_week"
 			          }
 			        }
 			      },
@@ -33939,32 +33377,32 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.Old_Price_per_hour"
+			              "Role": "pseudo_calendar.PX_year_week"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_Old_Price_per_hour"
+			          "ID": "pseudo_calendars_have_PX_year_weeks"
 			        }
 			      ]
 			    },
-			    "measures_table_has_old_revenues": {
+			    "pseudo_calendar_has_px_week_num": {
 			      "Binding": {
-			        "ConceptualEntity": "Measures Table"
+			        "ConceptualEntity": "Pseudo Calendar"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "measures_table": {
+			        "pseudo_calendar": {
 			          "Target": {
-			            "Entity": "measures_table"
+			            "Entity": "pseudo_calendar"
 			          }
 			        },
-			        "measures_table.old_revenues": {
+			        "pseudo_calendar.px_week_num": {
 			          "Target": {
-			            "Entity": "measures_table.old_revenues"
+			            "Entity": "pseudo_calendar.px_week_num"
 			          }
 			        }
 			      },
@@ -33972,15 +33410,15 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "measures_table"
+			              "Role": "pseudo_calendar"
 			            },
 			            "Object": {
-			              "Role": "measures_table.old_revenues"
+			              "Role": "pseudo_calendar.px_week_num"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "measures_tables_have_old_revenues"
+			          "ID": "pseudo_calendars_have_px_week_nums"
 			        }
 			      ]
 			    },
