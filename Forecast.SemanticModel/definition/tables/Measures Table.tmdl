@@ -1551,11 +1551,15 @@ table 'Measures Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Amount (FC - Selected)' =
+	measure 'Amount (FC – Selected)' =
 			
-			VAR v = SELECTEDVALUE ( 'P&L'[Actuality] )
+			VAR v = SELECTEDVALUE ( 'Version Selector'[Version] )
 			RETURN
-			CALCULATE ( [4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS ( 'P&L'[Actuality] = v ) )
+			CALCULATE (
+			    [4. P&L_Cal_ContextTransitionToMonth],
+			    REMOVEFILTERS ( 'P&L'[ActualityOrigin] ),
+			    'P&L'[ActualityOrigin] = v
+			)
 		displayFolder: P&L Currency Conversions
 		lineageTag: 6ff9ceed-6419-49e6-b6cd-a9e0ab7cd237
 
@@ -1584,11 +1588,11 @@ table 'Measures Table'
 			    v = "BU", [Amount (BU)],
 			
 			    -- FC1: hel FC
-			    NOT ISBLANK ( CutoffMonth ) && CutoffMonth = 0, [Amount (FC - Selected)],
+			    NOT ISBLANK ( CutoffMonth ) && CutoffMonth = 0, [Amount (FC – Selected)],
 			
 			    -- FC2..FC12: AC t.o.m. cutoff, annars vald FC-version
 			    NOT ISBLANK ( CutoffMonth ),
-			        IF ( MonthEnd <= CutoffEnd, [Amount (AC)], [Amount (FC - Selected)] ),
+			        IF ( MonthEnd <= CutoffEnd, [Amount (AC)], [Amount (FC – Selected)] ),
 			
 			    -- fallback om inget är valt: visa AC
 			    [Amount (AC)]
@@ -1628,11 +1632,11 @@ table 'Measures Table'
 			    -- FC1: hela året FC
 			    IF (
 			        NOT ISBLANK ( CutoffMonth ) && CutoffMonth = 0,
-			        CALCULATE ( [Amount (FC - Selected)], DATESBETWEEN ( 'Calendar'[Date], YearStart, YearEnd ) ),
+			        CALCULATE ( [Amount (FC – Selected)], DATESBETWEEN ( 'Calendar'[Date], YearStart, YearEnd ) ),
 			        -- FC2..FC12: FC från dagen efter cutoff t.o.m. YearEnd
 			        IF (
 			            NOT ISBLANK ( CutoffMonth ),
-			            CALCULATE ( [Amount (FC - Selected)], DATESBETWEEN ( 'Calendar'[Date], CutoffEnd + 1, YearEnd ) )
+			            CALCULATE ( [Amount (FC – Selected)], DATESBETWEEN ( 'Calendar'[Date], CutoffEnd + 1, YearEnd ) )
 			        )
 			    )
 			
@@ -1654,6 +1658,129 @@ table 'Measures Table'
 		lineageTag: b9c15ebb-dcc1-4711-8943-fb4e1e76ac0e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Amount (AC Any)' =
+			
+			CALCULATE (
+			    [4. P&L_Cal_ContextTransitionToMonth],
+			    REMOVEFILTERS ( 'P&L'[ActualityOrigin] ),
+			    LEFT ( 'P&L'[ActualityOrigin], 2 ) = "AC"
+			)
+		displayFolder: P&L Currency Conversions
+		lineageTag: 01b6c60a-f1df-4837-9346-59eb25487627
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Amount (BU Any)' =
+			
+			CALCULATE (
+			    [4. P&L_Cal_ContextTransitionToMonth],
+			    REMOVEFILTERS ( 'P&L'[ActualityOrigin] ),
+			    LEFT ( 'P&L'[ActualityOrigin], 2 ) = "BU"
+			)
+		displayFolder: P&L Currency Conversions
+		lineageTag: bd2afd64-7994-4863-9f95-f41266077a0d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Monthly (AC/FC/BU by Selector)' = ```
+			
+			VAR v         = SELECTEDVALUE ( 'Version Selector'[Version], "AC" )
+			VAR MonthEnd  = EOMONTH ( MAX ( 'Calendar'[Date] ), 0 )
+			VAR YearStart = DATE ( YEAR ( MonthEnd ), 1, 1 )
+			
+			VAR IsFC = LEFT ( v, 2 ) = "FC"
+			VAR IsAC = v = "AC"
+			VAR IsBU = v = "BU"
+			
+			-- Ex: "FC2503" -> 03 -> 3
+			VAR FcMonthNum = IF ( IsFC, VALUE ( RIGHT ( v, 2 ) ) )
+			-- FC2501 => 0 (ingen AC). FC2503 => 2 (jan–feb AC)
+			VAR CutoffMonth = IF ( IsFC, MAX ( 0, FcMonthNum - 1 ) )
+			VAR CutoffEnd   = IF ( IsFC && CutoffMonth > 0, EOMONTH ( YearStart, CutoffMonth - 1 ) )
+			
+			RETURN
+			SWITCH (
+			    TRUE (),
+			
+			    IsAC, [Amount (AC Any)],
+			    IsBU, [Amount (BU Any)],
+			
+			    -- FC2501: alla månader från vald FC-version
+			    IsFC && CutoffMonth = 0, [Amount (FC – Selected)],
+			
+			    -- FC2502..FC2512: AC t.o.m. cutoff, annars vald FC
+			    IsFC, IF ( MonthEnd <= CutoffEnd, [Amount (AC Any)], [Amount (FC – Selected)] ),
+			
+			    -- Fallback
+			    [Amount (AC Any)]
+			)
+			
+			```
+		displayFolder: P&L Currency Conversions
+		lineageTag: f80807cf-31b9-4e17-9471-dfd85ddee481
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Until' =
+			
+			
+			VAR StartDate = STARTOFYEAR('Calendar'[Date])
+			VAR EndDate = MAX('Calendar'[Date])
+			VAR Period = DATESBETWEEN(
+			    'Calendar'[Date],
+			    StartDate,
+			    EndDate
+			)
+			RETURN
+			CALCULATE([4. P&L_Cal_ContextTransitionToMonth], KEEPFILTERS('P&L'[Actuality] = "AC"), Period,
+			USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date]))
+		formatString: 0
+		displayFolder: Financials
+		lineageTag: eddfa65f-fe12-43c5-a358-0ce2d216b300
+
+	measure 'Budgets Until' = ```
+			
+			VAR StartDate = MAX('Calendar'[Date]) + 1
+			VAR EndDate = ENDOFYEAR('Calendar'[Date])
+			VAR Period = 
+			DATESBETWEEN(
+			    'Calendar'[Date],
+			    StartDate,
+			    EndDate
+			)
+			RETURN
+			    CALCULATE([4. P&L_Cal_ContextTransitionToMonth], 'P&L'[Actuality] = "FC2",
+			    Period,
+			    USERELATIONSHIP('Pseudo Calendar'[Date], 'Calendar'[Date])
+			    )
+			
+			```
+		displayFolder: Financials
+		lineageTag: 5a33dc11-50bc-4181-b348-0c3f2079bae9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Actual & Budget' =
+			
+			[Sales Until] + [Budgets Until]
+		displayFolder: Financials
+		lineageTag: 9ecb91af-9442-4368-9d36-d395ba94e3f7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure CF =
+			
+			VAR Actual = MAX('Pseudo Calendar'[Date]) <= MAX('Calendar'[Date])
+			VAR Bud = MAX('Pseudo Calendar'[Date]) > MAX('Calendar'[Date])
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    Actual, "#eff3f8",
+			    Bud, "#fedbe2"
+			)
+		displayFolder: Financials
+		lineageTag: 138df3af-260e-4f16-a235-4bc5cef7e619
 
 	partition 'Measures Table' = m
 		mode: import

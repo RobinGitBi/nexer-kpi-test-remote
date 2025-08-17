@@ -54,6 +54,8 @@ ref table 'GL Account Hierarchy'
 ref table Goals
 ref table Parameter
 ref table ForecastVersionMap
+ref table 'Version Selector'
+ref table 'Pseudo Calendar'
 
 ref cultureInfo en-US
 

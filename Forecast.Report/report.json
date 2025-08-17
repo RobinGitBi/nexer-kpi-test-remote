@@ -326,6 +326,15 @@
       "ordinal": 10,
       "visualContainers": [
         {
+          "config": "{\"name\":\"3d7afafd92d92eb191ea\",\"layouts\":[{\"id\":0,\"position\":{\"x\":763.389193422083,\"y\":71.84839467501958,\"z\":5001,\"width\":150.11182458888018,\"height\":152.6778386844166,\"tabOrder\":5001}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Calendar.Year Month\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"Calendar\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Year Month\"},\"Name\":\"Calendar.Year Month\",\"NativeReferenceName\":\"Year Month\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"Calendar\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Year Month\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'202501'\"}}]]}}}]}}}}]}}}",
+          "filters": "[]",
+          "height": 152.68,
+          "width": 150.11,
+          "x": 763.39,
+          "y": 71.85,
+          "z": 5001.00
+        },
+        {
           "config": "{\"name\":\"51bf523e9ac370eabde3\",\"layouts\":[{\"id\":0,\"position\":{\"x\":302.74215793754644,\"y\":98.49984086006296,\"z\":4000,\"width\":921.2632174558829,\"height\":298.3965767231319,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"pivotTable\",\"projections\":{\"Columns\":[{\"queryRef\":\"Calendar.Year Month\",\"active\":true},{\"queryRef\":\"ActualityOrgin.ActualityOrigin\"}],\"Values\":[{\"queryRef\":\"Measures Table.FC+Actuals\"},{\"queryRef\":\"Measures Table.4. P&L_Cal_ContextTransitionToMonth\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"Measures Table\",\"Type\":0},{\"Name\":\"c\",\"Entity\":\"Calendar\",\"Type\":0},{\"Name\":\"a1\",\"Entity\":\"ActualityOrgin\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"FC+Actuals\"},\"Name\":\"Measures Table.FC+Actuals\",\"NativeReferenceName\":\"FC+Actuals\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"4. P&L_Cal_ContextTransitionToMonth\"},\"Name\":\"Measures Table.4. P&L_Cal_ContextTransitionToMonth\",\"NativeReferenceName\":\"4. P&L_Cal_ContextTransitionToMonth\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Year Month\"},\"Name\":\"Calendar.Year Month\",\"NativeReferenceName\":\"Year Month\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a1\"}},\"Property\":\"ActualityOrigin\"},\"Name\":\"ActualityOrgin.ActualityOrigin\",\"NativeReferenceName\":\"ActualityOrigin\"}]},\"drillFilterOtherVisuals\":true,\"filterSortOrder\":3,\"objects\":{}}}",
           "filters": "[{\"name\":\"d4f41d15a6dd4a0278d0\",\"expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Measures Table\"}},\"Property\":\"Measure (CorrectTotals)\"}},\"type\":\"Advanced\",\"howCreated\":1,\"isHiddenInViewMode\":false,\"ordinal\":0}]",
           "height": 298.40,
@@ -335,12 +344,12 @@
           "z": 4000.00
         },
         {
-          "config": "{\"name\":\"7750a66eb643d7a3d749\",\"layouts\":[{\"id\":0,\"position\":{\"x\":322.74788537612966,\"y\":439.99099475766246,\"z\":3000,\"width\":206.8221143022545,\"height\":279.2757212234265,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"ActualityOrgin.ActualityOrigin\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"ActualityOrgin\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"ActualityOrigin\"},\"Name\":\"ActualityOrgin.ActualityOrigin\",\"NativeReferenceName\":\"ActualityOrigin\"}]},\"queryOptions\":{\"keepProjectionOrder\":true},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"ActualityOrgin\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"ActualityOrigin\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'FC2502'\"}}],[{\"Literal\":{\"Value\":\"'AC'\"}}]]}}}]}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Forecast Version'\"}}}}}]}}}",
+          "config": "{\"name\":\"7750a66eb643d7a3d749\",\"layouts\":[{\"id\":0,\"position\":{\"x\":341.279874706343,\"y\":441.3544244322631,\"z\":3000,\"width\":164.22490211433046,\"height\":160.37588097102585,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"ActualityOrgin.ActualityOrigin\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"ActualityOrgin\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"ActualityOrigin\"},\"Name\":\"ActualityOrgin.ActualityOrigin\",\"NativeReferenceName\":\"ActualityOrigin\"}]},\"queryOptions\":{\"keepProjectionOrder\":true},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"ActualityOrgin\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"ActualityOrigin\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'FC2502'\"}}],[{\"Literal\":{\"Value\":\"'AC'\"}}]]}}}]}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Forecast Version'\"}}}}}]}}}",
           "filters": "[]",
-          "height": 279.28,
-          "width": 206.82,
-          "x": 322.75,
-          "y": 439.99,
+          "height": 160.38,
+          "width": 164.22,
+          "x": 341.28,
+          "y": 441.35,
           "z": 3000.00
         },
         {
@@ -353,6 +362,15 @@
           "z": 0.00
         },
         {
+          "config": "{\"name\":\"a44656970c665c91293a\",\"layouts\":[{\"id\":0,\"position\":{\"x\":97.50853563038372,\"y\":107.77259201252937,\"z\":5002,\"width\":653.0505873140172,\"height\":265.5824588880188,\"tabOrder\":5002}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Calendar.Year Month\"},{\"queryRef\":\"Measures Table.4. P&L_Cal_ContextTransitionToMonth\"},{\"queryRef\":\"ActualityOrgin.ActualityOrigin\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"Calendar\",\"Type\":0},{\"Name\":\"m\",\"Entity\":\"Measures Table\",\"Type\":0},{\"Name\":\"a\",\"Entity\":\"ActualityOrgin\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Year Month\"},\"Name\":\"Calendar.Year Month\",\"NativeReferenceName\":\"Year Month\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"4. P&L_Cal_ContextTransitionToMonth\"},\"Name\":\"Measures Table.4. P&L_Cal_ContextTransitionToMonth\",\"NativeReferenceName\":\"4. P&L_Cal_ContextTransitionToMonth\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"ActualityOrigin\"},\"Name\":\"ActualityOrgin.ActualityOrigin\",\"NativeReferenceName\":\"ActualityOrigin\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{}}}",
+          "filters": "[]",
+          "height": 265.58,
+          "width": 653.05,
+          "x": 97.51,
+          "y": 107.77,
+          "z": 5002.00
+        },
+        {
           "config": "{\"name\":\"d69346bc28889c480508\",\"layouts\":[{\"id\":0,\"position\":{\"x\":12.736318407960198,\"y\":269.0547263681592,\"z\":1000,\"width\":273.83084577114425,\"height\":280.19900497512435,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Calendar.Year\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"Calendar\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Year\"},\"Name\":\"Calendar.Year\",\"NativeReferenceName\":\"Year\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{\"orientation\":{\"expr\":{\"Literal\":{\"Value\":\"0D\"}}},\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"Calendar\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Year\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"2025L\"}}]]}}}]}}}}]}}}",
           "filters": "[]",
           "height": 280.20,
@@ -362,7 +380,7 @@
           "z": 1000.00
         },
         {
-          "config": "{\"name\":\"dcf4f464a5a65eb90866\",\"layouts\":[{\"id\":0,\"position\":{\"x\":13,\"y\":559,\"width\":274,\"height\":161,\"z\":2000,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Calendar.Month\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"Calendar\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Month\"},\"Name\":\"Calendar.Month\",\"NativeReferenceName\":\"Month\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}},\"isInvertedSelectionMode\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}],\"general\":[{\"properties\":{}}],\"selection\":[{\"properties\":{\"selectAllCheckboxEnabled\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "config": "{\"name\":\"dcf4f464a5a65eb90866\",\"layouts\":[{\"id\":0,\"position\":{\"x\":13,\"y\":559,\"width\":274,\"height\":161,\"z\":2000,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Calendar.Month\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"Calendar\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Month\"},\"Name\":\"Calendar.Month\",\"NativeReferenceName\":\"Month\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{}}],\"selection\":[{\"properties\":{\"selectAllCheckboxEnabled\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
           "filters": "[]",
           "height": 161.00,
           "width": 274.00,
@@ -371,12 +389,12 @@
           "z": 2000.00
         },
         {
-          "config": "{\"name\":\"f50670299ce8c9cdbd29\",\"layouts\":[{\"id\":0,\"position\":{\"x\":599.6902075892068,\"y\":441.8007567988118,\"z\":5000,\"width\":562.0285037309475,\"height\":278.1171977225307,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"pivotTable\",\"projections\":{\"Rows\":[{\"queryRef\":\"Organisation Manual.CompanyId\",\"active\":true},{\"queryRef\":\"ActualityOrgin.Actuality\"}],\"Columns\":[{\"queryRef\":\"Calendar.Year Month\",\"active\":true}],\"Values\":[{\"queryRef\":\"Measures Table.Monthly (AC or FC or BU by Version)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"o\",\"Entity\":\"Organisation Manual\",\"Type\":0},{\"Name\":\"c\",\"Entity\":\"Calendar\",\"Type\":0},{\"Name\":\"a\",\"Entity\":\"ActualityOrgin\",\"Type\":0},{\"Name\":\"m\",\"Entity\":\"Measures Table\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"o\"}},\"Property\":\"CompanyId\"},\"Name\":\"Organisation Manual.CompanyId\",\"NativeReferenceName\":\"CompanyId\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Year Month\"},\"Name\":\"Calendar.Year Month\",\"NativeReferenceName\":\"Year Month\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"Actuality\"},\"Name\":\"ActualityOrgin.Actuality\",\"NativeReferenceName\":\"Actuality\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Monthly (AC or FC or BU by Version)\"},\"Name\":\"Measures Table.Monthly (AC or FC or BU by Version)\",\"NativeReferenceName\":\"Monthly (AC or FC or BU by Version)\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"subTotals\":[{\"properties\":{\"columnSubtotals\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}}}",
-          "filters": "[]",
-          "height": 278.12,
-          "width": 562.03,
-          "x": 599.69,
-          "y": 441.80,
+          "config": "{\"name\":\"f50670299ce8c9cdbd29\",\"layouts\":[{\"id\":0,\"position\":{\"x\":364.3740015661707,\"y\":422.10931871574,\"z\":5000,\"width\":765.9552075176194,\"height\":297.657635082224,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"pivotTable\",\"projections\":{\"Columns\":[{\"queryRef\":\"Pseudo Calendar.Year Month\",\"active\":true}],\"Values\":[{\"queryRef\":\"Measures Table.Actual & Budget\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"p\",\"Entity\":\"Pseudo Calendar\",\"Type\":0},{\"Name\":\"m\",\"Entity\":\"Measures Table\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"Year Month\"},\"Name\":\"Pseudo Calendar.Year Month\",\"NativeReferenceName\":\"Year Month\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Actual & Budget\"},\"Name\":\"Measures Table.Actual & Budget\",\"NativeReferenceName\":\"Actual & Budget\"}]},\"queryOptions\":{\"keepProjectionOrder\":true},\"showAllRoles\":[\"Columns\"],\"drillFilterOtherVisuals\":true,\"objects\":{\"subTotals\":[{\"properties\":{\"columnSubtotals\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}],\"values\":[{\"properties\":{\"backColor\":{\"solid\":{\"color\":{\"expr\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Measures Table\"}},\"Property\":\"CF\"}}}}}},\"selector\":{\"data\":[{\"dataViewWildcard\":{\"matchingOption\":1}}],\"metadata\":\"Measures Table.Actual & Budget\"}}]}}}",
+          "filters": "[{\"name\":\"96736e1a5dbc30dc2cb2\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Pseudo Calendar\"}},\"Property\":\"Year\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"p\",\"Entity\":\"Pseudo Calendar\",\"Type\":0}],\"Where\":[{\"Condition\":{\"Comparison\":{\"ComparisonKind\":0,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"Year\"}},\"Right\":{\"Literal\":{\"Value\":\"2025L\"}}}}}]},\"type\":\"Advanced\",\"howCreated\":1}]",
+          "height": 297.66,
+          "width": 765.96,
+          "x": 364.37,
+          "y": 422.11,
           "z": 5000.00
         }
       ],

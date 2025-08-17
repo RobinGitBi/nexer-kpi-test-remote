@@ -1,0 +1,121 @@
+table 'Pseudo Calendar'
+	lineageTag: 7d3c13d6-2330-4650-9902-ddc2029b4e31
+
+	column Date
+		formatString: General Date
+		lineageTag: b3943954-bd14-4155-a3f5-f225dd85df67
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 80932274-7841-4c91-9321-8ab442164c5f
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month'
+		lineageTag: 950c3457-8c31-49dd-8522-3675c4c5688c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Year Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: 4121effb-bc76-4998-b6cc-0525c9dd732b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		formatString: 0
+		lineageTag: b24a6d6b-c383-469a-90cf-4997a1be35de
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: 9cc756c0-a2c1-41da-87ec-e0984e0b3e5b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthYearName
+		lineageTag: ffedd957-aaa1-4058-abf1-ec689a958d31
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[MonthYearName]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Number'
+		formatString: 0
+		lineageTag: e8827f7c-42d4-43d9-b5f8-633173e08fca
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Day Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		lineageTag: c26315c9-2d33-40c1-96af-2bfe68a92e77
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current Year Offset'
+		formatString: 0
+		lineageTag: a1c3f940-308a-455f-af76-e2ebd5db5aae
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Current Year Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Of Year'
+		formatString: 0
+		lineageTag: a500a8f0-dfba-41d3-80b4-9be637408530
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Week Of Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PX Year Week'
+		formatString: 0
+		lineageTag: ef954ab0-b6e2-4c67-a3e6-ad5105add8a4
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[PX Year Week]
+
+		annotation SummarizationSetBy = Automatic
+
+	column PxWeekNum
+		formatString: 0
+		lineageTag: 9158650f-15e0-417f-a547-630969772a86
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[PxWeekNum]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Pseudo Calendar' = calculated
+		mode: import
+		source = 'Calendar'
+
+	annotation PBI_Id = b3257825f9e74d3a889534225919c45f
+

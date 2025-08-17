@@ -4,7 +4,7 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 5086.3559835827764,
+        "x": 4042.6667480468723,
         "y": 0
       },
       "nodes": [
@@ -23,8 +23,8 @@
         },
         {
           "location": {
-            "x": 5868.3327499515262,
-            "y": 0
+            "x": 5070.3597294077936,
+            "y": 49.999999999999972
           },
           "nodeIndex": "Calendar",
           "nodeLineageTag": "65041477-06a8-4a16-9394-4c3344a61489",
@@ -306,8 +306,8 @@
         },
         {
           "location": {
-            "x": 5796.6552674583581,
-            "y": 497
+            "x": 5492.6552674583581,
+            "y": 670.99999999999989
           },
           "nodeIndex": "Parameter",
           "nodeLineageTag": "f6418b4e-5885-4a43-85b7-b41829dedb92",
@@ -319,19 +319,45 @@
         },
         {
           "location": {
-            "x": 5796.6552674583581,
-            "y": 473
+            "x": 5748.6552674583581,
+            "y": 662.99999999999989
           },
           "nodeIndex": "ForecastVersionMap",
+          "nodeLineageTag": "5148887d-e722-4e99-87cd-510065a75a61",
           "size": {
             "height": 200,
             "width": 234
           },
           "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 5796.6552674583581,
+            "y": 473
+          },
+          "nodeIndex": "Version Selector",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 5500.6552674583581,
+            "y": 3.9999999999999982
+          },
+          "nodeIndex": "Pseudo Calendar",
+          "nodeLineageTag": "7d3c13d6-2330-4650-9902-ddc2029b4e31",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "All tables",
-      "zoomValue": 56.058468207030124,
+      "zoomValue": 50.000000000000036,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,

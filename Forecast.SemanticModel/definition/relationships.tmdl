@@ -127,3 +127,8 @@ relationship AutoDetected_a187aa38-0016-4a61-8b9e-486c162f381b
 	fromColumn: Goals.SourceCurrency
 	toColumn: 'Reporting Currency'.SourceCurrency
 
+relationship 2a4c9317-8d8b-be2a-09b5-6ec2c852ac2f
+	isActive: false
+	fromColumn: Calendar.Date
+	toColumn: 'Pseudo Calendar'.Date
+
